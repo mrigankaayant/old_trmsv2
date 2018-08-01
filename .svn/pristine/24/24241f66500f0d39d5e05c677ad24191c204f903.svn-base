@@ -1,0 +1,64 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:p="http://primefaces.org/ui">
+
+	<h:form id="form">
+		<p:panel style="margin-top:9%;">
+			<f:facet name="header">Mail To Candidate</f:facet>
+
+			<p:panel>
+				<f:facet name="header">Write Mail</f:facet>
+
+				<div class="ui-g">
+					<div class="ui-g-12 ui-md-6 ui-lg-12">
+						<h:panelGrid style="width:100%">
+							<p:outputLabel for="subject" value="Subject:" />
+							<p:inputText id="subject" value="#{hrBean.offerletterModel.subject}" required="true"
+								requiredMessage="Enter Subject" placeholder="Subject">
+							</p:inputText>
+							<p:message for="subject" />
+						</h:panelGrid>
+					</div>
+				</div>
+
+				<div class="ui-g">
+					<div class="ui-g-12 ui-md-6 ui-lg-12">
+						<h:panelGrid style="width:100%">
+							<p:outputLabel for="cc" value="CC:" />
+							<p:inputText id="cc" value="#{hrBean.offerletterModel.cc}" placeholder="CC">
+							</p:inputText>
+							<p:message for="cc" />
+						</h:panelGrid>
+					</div>
+				</div>
+				<div class="ui-g">
+					<div class="ui-g-12 ui-md-6 ui-lg-12">
+						<h:panelGrid style="width:100%">
+							<p:outputLabel for="bcc" value="BCC:" />
+							<p:inputText id="bcc" value="#{hrBean.offerletterModel.bcc}" placeholder="BCC">
+							</p:inputText>
+							<p:message for="bcc" />
+						</h:panelGrid>
+					</div>
+				</div>
+
+
+				<div class="ui-g">
+					<div class="ui-g-12 ui-md-6 ui-lg-12">
+						<h:panelGrid style="width:100%">
+							<p:outputLabel for="message" value="Message:" />
+							<p:editor id="message" widgetVar="editorWidget" value="#{hrBean.offerletterModel.bodyContent}" />
+							<p:message for="message" />
+						</h:panelGrid>
+					</div>
+				</div>
+				
+				<f:facet name="footer">
+				    <p:commandButton value="Send" action="#{hrBean.mailSendToCandidate()}" onclick="PF('statusDialog').show()" oncomplete="PF('statusDialog').hide()" update=":mainBody" />
+				    <p:commandButton value="Clear" type="button" onclick="PF('editorWidget').clear();" icon="ui-icon-close" />
+				</f:facet>
+
+			</p:panel>
+
+		</p:panel>
+	</h:form>
+</ui:composition>

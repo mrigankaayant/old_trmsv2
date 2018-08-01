@@ -1,0 +1,377 @@
+package com.ayantsoft.trms.jsf.view;
+
+import java.io.Serializable;
+import java.math.BigDecimal;
+import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+
+import javax.faces.application.FacesMessage;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
+import javax.faces.bean.ViewScoped;
+import javax.faces.context.FacesContext;
+
+import org.primefaces.event.SelectEvent;
+
+import com.ayantsoft.trms.hibernate.pojo.CandidateCheckList;
+import com.ayantsoft.trms.hibernate.pojo.CandidateCourse;
+import com.ayantsoft.trms.hibernate.pojo.CandidatePayment;
+import com.ayantsoft.trms.hibernate.pojo.CheckListType;
+import com.ayantsoft.trms.hibernate.pojo.Employee;
+import com.ayantsoft.trms.jsf.model.CandidatePaymentModel;
+import com.ayantsoft.trms.service.CandidateCheckListService;
+//import com.ayantsoft.trms.jsf.model.LazyCandidatePaymentModel;
+import com.ayantsoft.trms.service.CandidatePaymentService;
+
+/**
+ * @author Mriganka
+ *
+ */
+@ManagedBean
+@ViewScoped
+public class AccountBean implements Serializable{
+
+	/**
+	 * serialVersionUID
+	 */
+	private static final long serialVersionUID = 2209864836051993425L;
+
+
+
+	@ManagedProperty(value="#{candidatePaymentService}")
+	private CandidatePaymentService candidatePaymentService;
+
+	@ManagedProperty(value="#{candidateCheckListService}")
+	private CandidateCheckListService candidateCheckListService;
+
+	@ManagedProperty(value="#{loginBean}")
+	private LoginBean loginBean;
+
+	@ManagedProperty(value="#{appDataBean}")
+	private AppDataBean appDataBean ;
+
+
+	private String action;
+	private CandidatePayment candidatePayment;
+	private List<CandidatePaymentModel> candidatePaymentModels;
+	private CandidatePaymentModel candidatePaymentModel;
+	private List<CandidateCourse> courcesForPayment;
+	private List<CandidatePayment> paymentList;
+	private Date startDate;
+	private Date endDate;
+
+	public void showDuePaymentDetails()
+	{
+		this.action = "VIEW";
+		candidatePaymentModels=candidatePaymentService.getCandidatePaymentDue(loginBean.getUserProfile().getEmployee().getEmpId(), loginBean.hasRole("ROLE_RECRUITER"),loginBean.hasRole("ROLE_ADMIN"));
+
+		if(candidatePaymentModels != null)
+		{
+			Iterator<CandidatePaymentModel> ite = candidatePaymentModels.iterator();
+			while(ite.hasNext()) {
+				CandidatePaymentModel cpm = ite.next();
+
+				if(cpm.getDueAmount() != null){
+					if ((cpm.getDueAmount()).compareTo(BigDecimal.ZERO) == 0){
+						ite.remove();
+					}
+				}
+			}
+
+		}
+
+	}
+
+	public void onRowSelect(SelectEvent event) {
+		paymentDetails();
+	}
+
+	public void paymentDetails()
+	{
+		action = "PAYMENT";
+		List<CandidatePayment> candidatePayments = candidatePaymentService.showCandidateDueDetals(candidatePaymentModel.getCandidate().getCandidateId());
+		candidatePaymentModel.setCandidatePayments(candidatePayments);
+
+		courcesForPayment = candidatePaymentService.getCourcesForPayment(candidatePaymentModel.getCandidate().getCandidateId());
+
+		candidatePayment = new CandidatePayment();
+		candidatePayment.setCandidateCourse(new CandidateCourse());
+
+	}
+
+	public BigDecimal getTotalDueAmount(String course,Integer candidateId) {
+		return candidatePaymentService.getTotalDueByCandidateId(course,candidateId);
+	}
+
+
+
+
+	public void savePayment()
+	{
+		try{
+			Employee recruiter = new Employee();
+			recruiter.setEmpId(candidatePaymentModel.getRecruiterEmpId());
+			candidatePayment.setEmployee(recruiter);
+			candidatePayment.setCandidate(candidatePaymentModel.getCandidate());
+
+			FacesContext fc = FacesContext.getCurrentInstance();
+			Map<String,String> params =fc.getExternalContext().getRequestParameterMap();
+			String paymentPurpose = params.get("paymentPurpose");
+
+			if(paymentPurpose.equals("PAYMENT")){
+				if(candidateCheckListService.enrollmentFormStatusCheck(candidatePaymentModel.getCandidate().getCandidateId(),"Enrollment Form Submission")){
+					List<CandidateCheckList> canCheckLists = candidateCheckListService.findCheckListByCandidateId(candidatePaymentModel.getCandidate().getCandidateId());
+					CandidateCheckList paymentDeclarationCheckList = null;
+					if(canCheckLists!=null){
+						for(CandidateCheckList checkList:canCheckLists)
+						{
+							if(checkList.getCheckListType().getCheckListTypeName().equals("Payment Declaration Form")){
+								paymentDeclarationCheckList = checkList;
+								break;
+							}
+						}
+						if(paymentDeclarationCheckList.getCheckListStatus() != null){
+							if(paymentDeclarationCheckList.getCheckListStatus().equals("Pending")||paymentDeclarationCheckList.getCheckListStatus().equals("Initiated")){
+								FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Fail:", "Previous Payment Declaration Form process is not completed."));
+							}else{
+								paymentDeclarationCheckList.setCheckListStatus("Pending");
+								candidateCheckListService.saveCandidateCheckListForAssign(paymentDeclarationCheckList);
+								candidatePaymentService.savePayment(candidatePayment, loginBean.getEmployee());
+								FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"Sucess:", "Payment saved successfully"));
+							}
+						}else{
+							paymentDeclarationCheckList.setCheckListStatus("Pending");
+							candidateCheckListService.saveCandidateCheckListForAssign(paymentDeclarationCheckList);
+							candidatePaymentService.savePayment(candidatePayment, loginBean.getEmployee());
+							FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"Sucess:", "Payment saved successfully"));
+						}
+					}
+
+				}else{
+					List<CandidateCheckList> canCheckLists = candidateCheckListService.findCheckListByCandidateId(candidatePaymentModel.getCandidate().getCandidateId());
+					if(canCheckLists != null && canCheckLists.size()>0){
+						candidatePaymentService.savePayment(candidatePayment, loginBean.getEmployee());
+					}else{
+						List<CheckListType> checkListTypes = appDataBean.getCheckListTypes();
+						for(CheckListType checkListType : checkListTypes)
+						{
+							CandidateCheckList checkList = new CandidateCheckList();
+							if(checkListType.getCheckListTypeName().equals("Enrollment Form Submission"))
+							{
+								checkList.setCheckListStatus("Pending");
+							}
+							checkList.setCheckListDate(new Date());
+							checkList.setCheckListType(checkListType);
+							checkList.setCandidate(candidatePaymentModel.getCandidate());
+							candidateCheckListService.saveCandidateCheckList(checkList,null,null);
+						}
+						candidatePaymentService.savePayment(candidatePayment, loginBean.getEmployee());
+					}
+					FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"Sucess:", "Payment saved successfully"));
+				}
+				paymentDetails();
+			}else{
+				candidatePaymentService.savePayment(candidatePayment, loginBean.getEmployee());
+				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"Sucess:", "Skill Successfully Added"));
+				paymentDetails();
+			}
+
+		}catch(Exception e){
+			e.printStackTrace();
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Fail:", "Payment not saved"));
+		}
+
+		addSkill();
+	}
+
+	public void addSkill()
+	{
+		candidatePayment = new CandidatePayment();
+		candidatePayment.setCandidateCourse(new CandidateCourse());
+	}
+
+	
+	private BigDecimal discountAmount;
+	
+	public void discountAmount()
+	{
+		if(discountAmount != null){
+			discountAmount = null;
+		}
+		candidatePayment = new CandidatePayment();
+		candidatePayment.setCandidateCourse(new CandidateCourse());
+	}
+	
+	public void saveDiscountAmount(){
+		try{
+			Employee recruiter = new Employee();
+			recruiter.setEmpId(candidatePaymentModel.getRecruiterEmpId());
+			candidatePayment.setEmployee(recruiter);
+			candidatePayment.setCandidate(candidatePaymentModel.getCandidate());
+			candidatePayment.setTransactionDate(new Date());
+			candidatePayment.setDebit(discountAmount);
+			candidatePayment.setTxnType("Discount");
+			candidatePayment.setTransactionId("Discount");
+			candidatePaymentService.saveDiscountAmount(candidatePayment, loginBean.getEmployee());
+			
+			List<CandidatePayment> candidatePayments = candidatePaymentService.showCandidateDueDetals(candidatePaymentModel.getCandidate().getCandidateId());
+			candidatePaymentModel.setCandidatePayments(candidatePayments);
+
+			courcesForPayment = candidatePaymentService.getCourcesForPayment(candidatePaymentModel.getCandidate().getCandidateId());
+
+			candidatePayment = new CandidatePayment();
+			candidatePayment.setCandidateCourse(new CandidateCourse());
+			
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"Sucess:", "Discount saved successfully"));
+		}catch(Exception e){
+			e.printStackTrace();
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Fail:", "Discount not saved"));
+		}
+	}
+
+
+	public void showPaymentDetailsByDate()
+	{
+		action = "SHOWPAYMENTDETAILSBYDATE";
+		if(startDate != null){
+			startDate = null;
+		}
+		if(endDate != null){
+			endDate = null;
+		}
+
+	}
+
+	public void paymentListByStartDateEndDate(){
+		try{
+			action = "PAYMENTDETAILSBYDATE";
+			if(paymentList != null){
+				paymentList.clear();
+			}
+			paymentList = candidatePaymentService.getCandidatePaymentByDate(startDate, endDate);
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+	}
+
+
+	public Date getStartDate() {
+		return startDate;
+	}
+
+	public void setStartDate(Date startDate) {
+		this.startDate = startDate;
+	}
+
+	public Date getEndDate() {
+		return endDate;
+	}
+
+	public void setEndDate(Date endDate) {
+		this.endDate = endDate;
+	}
+
+	public CandidatePaymentService getCandidatePaymentService() {
+		return candidatePaymentService;
+	}
+
+
+	public void setCandidatePaymentService(CandidatePaymentService candidatePaymentService) {
+		this.candidatePaymentService = candidatePaymentService;
+	}
+
+	public LoginBean getLoginBean() {
+		return loginBean;
+	}
+
+
+	public void setLoginBean(LoginBean loginBean) {
+		this.loginBean = loginBean;
+	}
+
+
+	public String getAction() {
+		return action;
+	}
+
+
+	public void setAction(String action) {
+		this.action = action;
+	}
+
+
+	public CandidatePayment getCandidatePayment() {
+		return candidatePayment;
+	}
+
+
+	public void setCandidatePayment(CandidatePayment candidatePayment) {
+		this.candidatePayment = candidatePayment;
+	}
+
+
+	public List<CandidatePaymentModel> getCandidatePaymentModels() {
+		return candidatePaymentModels;
+	}
+
+
+	public void setCandidatePaymentModels(List<CandidatePaymentModel> candidatePaymentModels) {
+		this.candidatePaymentModels = candidatePaymentModels;
+	}
+
+
+	public CandidatePaymentModel getCandidatePaymentModel() {
+		return candidatePaymentModel;
+	}
+
+
+	public void setCandidatePaymentModel(CandidatePaymentModel candidatePaymentModel) {
+		this.candidatePaymentModel = candidatePaymentModel;
+	}
+
+
+	public List<CandidateCourse> getCourcesForPayment() {
+		return courcesForPayment;
+	}
+
+
+	public void setCourcesForPayment(List<CandidateCourse> courcesForPayment) {
+		this.courcesForPayment = courcesForPayment;
+	}
+
+	public CandidateCheckListService getCandidateCheckListService() {
+		return candidateCheckListService;
+	}
+
+	public void setCandidateCheckListService(CandidateCheckListService candidateCheckListService) {
+		this.candidateCheckListService = candidateCheckListService;
+	}
+
+	public AppDataBean getAppDataBean() {
+		return appDataBean;
+	}
+
+	public void setAppDataBean(AppDataBean appDataBean) {
+		this.appDataBean = appDataBean;
+	}
+
+	public List<CandidatePayment> getPaymentList() {
+		return paymentList;
+	}
+
+	public void setPaymentList(List<CandidatePayment> paymentList) {
+		this.paymentList = paymentList;
+	}
+
+	public BigDecimal getDiscountAmount() {
+		return discountAmount;
+	}
+
+	public void setDiscountAmount(BigDecimal discountAmount) {
+		this.discountAmount = discountAmount;
+	}
+
+
+}

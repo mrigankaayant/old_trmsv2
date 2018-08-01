@@ -1,0 +1,124 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html" xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:fn="http://java.sun.com/jsp/jstl/functions">
+
+<ui:composition template="/trainer/trainerTemplate.xhtml">
+	<ui:define name="content">
+		<h:panelGroup id="mainBody">
+			<c:choose>
+
+				<c:when test="#{trainerBean.action == 'ADDBATCH'}">
+					<ui:include src="/trainer/addBatch.xhtml" />
+				</c:when>
+
+				<c:when test="#{trainerBean.action == 'ADDTRAINER'}">
+					<ui:include src="/trainer/addTrainer.xhtml" />
+				</c:when>
+
+				<c:when test="#{trainerBean.action == 'TRAINERLIST'}">
+					<ui:include src="/trainer/listTrainer.xhtml" />
+				</c:when>
+
+				<c:when test="#{trainerBean.action == 'LISTTRAINERINVOICE'}">
+					<ui:include src="/trainer/trainerInvoiceList.xhtml" />
+				</c:when>
+
+				<c:when test="#{trainerBean.action == 'TRAINERLISTFORINVOICE'}">
+					<ui:include src="/trainer/listTrainerForInvoice.xhtml" />
+				</c:when>
+
+				<c:when test="#{trainerBean.action == 'BATCHLIST'}">
+					<ui:include src="/trainer/programeScheduleList.xhtml" />
+				</c:when>
+
+				<c:when test="#{trainerBean.action == 'INVOICPAYAMOUNTFORM'}">
+					<ui:include src="/trainer/invoicePayAmountForm.xhtml" />
+				</c:when>
+
+				<c:when test="#{trainerBean.action == 'TRAINERDETAILSOFMONTHWISE'}">
+					<ui:include src="/trainer/trainerDetailsOfMonthWise.xhtml" />
+				</c:when>
+
+				<c:when test="#{trainerBean.action == 'INVOICPAYAMOUNTFORMFORMONTH'}">
+					<ui:include src="/trainer/invoicePayAmountFormForMonth.xhtml" />
+				</c:when>
+
+				<c:when test="#{trainerBean.action == 'INVOICPAYAMOUNTFORMFORStUDENTWISE'}">
+					<ui:include src="/trainer/invoicePayAmountFormForSudentWise.xhtml" />
+				</c:when>
+				
+				<c:when test="#{trainerBean.action == 'PROGRAMESCHEDULELIST'}">
+					<ui:include src="/trainer/listBatch.xhtml" />
+				</c:when>
+				
+				<c:when test="#{trainerBean.action == 'ASSIGNCANDIDATE'}">
+					<ui:include src="/trainer/assignCandidate.xhtml" />
+				</c:when>
+				
+				
+				<c:when test="#{trainerBean.action == 'CANDIDATEFORASSIGN'}">
+					<ui:include src="/trainer/candidateList.xhtml" />
+				</c:when>
+				
+				<c:when test="#{trainerBean.action == 'CANDIDATEASSIGNSUCCESS'}">
+					<ui:include src="/trainer/assignSuccess.xhtml" />
+				</c:when>
+				
+				<c:when test="#{trainerBean.action == 'TRAINEELIST'}">
+					<ui:include src="/trainer/traineeList.xhtml" />
+				</c:when>
+				
+				<c:when test="#{trainerBean.action == 'SKIPCANDIDATEPAGE'}">
+					<ui:include src="/trainer/skipCandidatePage.xhtml" />
+				</c:when>
+				
+				<c:when test="#{trainerBean.action == 'CANDIDATEFORREMOVE'}">
+					<ui:include src="/trainer/candidateListForRemove.xhtml" />
+				</c:when>
+				
+				<c:when test="#{trainerBean.action == 'REMOVECANDIDATEDETAILS'}">
+					<ui:include src="/trainer/removeCandidateDetails.xhtml" />
+				</c:when>
+				
+				<c:when test="#{trainerBean.action == 'CANDIDATEFORTRANSFER'}">
+					<ui:include src="/trainer/transferCandidateDetails.xhtml" />
+				</c:when>
+				
+				<c:when test="#{trainerBean.action == 'BATCHLISTFORTRANSFER'}">
+					<ui:include src="/trainer/batchListForTransfer.xhtml" />
+				</c:when>
+				
+				<c:when test="#{trainerBean.action == 'TRANSFERBATCHDETAILS'}">
+					<ui:include src="/trainer/transferBatchDetails.xhtml" />
+				</c:when>
+				
+				<c:when test="#{trainerBean.action == 'MAILSENDINGFORM'}">
+					<ui:include src="/trainer/mailSendingForm.xhtml" />
+				</c:when>
+				
+				<c:when test="#{trainerBean.action == 'CANDIDATELISTINABATCH'}">
+					<ui:include src="/trainer/candidateListForABatch.xhtml" />
+				</c:when>
+				
+				<c:when test="#{trainerBean.action == 'CANDIDATEDETAILSAFTERTRANSFER'}">
+					<ui:include src="/trainer/candidateDetailsAfterTransfer.xhtml" />
+				</c:when>
+				
+				<c:when test="#{trainerBean.action == 'CANDIDATELISTINABATCHFORREMOVE'}">
+					<ui:include src="/trainer/candidateListInABatchForRemove.xhtml" />
+				</c:when>
+				
+				<c:when test="#{trainerBean.action == 'CANDIDATEDETAILSAFTERREMOVE'}">
+					<ui:include src="/trainer/candidateDetailsInABatchAfterRemove.xhtml" />
+				</c:when>
+				
+				
+			
+			</c:choose>
+
+		</h:panelGroup>
+	</ui:define>
+</ui:composition>
+
+</html>

@@ -1,0 +1,127 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:p="http://primefaces.org/ui">
+
+	<p:growl id="growl" showDetail="true" sticky="false" autoUpdate="true" />
+
+	<h:form id="form">
+		<p:panel style="margin-top:9%;">
+
+			<f:facet name="header">
+				<p:outputLabel>Details</p:outputLabel>
+			</f:facet>
+
+			<p:panelGrid columns="6" cellpadding="10" style="width:100%;">
+				<f:facet name="header">Candidate Details</f:facet>
+				<h:outputText value="Id: " />
+				<h:outputText value="#{trainerBean.candidate.candidateId}" />
+				<h:outputText value="Candidate Name: " />
+				<h:outputText value="#{trainerBean.candidate.firstName}" />
+
+				<h:outputText value="Email: " />
+				<h:outputText value="#{trainerBean.candidate.contactAddress.email}" />
+
+				<h:outputText value="Phone No.: " />
+				<h:outputText value="#{trainerBean.candidate.contactAddress.workMobile}" />
+
+				<h:outputText value="Course Name: " />
+				<h:outputText value="#{trainerBean.candidate.candidateCourse.course}" />
+
+				<h:outputText value="Recruiter Name: " />
+				<h:outputText value="#{trainerBean.candidate.employee.name}" />
+			</p:panelGrid>
+
+			<p:panelGrid columns="6" cellpadding="10" style="width:100%;margin-top:2%;">
+				<f:facet name="header">Previous Batch Details</f:facet>
+				<h:outputText value="Id: " />
+				<h:outputText value="#{trainerBean.programmeSchedule.id}" />
+				<h:outputText value="Course Name: " />
+				<h:outputText value="#{trainerBean.programmeSchedule.candidateCourse.course}" />
+
+				<h:outputText value="Trainer Name: " />
+				<h:outputText value="#{trainerBean.programmeSchedule.trainer.trainerName}" />
+
+				<h:outputText value="Start Date: " />
+				<h:outputText value="#{trainerBean.programmeSchedule.startDate}" />
+
+				<h:outputText value="End Date: " />
+				<h:outputText value="#{trainerBean.programmeSchedule.endDate}" />
+
+				<h:outputText value="Start Time: " />
+				<h:outputText value="#{trainerBean.programmeSchedule.startTime}" />
+
+				<h:outputText value="End Time: " />
+				<h:outputText value="#{trainerBean.programmeSchedule.endTime}" />
+
+				<h:outputText value="Completed: " />
+				<h:outputText value="#{trainerBean.programmeSchedule.isComplete}" />
+			</p:panelGrid>
+
+			<p:panel style="margin-top:2%;">
+				<f:facet name="header">
+					<p:outputLabel>Select Batch To Transfer Candidate</p:outputLabel>
+				</f:facet>
+
+				<p:dataTable var="psm" value="#{trainerBean.programeScheduleModels}" paginator="true" rows="20"
+					rowKey="#{psm.programeSchedule.id}" resizableColumns="true" sortBy="#{p.id}" sortOrder="descending"
+					paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
+					rowsPerPageTemplate="20,25,50,100" selection="#{trainerBean.selectedProgrameScheduleModel}" resizeMode="true"
+					widgetVar="programescheduleTable" tableStyle="table-layout: auto">
+
+
+					<f:facet name="header">Running Batch</f:facet>
+
+					<p:column selectionMode="single" style="width:16px;text-align:center" />
+
+					<p:column headerText="Id" sortBy="#{psm.programeSchedule.id}" filterBy="#{psm.programeSchedule.id}">
+						<h:outputText value="#{psm.programeSchedule.id}" />
+					</p:column>
+
+					<p:column headerText="Batch Title" sortBy="#{psm.programeSchedule.title}" filterBy="#{psm.programeSchedule.title}">
+						<h:outputText value="#{psm.programeSchedule.title}" />
+					</p:column>
+
+					<p:column headerText="Course Name" sortBy="#{psm.programeSchedule.candidateCourse.course}" filterBy="#{psm.programeSchedule.candidateCourse.course}">
+						<h:outputText value="#{psm.programeSchedule.candidateCourse.course}" />
+					</p:column>
+
+					<p:column headerText="Trainer Name" sortBy="#{psm.programeSchedule.trainer.trainerName}" filterBy="#{psm.programeSchedule.trainer.trainerName}">
+						<h:outputText value="#{psm.programeSchedule.trainer.trainerName}" />
+					</p:column>
+
+					<p:column headerText="Start Date" sortBy="#{psm.programeSchedule.startDate}" filterBy="#{psm.programeSchedule.startDate}">
+						<h:outputText value="#{psm.programeSchedule.startDate}" />
+					</p:column>
+
+					<p:column headerText="End Date" sortBy="#{psm.programeSchedule.endDate}" filterBy="#{psm.programeSchedule.endDate}">
+						<h:outputText value="#{psm.programeSchedule.endDate}" />
+					</p:column>
+
+					<p:column headerText="Start Time" sortBy="#{psm.programeSchedule.startTime}" filterBy="#{psm.programeSchedule.startTime}">
+						<h:outputText value="#{psm.programeSchedule.startTime}" />
+					</p:column>
+
+					<p:column headerText="End Time" sortBy="#{psm.programeSchedule.endTime}" filterBy="#{psm.programeSchedule.endTime}">
+						<h:outputText value="#{psm.programeSchedule.endTime}" />
+					</p:column>
+
+					<p:column headerText="Day Of Week" sortBy="#{psm.programeSchedule.dayOfWeek}" filterBy="#{psm.programeSchedule.dayOfWeek}">
+						<h:outputText value="#{psm.programeSchedule.dayOfWeek}" />
+					</p:column>
+
+					<p:column headerText="Total Candidate" sortBy="#{psm.totalCandidate}" filterBy="#{psm.totalCandidate}" >
+						<h:outputText value="#{psm.totalCandidate}" />
+					</p:column>
+
+				</p:dataTable>
+
+				<f:facet name="footer" style="text-align:left">
+					<p:commandButton value="Next" action="#{trainerBean.transferBatchDetails()}" onclick="PF('statusDialog').show()"
+						oncomplete="PF('statusDialog').hide()" update=":mainBody" />
+				</f:facet>
+			</p:panel>
+
+
+
+		</p:panel>
+	</h:form>
+</ui:composition>

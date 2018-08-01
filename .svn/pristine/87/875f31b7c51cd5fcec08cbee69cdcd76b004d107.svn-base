@@ -1,0 +1,84 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+	<h:form id="datatable-form">
+		<p:panel style="margin-top:9%">
+
+			<f:facet name="header">Trainee List</f:facet>
+
+			<p:dataTable id="candidate-datatable" var="candi" value="#{trainerBean.assignCandidates}" paginator="true" rows="20"
+				rowKey="#{candi.candidateId}" resizableColumns="true" sortBy="#{candi.candidateId}"
+				paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
+				rowsPerPageTemplate="20,30,50,100" resizeMode="true" selection="#{trainerBean.selectedAssignCandidates}"
+				widgetVar="advanceSearch" tableStyle="table-layout: auto">
+
+				<f:facet name="header">
+					<div align="left">
+						<h:commandLink action="#{trainerBean.mailSendForm()}" update=":mainBody">
+							<h:graphicImage value="/resources/demo/images/icon/email.png" />
+						</h:commandLink>
+					</div>
+				</f:facet>
+				
+				<p:column selectionMode="multiple" style="width:16px;text-align:center" />
+
+				<p:column headerText="Id" sortBy="#{candi.candidateId}" filterBy="#{candi.candidateId}">
+					<h:outputText value="#{candi.candidateId}" />
+				</p:column>
+
+				<p:column headerText="Name" sortBy="#{candi.candidateName}" filterBy="#{candi.candidateName}">
+					<h:outputText value="#{candi.candidateName}" />
+				</p:column>
+
+				<p:column headerText="Email" sortBy="#{candi.candidateEmail}" filterBy="#{candi.candidateEmail}">
+					<h:outputText value="#{candi.candidateEmail}" />
+				</p:column>
+
+				<p:column headerText="Mobile" sortBy="#{candi.candidateMobile}" filterBy="#{candi.candidateMobile}">
+					<h:outputText value="#{candi.candidateMobile}" />
+				</p:column>
+
+				<p:column headerText="Cur. Location" sortBy="#{candi.currentLocation}" filterBy="#{candi.currentLocation}">
+					<h:outputText value="#{candi.currentLocation}" />
+				</p:column>
+
+
+				<p:column headerText="Course" sortBy="#{candi.candidateCourse}" filterBy="#{candi.candidateCourse}">
+					<h:outputText value="#{candi.candidateCourse}" />
+				</p:column>
+
+				<p:column headerText="Status" sortBy="#{candi.candidateStatus}" filterBy="#{candi.candidateStatus}">
+					<h:outputText value="#{candi.candidateStatus}" />
+				</p:column>
+
+				<p:column headerText="Batch Title" sortBy="#{candi.batchTitle}" filterBy="#{candi.batchTitle}">
+					<h:outputText value="#{candi.batchTitle}" />
+				</p:column>
+
+				<p:column headerText="Start Date" sortBy="#{candi.startDate}" filterBy="#{candi.startDate}">
+					<h:outputText value="#{candi.startDate}" />
+				</p:column>
+
+				<p:column headerText="End Date" sortBy="#{candi.endDate}" filterBy="#{candi.endDate}">
+					<h:outputText value="#{candi.endDate}" />
+				</p:column>
+
+				<p:column headerText="Start Time" sortBy="#{candi.startTime}" filterBy="#{candi.startTime}">
+					<h:outputText value="#{candi.startTime}" />
+				</p:column>
+
+				<p:column headerText="End Time" sortBy="#{candi.endTime}" filterBy="#{candi.endTime}">
+					<h:outputText value="#{candi.endTime}" />
+				</p:column>
+
+				<p:column headerText="End Time" sortBy="#{candi.batchStatus}" filterBy="#{candi.batchStatus}">
+					<h:outputText value="#{candi.batchStatus}" />
+				</p:column>
+
+			</p:dataTable>
+		</p:panel>
+
+	</h:form>
+
+</ui:composition>

@@ -1,0 +1,153 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:p="http://primefaces.org/ui"
+	template="/templates/common.xhtml">
+	<ui:define name="submenu">
+		<div class="ui-ribbon-groups ui-helper-clearfix">
+			<h:form>
+
+				<table class="ui-ribbon-group-content ui-ribbon-group ui-widget">
+
+					<tr>
+						<td>
+							<p:commandButton value="W2 List" styleClass="ui-ribbon-bigbutton" icon="ui-ribbonicon-candidateProfile"
+								action="#{hrBean.w2List()}" onclick="PF('statusDialog').show()" oncomplete="PF('statusDialog').hide()"
+								update=":mainBody" />
+						</td>
+					</tr>
+
+					<tfoot>
+						<tr>
+							<td colspan="3" class="ui-ribbon-group-label">Search</td>
+						</tr>
+					</tfoot>
+				</table>
+
+				<table class="ui-ribbon-group-content ui-ribbon-group ui-widget">
+
+					<tr>
+						<td>
+							<p:commandButton value="Enrollment Form" styleClass="ui-ribbon-bigbutton" icon="ui-ribbonicon-enrollment"
+								action="#{hrBean.checkEnrollmentFormPending()}" onclick="PF('statusDialog').show()"
+								oncomplete="PF('statusDialog').hide()" update=":mainBody">
+								<f:param name="checkListTypeName" value="Enrollment Form Submission" />
+							</p:commandButton>
+						</td>
+
+						<td>
+							<p:commandButton value="Offer Letter" styleClass="ui-ribbon-bigbutton" icon="ui-ribbonicon-offerletter"
+								action="#{hrBean.checkEnrollmentFormPending()}" onclick="PF('statusDialog').show()"
+								oncomplete="PF('statusDialog').hide()" update=":mainBody">
+								<f:param name="checkListTypeName" value="Offer Letter" />
+							</p:commandButton>
+						</td>
+
+						<td>
+							<p:commandButton value="Training" styleClass="ui-ribbon-bigbutton" icon="ui-ribbonicon-training"
+								action="#{hrBean.trainingChecklistPending()}" onclick="PF('statusDialog').show()"
+								oncomplete="PF('statusDialog').hide()" update=":mainBody">
+								<f:param name="checkListTypeName" value="Training" />
+							</p:commandButton>
+						</td>
+
+						<td>
+							<p:commandButton value="Feedback Form" styleClass="ui-ribbon-bigbutton" icon="ui-ribbonicon-feedback"
+								action="#{hrBean.checkEnrollmentFormPending()}" onclick="PF('statusDialog').show()"
+								oncomplete="PF('statusDialog').hide()" update=":mainBody">
+								<f:param name="checkListTypeName" value="Training Completion And Feedback Form" />
+							</p:commandButton>
+						</td>
+
+						<td>
+							<p:commandButton value="Datasheet" styleClass="ui-ribbon-bigbutton" icon="ui-ribbonicon-datasheet"
+								action="#{hrBean.checkEnrollmentFormPending()}" onclick="PF('statusDialog').show()"
+								oncomplete="PF('statusDialog').hide()" update=":mainBody">
+								<f:param name="checkListTypeName" value="Datasheet" />
+							</p:commandButton>
+						</td>
+
+						<td>
+							<p:commandButton value="Resume" styleClass="ui-ribbon-bigbutton" icon="ui-ribbonicon-resume"
+								action="#{hrBean.resumePending()}" onclick="PF('statusDialog').show()" oncomplete="PF('statusDialog').hide()"
+								update=":mainBody">
+								<f:param name="checkListTypeName" value="Resume Preparation" />
+							</p:commandButton>
+						</td>
+
+						<td>
+							<p:commandButton value="Mock" styleClass="ui-ribbon-bigbutton" icon="ui-ribbonicon-mock"
+								action="#{hrBean.mockChecklistPending()}" onclick="PF('statusDialog').show()"
+								oncomplete="PF('statusDialog').hide()" update=":mainBody">
+								<f:param name="checkListTypeName" value="Mock Preparation" />
+							</p:commandButton>
+						</td>
+
+						<td>
+							<p:commandButton value="Graduation" styleClass="ui-ribbon-bigbutton" icon="ui-ribbonicon-graduation"
+								action="#{hrBean.mockChecklistPending()}" onclick="PF('statusDialog').show()"
+								oncomplete="PF('statusDialog').hide()" update=":mainBody">
+								<f:param name="checkListTypeName" value="Graduation" />
+							</p:commandButton>
+						</td>
+
+
+						<td>
+							<p:commandButton value="Reference Check" styleClass="ui-ribbon-bigbutton" icon="ui-ribbonicon-referencecheck"
+								action="#{hrBean.checkEnrollmentFormPending()}" onclick="PF('statusDialog').show()"
+								oncomplete="PF('statusDialog').hide()" update=":mainBody">
+								<f:param name="checkListTypeName" value="Reference Check" />
+							</p:commandButton>
+						</td>
+
+						<td>
+							<p:commandButton value="Documents" styleClass="ui-ribbon-bigbutton" icon="ui-ribbonicon-documents"
+								action="#{hrBean.checkEnrollmentFormPending()}" onclick="PF('statusDialog').show()"
+								oncomplete="PF('statusDialog').hide()" update=":mainBody">
+								<f:param name="checkListTypeName" value="Documents" />
+							</p:commandButton>
+						</td>
+
+						<td>
+							<p:commandButton value="Pre-Hotlist" styleClass="ui-ribbon-bigbutton" icon="ui-ribbonicon-hotlist"
+								action="#{hrBean.hotListChecklistPending()}" onclick="PF('statusDialog').show()"
+								oncomplete="PF('statusDialog').hide()" update=":mainBody">
+								<f:param name="checkListTypeName" value="Hotlist" />
+							</p:commandButton>
+						</td>
+
+						<td>
+							<p:commandButton value="Payment Declaration Form" styleClass="ui-ribbon-bigbutton"
+								icon="ui-ribbonicon-paymentdeclaration" action="#{hrBean.checkEnrollmentFormPending()}"
+								onclick="PF('statusDialog').show()" oncomplete="PF('statusDialog').hide()" update=":mainBody">
+								<f:param name="checkListTypeName" value="Payment Declaration Form" />
+							</p:commandButton>
+						</td>
+
+					</tr>
+
+					<tfoot>
+						<tr>
+							<td colspan="3" class="ui-ribbon-group-label">Check List</td>
+						</tr>
+					</tfoot>
+				</table>
+
+				<table class="ui-ribbon-group-content ui-ribbon-group ui-widget">
+					<tr>
+						<td>
+							<p:commandButton value="Logout" icon="ui-ribbonicon-logout" styleClass="ui-ribbon-bigbutton" id="logout-button"
+								action="#{loginBean.logout()}" onclick="PF('statusDialog').show()" oncomplete="PF('statusDialog').hide()"
+								update=":mainBody" />
+						</td>
+					</tr>
+					<tfoot>
+						<tr>
+							<td colspan="7" class="ui-ribbon-group-label">Logout</td>
+						</tr>
+					</tfoot>
+				</table>
+			</h:form>
+
+		</div>
+	</ui:define>
+</ui:composition>

@@ -1,0 +1,167 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+
+	<p:growl id="growl" showDetail="true" sticky="false" autoUpdate="true" />
+
+
+	<h:form id="duration-form">
+
+
+		<p:panel id="duration-panel" style="margin-top:9%;margin-bottom:20px">
+
+			<p:panelGrid style="width:100%">
+
+				<p:row>
+					<p:column>
+						<p:outputLabel for="duration-type" value="Duration Type:" />
+					</p:column>
+
+					<p:column>
+						<p:selectOneMenu id="duration-type" value="#{reportBean.durationType}" required="true">
+							<f:selectItem itemLabel="---Select---" itemValue="" noSelectionOption="true" />
+							<f:selectItem itemValue="day" itemLabel="Daily" />
+							<f:selectItem itemValue="week" itemLabel="Weekly" />
+							<f:selectItem itemValue="month" itemLabel="Monthly" />
+							<f:selectItem itemValue="year" itemLabel="Yearly" />
+						</p:selectOneMenu>
+					</p:column>
+
+					<p:column>
+						<p:outputLabel for="duration-value" value="Duration Value:" />
+					</p:column>
+
+					<p:column>
+						<p:inputText id="duration-value" value="#{reportBean.durationValue}" placeholder="Enter Duration Value"
+							rendered="true" />
+					</p:column>
+
+					<p:column style="text-align:center">
+						<p:commandButton value="Submit" actionListener="#{reportBean.viewRecruitmentReport()}"
+							update="duration-form" />
+					</p:column>
+
+				</p:row>
+
+			</p:panelGrid>
+
+		</p:panel>
+
+
+		<p:panel id="advancesearch-panel" style="margin-bottom:20px">
+			<p:panelGrid style="width:100%">
+				<p:row>
+					<p:column>
+						<p:outputLabel for="employee" value="Employee Name:" />
+					</p:column>
+
+					<p:column>
+						<p:selectOneMenu id="employee" value="#{reportBean.empId}">
+							<f:selectItem itemLabel="---Select---" itemValue="" noSelectionOption="true" />
+							<f:selectItems value="#{appDataBean.employees}" var="emp" itemValue="#{emp.empId}" itemLabel="#{emp.name}" />
+
+							<p:ajax event="change" listener="#{reportBean.viewRecruitmentReport()}"
+								update="recruiterPaymentDueInfoTable" />
+
+						</p:selectOneMenu>
+					</p:column>
+
+					<p:column>
+						<p:outputLabel for="course" value="Course Name:" />
+					</p:column>
+
+					<p:column>
+						<p:selectOneMenu id="course" value="#{reportBean.courseId}">
+							<f:selectItem itemLabel="---Select---" itemValue="" noSelectionOption="true" />
+							<f:selectItems value="#{appDataBean.candidateCourses}" var="course" itemValue="#{course.id}"
+								itemLabel="#{course.course}" />
+
+							<p:ajax event="change" listener="#{reportBean.viewRecruitmentReport()}"
+								update="recruiterPaymentDueInfoTable" />
+
+						</p:selectOneMenu>
+					</p:column>
+
+
+					<p:column>
+						<p:outputLabel for="receiver" value="Receiver: " />
+					</p:column>
+
+					<p:column>
+						<p:selectOneMenu id="receiver" value="#{reportBean.receiver}">
+							<f:selectItem itemLabel="---Select---" itemValue="" noSelectionOption="true" />
+							<f:selectItem itemValue="Ayantsoft Pvt Ltd" itemLabel="Ayantsoft Pvt Ltd" />
+							<f:selectItem itemValue="Global It Experts,Inc" itemLabel="GlobalIt Experts,Inc" />
+							<p:ajax event="change" listener="#{reportBean.viewRecruitmentReport()}"
+								update="recruiterPaymentDueInfoTable" />
+
+						</p:selectOneMenu>
+					</p:column>
+
+
+					<p:column>
+						<p:outputLabel for="mode-of-payment" value="Mode Of Payment: " />
+					</p:column>
+
+					<p:column>
+						<p:selectOneMenu id="mode-of-payment" value="#{reportBean.modeOfPayment}">
+							<f:selectItem itemLabel="---Select---" itemValue="" noSelectionOption="true" />
+							<f:selectItem itemValue="Cheque" itemLabel="Cheque" />
+							<f:selectItem itemValue="Paypal" itemLabel="Paypal" />
+
+							<p:ajax event="change" listener="#{reportBean.viewRecruitmentReport()}"
+								update="recruiterPaymentDueInfoTable" />
+
+						</p:selectOneMenu>
+					</p:column>
+
+				</p:row>
+			</p:panelGrid>
+		</p:panel>
+
+
+		<p:dataTable var="entity" value="#{reportBean.recruitmentReport}" id="recruiterPaymentDueInfoTable"
+			emptyMessage="Data not found"  >
+
+			<f:facet name="header">
+				<p:panel id="chartPanelForSummaryReport" style="margin-left:92%;">
+					<p:panelGrid>
+						<h:commandLink>
+							<p:graphicImage name="/demo/images/pdf.png" />
+							<p:dataExporter type="pdf" target=":datatable-form:recruiterPaymentDueInfoTable"
+								fileName="detailsOfRecriterPaymentPdf" pageOnly="true" />
+						</h:commandLink>
+
+						<h:commandLink>
+							<p:graphicImage name="/demo/images/excel.png" />
+							<p:dataExporter type="xls" target=":datatable-form:recruiterPaymentDueInfoTable"
+								fileName="detailsOfRecriterPaymentexcel" />
+						</h:commandLink>
+
+					</p:panelGrid>
+				</p:panel>
+
+				<p:panel style="background-color:Gray;">
+					<h:outputText value="Recruiter Report" style="color:black;font-weight: bold;font-size: 150%;" />
+				</p:panel>
+			</f:facet>
+
+			<p:column headerText="Paid Amount USD">
+				<h:outputText value="#{entity.get('paidAmount')}" />
+			</p:column>
+
+
+			<p:column headerText="Due Amount USD">
+				<h:outputText value="#{entity.get('dueAmount')}" />
+			</p:column>
+
+			<p:column headerText="Duration">
+				<h:outputText value="#{entity.get('formatedDate')}" />
+			</p:column>
+
+		</p:dataTable>
+
+	</h:form>
+
+</ui:composition>

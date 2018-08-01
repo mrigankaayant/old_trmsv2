@@ -1,0 +1,63 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:p="http://primefaces.org/ui">
+
+	<h:form>
+		<p:panel style="margin-top:9%;">
+			<f:facet name="header">Add City</f:facet>
+
+			<p:panel style="width:50%;margin-left:29%;margin-top:1%;">
+				<f:facet name="header">Enter Details Of This Fields</f:facet>
+
+				<div class="ui-g">
+					<div class="ui-g-12 ui-md-6 ui-lg-12">
+						<h:panelGrid style="width:100%">
+							<p:outputLabel for="us-state" value="Select State:" />
+							<p:autoComplete id="us-state" value="#{adminBean.stateName}"
+								completeMethod="#{appDataBean.filterStateList}" forceSelection="true" autoHighlight="true" maxResults="20"
+								required="true" requiredMessage="Select State" />
+							<p:message for="us-state" />
+						</h:panelGrid>
+					</div>
+				</div>
+
+				<div class="ui-g">
+					<div class="ui-g-12 ui-md-6 ui-lg-12">
+						<h:panelGrid style="width:100%">
+							<p:outputLabel for="us-city" value="Enter City Name:" />
+							<p:inputText id="us-city" value="#{adminBean.cityName}" required="true" requiredMessage="Enter City Name"
+								placeholder="City Name" />
+							<p:message for="us-city" />
+						</h:panelGrid>
+					</div>
+				</div>
+
+				<f:facet name="footer">
+					<p:commandButton value="Save" actionListener="#{adminBean.saveCity()}" onclick="PF('statusDialog').show()"
+						oncomplete="PF('statusDialog').hide()" update=":mainBody" />
+				</f:facet>
+			</p:panel>
+			<br></br>
+			<br></br>
+			<br></br>
+			<br></br>
+			<br></br>
+			<br></br>
+			<br></br>
+			<br></br>
+			<br></br>
+			<br></br>
+			<br></br>
+			<br></br>
+			<br></br>
+			<br></br>
+			<br></br>
+			<br></br>
+			<br></br>
+			<br></br>
+			<br></br>
+			<br></br>
+			<br></br>
+			<br></br>
+		</p:panel>
+	</h:form>
+</ui:composition>

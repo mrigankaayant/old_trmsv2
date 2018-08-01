@@ -1,0 +1,271 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+	<h:form id="trainer-form">
+		<p:panel>
+			<f:facet name="header">Enter Trainer Detail</f:facet>
+
+			<div class="ui-g">
+				<div class="ui-g-12 ui-md-6 ui-lg-3">
+					<h:panelGrid style="width:100%">
+						<p:outputLabel for="trainer-name" value="Trainer Name:" />
+						<p:inputText value="#{hrBean.trainer.trainerName}" required="true" id="trainer-name"
+							requiredMessage="Enter Trainer Name" placeholder="Enter Trainer Name" />
+						<p:message for="trainer-name" />
+					</h:panelGrid>
+				</div>
+
+
+				<div class="ui-g-12 ui-md-6 ui-lg-3">
+					<h:panelGrid style="width:100%">
+						<p:outputLabel for="trainer-addressLine1" value="Address Line1:" />
+						<p:inputText value="#{hrBean.trainer.contactAddress.address1}" required="true" id="trainer-addressLine1"
+							requiredMessage="Enter Address Line1" placeholder="Enter Address Line1" />
+						<p:message for="trainer-addressLine1" />
+					</h:panelGrid>
+				</div>
+
+				<div class="ui-g-12 ui-md-6 ui-lg-3">
+					<h:panelGrid style="width:100%">
+						<p:outputLabel for="trainer-addressLine2" value="Address Line2:" />
+						<p:inputText value="#{hrBean.trainer.contactAddress.address2}" id="trainer-addressLine2"
+							placeholder="Enter Address Line2" />
+						<p:message for="trainer-addressLine2" />
+					</h:panelGrid>
+				</div>
+
+				<div class="ui-g-12 ui-md-6 ui-lg-3">
+					<h:panelGrid style="width:100%">
+						<p:outputLabel for="trainer-landmark" value="Landmark:" />
+						<p:inputText value="#{hrBean.trainer.contactAddress.landmark}" id="trainer-landmark" placeholder="Enter Landmark" />
+						<p:message for="trainer-landmark" />
+					</h:panelGrid>
+				</div>
+
+				<div class="ui-g-12 ui-md-6 ui-lg-3">
+					<h:panelGrid style="width:100%">
+						<p:outputLabel for="trainer-postalCode" value="Postal Code:" />
+						<p:inputText value="#{hrBean.trainer.contactAddress.postalCode}" required="true" id="trainer-postalCode"
+							requiredMessage="Enter Postal Code" placeholder="Enter Postal Code">
+							<f:validateLength minimum="6" maximum="6" />
+						</p:inputText>
+						<p:message for="trainer-postalCode" />
+					</h:panelGrid>
+				</div>
+
+				<div class="ui-g-12 ui-md-6 ui-lg-3">
+					<h:panelGrid style="width:100%">
+						<p:outputLabel for="trainer-country" value="Country:" />
+						<p:inputText value="#{hrBean.trainer.contactAddress.country}" required="true" requiredMessage="Enter Country"
+							id="trainer-country" placeholder="Enter Country" />
+						<p:message for="trainer-country" />
+					</h:panelGrid>
+				</div>
+
+
+				<div class="ui-g-12 ui-md-6 ui-lg-3">
+					<h:panelGrid style="width:100%">
+						<p:outputLabel for="trainer-state" value="State:" />
+						<p:inputText value="#{hrBean.trainer.contactAddress.state}" required="true" requiredMessage="Enter State"
+							id="trainer-state" placeholder="Enter State" />
+						<p:message for="trainer-state" />
+					</h:panelGrid>
+				</div>
+
+
+				<div class="ui-g-12 ui-md-6 ui-lg-3">
+					<h:panelGrid style="width:100%">
+						<p:outputLabel for="trainer-city" value="City:" />
+						<p:inputText value="#{hrBean.trainer.contactAddress.city}" required="true" requiredMessage="Enter City"
+							id="trainer-city" placeholder="Enter City" size="46" />
+						<p:message for="trainer-city" />
+					</h:panelGrid>
+				</div>
+
+				<div class="ui-g-12 ui-md-6 ui-lg-3">
+					<h:panelGrid style="width:100%">
+						<p:outputLabel for="trainer-workPhone" value="Work Phone:" />
+						<p:inputMask value="#{hrBean.trainer.contactAddress.workPhone}" id="trainer-workPhone" mask="(999) 999-9999" />
+						<p:message for="trainer-workPhone" />
+					</h:panelGrid>
+				</div>
+
+
+				<div class="ui-g-12 ui-md-6 ui-lg-3">
+					<h:panelGrid style="width:100%">
+						<p:outputLabel for="trainer-homePhone" value="Home Phone:" />
+						<p:inputMask value="#{hrBean.trainer.contactAddress.homePhone}" id="trainer-homePhone" mask="(999) 999-9999" />
+						<p:message for="trainer-homePhone" />
+					</h:panelGrid>
+				</div>
+
+
+				<div class="ui-g-12 ui-md-6 ui-lg-3">
+					<h:panelGrid style="width:100%">
+						<p:outputLabel for="trainer-workMobile" value="Work Mobile:" />
+						<p:inputMask value="#{hrBean.trainer.contactAddress.workMobile}" id="trainer-workMobile" required="true"
+							requiredMessage="Enter Work Mobile" validator="#{hrBean.workMobileValidation}" mask="(999) 999-9999">
+							<p:ajax update="trainer-workmobile-msg" event="blur" />
+						</p:inputMask>
+						<p:message for="trainer-workMobile" id="trainer-workmobile-msg" />
+					</h:panelGrid>
+				</div>
+
+
+				<div class="ui-g-12 ui-md-6 ui-lg-3">
+					<h:panelGrid style="width:100%">
+						<p:outputLabel for="trainer-homeMobile" value="Home Mobile:" />
+						<p:inputMask value="#{hrBean.trainer.contactAddress.homeMobile}" id="trainer-homeMobile" mask="(999) 999-9999" />
+						<p:message for="trainer-homeMobile" />
+					</h:panelGrid>
+				</div>
+
+
+				<div class="ui-g-12 ui-md-6 ui-lg-3">
+					<h:panelGrid style="width:100%">
+						<p:outputLabel for="trainer-personalEmail" value="Personal Email:" />
+						<p:inputText id="trainer-personalEmail" value="#{hrBean.trainer.contactAddress.email}"
+							validator="#{hrBean.emailValidate}" validatorMessage="Invalid email format" required="true"
+							requiredMessage="Enter Personal Email" placeholder="Enter valid email">
+							<f:validateRegex pattern="[\w\.-]*[a-zA-Z0-9_]@[\w\.-]*[a-zA-Z0-9]\.[a-zA-Z][a-zA-Z\.]*[a-zA-Z]" />
+							<p:ajax update="trainer-personalEmail-msg" event="blur" />
+						</p:inputText>
+						<p:message for="trainer-personalEmail" id="trainer-personalEmail-msg" />
+					</h:panelGrid>
+				</div>
+
+
+				<div class="ui-g-12 ui-md-6 ui-lg-3">
+					<h:panelGrid style="width:100%">
+						<p:outputLabel for="trainer-fax" value="Fax:" />
+						<p:inputText value="#{hrBean.trainer.contactAddress.fax}" id="trainer-fax" placeholder="Enter Fax" />
+						<p:message for="trainer-fax" />
+					</h:panelGrid>
+				</div>
+
+
+				<div class="ui-g-12 ui-md-6 ui-lg-3">
+					<h:panelGrid style="width:100%">
+						<p:outputLabel for="trainer-linkedin" value="Linkedin:" />
+						<p:inputText value="#{hrBean.trainer.contactAddress.linkedin}" id="trainer-linkedin" placeholder="Enter Linkedin" />
+						<p:message for="trainer-linkedin" />
+					</h:panelGrid>
+				</div>
+
+
+
+				<div class="ui-g-12 ui-md-6 ui-lg-3">
+					<h:panelGrid style="width:100%">
+						<p:outputLabel for="trainer-facebook" value="Facebook:" />
+						<p:inputText value="#{hrBean.trainer.contactAddress.facebook}" id="trainer-facebook" placeholder="Enter Facebook" />
+						<p:message for="trainer-facebook" />
+					</h:panelGrid>
+				</div>
+
+
+
+				<div class="ui-g-12 ui-md-6 ui-lg-3">
+					<h:panelGrid style="width:100%">
+						<p:outputLabel for="trainer-twitter" value="Twitter:" />
+						<p:inputText value="#{hrBean.trainer.contactAddress.twitter}" id="trainer-twitter" placeholder="Enter Twitter" />
+						<p:message for="trainer-twitter" />
+					</h:panelGrid>
+				</div>
+
+
+				<div class="ui-g-12 ui-md-6 ui-lg-3">
+					<h:panelGrid style="width:100%">
+						<p:outputLabel for="trainer-skype" value="Skype:" />
+						<p:inputText value="#{hrBean.trainer.contactAddress.skype}" id="trainer-skype" placeholder="Enter Skype" />
+						<p:message for="trainer-skype" />
+					</h:panelGrid>
+				</div>
+
+
+				<div class="ui-g-12 ui-md-6 ui-lg-3">
+					<h:panelGrid style="width:100%">
+						<p:outputLabel for="trainer-msn" value="Msn:" />
+						<p:inputText value="#{hrBean.trainer.contactAddress.msn}" id="trainer-msn" placeholder="Enter Msn" />
+						<p:message for="trainer-msn" />
+					</h:panelGrid>
+				</div>
+
+
+
+				<div class="ui-g-12 ui-md-6 ui-lg-3">
+					<h:panelGrid style="width:100%">
+						<p:outputLabel for="trainer-trainerBankName" value="Trainer Bank Name:" />
+						<p:inputText value="#{hrBean.trainer.trainerBankName}" id="trainer-trainerBankName"
+							placeholder="Enter Trainer Bank Name" required="true" requiredMessage="Enter Trainer Bank Name" />
+						<p:message for="trainer-trainerBankName" />
+					</h:panelGrid>
+				</div>
+
+
+				<div class="ui-g-12 ui-md-6 ui-lg-3">
+					<h:panelGrid style="width:100%">
+						<p:outputLabel for="trainer-bankAccount" value="Bank Account:" />
+						<p:inputText value="#{hrBean.trainer.bankAccount}" id="trainer-bankAccount" placeholder="Enter Bank Account"
+							required="true" requiredMessage="Enter Bank Account" />
+						<p:message for="trainer-bankAccount" />
+					</h:panelGrid>
+				</div>
+
+
+				<div class="ui-g-12 ui-md-6 ui-lg-3">
+					<h:panelGrid style="width:100%">
+						<p:outputLabel for="trainer-bankAccounttype" value="Account Type:" />
+						<p:selectOneRadio id="trainer-bankAccounttype" value="#{hrBean.trainer.accountType}" required="true" requiredMessage="Enter Account Type">
+							<f:selectItem itemLabel="Savings Account" itemValue="Savings" />
+							<f:selectItem itemLabel="Current Account" itemValue="Current" />
+						</p:selectOneRadio>
+						<p:message for="trainer-bankAccounttype" />
+					</h:panelGrid>
+				</div>
+
+
+
+				<div class="ui-g-12 ui-md-6 ui-lg-3">
+					<h:panelGrid style="width:100%">
+						<p:outputLabel for="trainer-bankIfsc" value="Bank IFSC No.:" />
+						<p:inputText value="#{hrBean.trainer.bankIfsc}" id="trainer-bankIfsc" placeholder="Enter Bank IFSC No."
+							required="true" requiredMessage="Enter Bank IFSC No." />
+						<p:message for="trainer-bankIfsc" />
+					</h:panelGrid>
+				</div>
+				
+				
+				<div class="ui-g-12 ui-md-6 ui-lg-3">
+					<h:panelGrid style="width:100%">
+						<p:outputLabel for="trainer-modeOfPayment" value="Mode Of Payment:" />
+						<p:selectOneRadio id="trainer-modeOfPayment" value="#{hrBean.trainer.modeOfPayment}" required="true" requiredMessage="Enter Mode Of Payment">
+							<f:selectItem itemLabel="Batch Wise" itemValue="Batch Wise" />
+							<f:selectItem itemLabel="Month Wise" itemValue="Month Wise" />
+						</p:selectOneRadio>
+						<p:message for="trainer-modeOfPayment" />
+					</h:panelGrid>
+				</div>
+				
+				
+
+
+				<div class="ui-g-12 ui-md-6 ui-lg-3">
+					<h:panelGrid style="width:100%">
+						<p:outputLabel for="trainer-course" value="Course Name:" />
+						<p:selectOneMenu id="trainer-course" value="#{hrBean.trainer.candidateCourse.id}" required="true"
+							requiredMessage="Enter Course Name">
+							<f:selectItem itemLabel="Select Course" itemValue="" noSelectionOption="true" />
+							<f:selectItems value="#{appDataBean.candidateCourses}" var="course" itemLabel="#{course.course}"
+								itemValue="#{course.id}" />
+						</p:selectOneMenu>
+						<p:message for="trainer-course" />
+					</h:panelGrid>
+				</div>
+				<f:facet name="footer">
+					<p:commandButton value="Save" actionListener="#{hrBean.saveTrainer()}" update=":mainBody" />
+				</f:facet>
+			</div>
+		</p:panel>
+	</h:form>
+</ui:composition>

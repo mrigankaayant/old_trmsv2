@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC
+"-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+	<session-factory>
+		<property name="hibernate.bytecode.use_reflection_optimizer">false</property>
+		<property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
+
+	    <!-- <property name="hibernate.connection.password">ayantprod</property>
+		<property name="hibernate.connection.url">jdbc:mysql://localhost:3306/ayant_trmsv2</property>
+		<property name="hibernate.connection.username">ayant_prod</property> -->
+		
+	    <property name="hibernate.connection.password">mysql</property>
+		<property name="hibernate.connection.url">jdbc:mysql://localhost:3306/ayant_trmsv2</property>
+		<property name="hibernate.connection.username">root</property>
+		
+		<property name="hibernate.dialect">org.hibernate.dialect.MySQL5InnoDBDialect</property>
+		<property name="hibernate.search.autoregister_listeners">true</property>
+		<property name="hibernate.validator.apply_to_ddl">false</property>
+		
+		<mapping class="com.ayantsoft.trms.hibernate.pojo.Candidate" />
+		<mapping class="com.ayantsoft.trms.hibernate.pojo.CandidateCheckList" />
+		<mapping class="com.ayantsoft.trms.hibernate.pojo.EducationCertification" />
+		<mapping class="com.ayantsoft.trms.hibernate.pojo.EmployeeHasTask" />
+		<mapping class="com.ayantsoft.trms.hibernate.pojo.Role" />
+		<mapping class="com.ayantsoft.trms.hibernate.pojo.TaskRole" />
+		<mapping class="com.ayantsoft.trms.hibernate.pojo.States" />
+		<mapping class="com.ayantsoft.trms.hibernate.pojo.TrainerInvoice" />
+		<mapping class="com.ayantsoft.trms.hibernate.pojo.Trainer" />
+		<mapping class="com.ayantsoft.trms.hibernate.pojo.IncentiveStructure" />
+		<mapping class="com.ayantsoft.trms.hibernate.pojo.CandidateCourse" />
+		<mapping class="com.ayantsoft.trms.hibernate.pojo.Documents" />
+		<mapping class="com.ayantsoft.trms.hibernate.pojo.TaskTag" />
+		<mapping class="com.ayantsoft.trms.hibernate.pojo.UserProfile" />
+		<mapping class="com.ayantsoft.trms.hibernate.pojo.ProgrammeSchedule" />
+		<mapping class="com.ayantsoft.trms.hibernate.pojo.ProfileImage" />
+		<mapping class="com.ayantsoft.trms.hibernate.pojo.CheckListType" />
+		<mapping class="com.ayantsoft.trms.hibernate.pojo.CandidatePayment" />
+		<mapping class="com.ayantsoft.trms.hibernate.pojo.DocumentsType" />
+		<mapping class="com.ayantsoft.trms.hibernate.pojo.Immigration" />
+		<mapping class="com.ayantsoft.trms.hibernate.pojo.CandidateVisa" />
+		<mapping class="com.ayantsoft.trms.hibernate.pojo.CandidateGroup" />
+		<mapping class="com.ayantsoft.trms.hibernate.pojo.CandidateSkills" />
+		<mapping class="com.ayantsoft.trms.hibernate.pojo.Department" />
+		<mapping class="com.ayantsoft.trms.hibernate.pojo.Cities" />
+		<mapping class="com.ayantsoft.trms.hibernate.pojo.Countries" />
+		<mapping class="com.ayantsoft.trms.hibernate.pojo.FollowUp" />
+		<mapping class="com.ayantsoft.trms.hibernate.pojo.TaskHasDocuments" />
+		<mapping class="com.ayantsoft.trms.hibernate.pojo.CandidateRemarks" />
+		<mapping class="com.ayantsoft.trms.hibernate.pojo.TaskStatus" />
+		<mapping class="com.ayantsoft.trms.hibernate.pojo.Employee" />
+		<mapping class="com.ayantsoft.trms.hibernate.pojo.Designation" />
+		<mapping class="com.ayantsoft.trms.hibernate.pojo.ContactAddress" />
+	</session-factory>
+</hibernate-configuration>

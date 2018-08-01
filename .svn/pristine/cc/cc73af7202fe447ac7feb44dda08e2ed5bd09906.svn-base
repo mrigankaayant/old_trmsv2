@@ -1,0 +1,82 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:p="http://primefaces.org/ui">
+
+	<h:form>
+		<p:panel style="margin-top:1%;">
+			<f:facet name="header">Candidate Search</f:facet>
+
+			<div class="ui-g">
+				<div class="ui-g-5 ui-md-5 ui-lg-5">
+					<h:panelGrid style="width:100%">
+						<p:outputLabel for="searchBy" value="Search By:" />
+						<p:selectOneMenu id="searchBy" value="#{recruitmentBean.searchBy}" required="true" requiredMessage="Select Search By">
+							<f:selectItem itemLabel="Select One" itemValue="" />
+							<f:selectItem itemLabel="Name" itemValue="Name" />
+							<f:selectItem itemLabel="Email Id" itemValue="EmailId" />
+							<f:selectItem itemLabel="Phone No" itemValue="PhoneNo" />
+						</p:selectOneMenu>
+						<p:message for="searchBy" />
+					</h:panelGrid>
+				</div>
+				
+				<div class="ui-g-5 ui-md-5 ui-lg-5">
+					<h:panelGrid style="width:100%">
+						<p:outputLabel for="searchValue" value="Search Value:" />
+						<p:inputText value="#{recruitmentBean.searchValue}" required="true" id="searchValue" requiredMessage="Enter Search Value" placeholder="Enter Search Value" />
+						<p:message for="searchValue" />
+					</h:panelGrid>
+				</div>
+				
+				<div class="ui-g-2 ui-md-2 ui-lg-2" style="padding-top:1.5%;">
+					<h:panelGrid style="width:100%">
+						<p:commandButton value="Search" action="#{recruitmentBean.getCandidateListBySearchValue()}" onclick="PF('statusDialog').show()" oncomplete="PF('statusDialog').hide()" update=":mainBody" />
+					</h:panelGrid>
+				</div>
+				
+			</div>
+
+		</p:panel>
+	</h:form>
+	
+	<p:panel style="margin-top:1%;" rendered="#{not empty recruitmentBean.searchingCandidateList}">
+	
+	     <p:dataTable var="candidate" value="#{recruitmentBean.searchingCandidateList}" paginator="true" rows="20"
+				 resizableColumns="true" resizeMode="true" paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
+				rowsPerPageTemplate="20,30,50,100" id="candidate-search-table" tableStyle="table-layout: auto">
+
+				<f:facet name="header">Candidates</f:facet>
+
+
+				<p:column headerText="Name" sortBy="#{candidate.firstName}" filterBy="#{candidate.firstName}">
+					<h:outputText value="#{candidate.firstName}" />
+				</p:column>
+
+
+				<p:column headerText="Email" sortBy="#{candidate.contactAddress.email}" filterBy="#{candidate.contactAddress.email}">
+					<h:outputText value="#{candidate.contactAddress.email}" />
+				</p:column>
+
+
+				<p:column headerText="Phone No." sortBy="#{candidate.contactAddress.workMobile}" filterBy="#{candidate.contactAddress.workMobile}">
+					<h:outputText value="#{candidate.contactAddress.workMobile}" />
+				</p:column>
+
+
+				<p:column headerText="Course" sortBy="#{candidate.candidateCourse.course}" filterBy="#{candidate.candidateCourse.course}">
+					<h:outputText value="#{candidate.candidateCourse.course}" />
+				</p:column>
+
+
+				<p:column headerText="Recruiter Name" sortBy="#{candidate.employee.name}" filterBy="#{candidate.employee.name}">
+					<h:outputText value="#{candidate.employee.name}" />
+				</p:column>
+
+			</p:dataTable>
+	</p:panel>
+	
+	<p:panel style="margin-top:1%;" rendered="#{!not empty recruitmentBean.searchingCandidateList}">
+	   <f:facet name="header">Result</f:facet>
+	     <h1 align="center">Data is not found</h1>
+	</p:panel>
+	
+</ui:composition>

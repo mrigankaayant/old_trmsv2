@@ -1,0 +1,53 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:p="http://primefaces.org/ui">
+
+	<h:form>
+		<p:panel style="margin-top:9%;">
+			<f:facet name="header">#{recruitmentBean.candidateStatus}</f:facet>
+
+			<p:dataTable var="c" value="#{recruitmentBean.candidates}" paginator="true" rows="20" rowKey="#{c.candidateId}"
+				resizableColumns="true" resizeMode="true" selectionMode="single"
+				paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
+				sortBy="#{c.candidateId}" sortOrder="descending" rowsPerPageTemplate="10,25,50,100" id="candidate-table" lazy="true"
+				widgetVar="candidateTable" tableStyle="table-layout: auto">
+
+				<f:facet name="header">Candidates</f:facet>
+
+				<p:column headerText="Id" sortBy="#{c.candidateId}" filterBy="#{c.candidateId}" style="text-align:center">
+					<h:outputText value="#{c.candidateId}" />
+				</p:column>
+
+
+				<p:column headerText="Name" sortBy="#{c.firstName}" filterBy="#{c.firstName}" style="text-align:center">
+					<h:outputText value="#{c.firstName}" />
+				</p:column>
+
+				<p:column headerText="Email" sortBy="#{c.contactAddress.email}" filterBy="#{c.contactAddress.email}"
+					style="text-align:center">
+					<h:outputText value="#{c.contactAddress.email}" />
+				</p:column>
+
+				<p:column headerText="Mobile" sortBy="#{c.contactAddress.workMobile}" filterBy="#{c.contactAddress.workMobile}"
+					style="text-align:center">
+					<h:outputText value="#{c.contactAddress.workMobile}" />
+				</p:column>
+
+				<p:column headerText="Cur. Location" sortBy="#{c.currentLocation}" filterBy="#{c.currentLocation}"
+					style="text-align:center">
+					<h:outputText value="#{c.currentLocation}" />
+				</p:column>
+
+				<p:column headerText="Skill" sortBy="#{c.candidateCourse.course}" filterBy="#{c.candidateCourse.course}">
+					<f:facet name="filter">
+						<p:selectOneMenu onchange="PF('candidateTable').filter()">
+							<f:selectItem itemLabel="Select Skill" itemValue=" " noSelectionOption="true" />
+							<f:selectItems value="#{appDataBean.candidateCourses}" var="course" itemLabel="#{course.course}"
+								itemValue="#{course.id}" />
+						</p:selectOneMenu>
+					</f:facet>
+					<h:outputText value="#{c.candidateCourse.course}" />
+				</p:column>
+			</p:dataTable>
+		</p:panel>
+	</h:form>
+</ui:composition>

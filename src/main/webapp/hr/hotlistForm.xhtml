@@ -1,0 +1,168 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:p="http://primefaces.org/ui">
+
+	<h:form>
+		<p:panel style="margin-top:9%">
+			<f:facet name="header">Hotlist</f:facet>
+
+			<div class="ui-g">
+				<div class="ui-g-12 ui-md-6 ui-lg-4">
+					<h:panelGrid style="width:100%">
+						<p:outputLabel for="billrate" value="Bill-Rate:" />
+						<p:inputText id="billrate" value="#{hrBean.candidate.billRate}" required="true" requiredMessage="Enter bill-rate"
+							placeholder="Bill-Rate">
+							<f:convertNumber longOnly="true" />
+						</p:inputText>
+						<p:message for="billrate" />
+					</h:panelGrid>
+				</div>
+
+
+				<div class="ui-g-12 ui-md-6 ui-lg-4">
+					<h:panelGrid style="width:100%">
+						<p:outputLabel for="snn" value="SSN:" />
+						<p:inputText id="snn" value="#{hrBean.candidate.ssn}" required="true" requiredMessage="Enter SSN No."
+							placeholder="SNN No." />
+						<p:message for="snn" />
+					</h:panelGrid>
+				</div>
+
+
+				<div class="ui-g-12 ui-md-6 ui-lg-4">
+					<h:panelGrid style="width:100%">
+						<p:outputLabel for="sales-responsibility" value="Sales Responsibility:" />
+						<p:selectManyCheckbox id="sales-responsibility" value="#{hrBean.employeeIds}" layout="grid" columns="3"
+							required="true" requiredMessage="Enter Sales Responsibility">
+							<f:selectItems value="#{hrBean.employees}" var="emp" itemValue="#{emp.empId}" itemLabel="#{emp.name}" />
+						</p:selectManyCheckbox>
+						<p:message for="sales-responsibility" />
+					</h:panelGrid>
+				</div>
+			</div>
+
+
+			<div class="ui-g">
+				<div class="ui-g-12 ui-md-6 ui-lg-4">
+					<h:panelGrid style="width:100%">
+						<p:outputLabel for="clocation" value="Current Location:" />
+						<p:inputText id="clocation" value="#{hrBean.candidate.currentLocation}" required="true"
+							requiredMessage="Enter Current Location" placeholder="Current Location" />
+						<p:message for="clocation" />
+					</h:panelGrid>
+				</div>
+
+				<div class="ui-g-12 ui-md-6 ui-lg-4">
+					<h:panelGrid style="width:100%">
+						<p:outputLabel for="plocation" value="Prefered Location:" />
+						<p:inputText id="plocation" value="#{hrBean.candidate.preferedLocation}" required="true"
+							requiredMessage="Enter Prefered Location" placeholder="Prefered Location" />
+						<p:message for="plocation" />
+					</h:panelGrid>
+				</div>
+
+
+				<div class="ui-g-12 ui-md-6 ui-lg-4">
+					<h:panelGrid style="width:100%">
+						<p:outputLabel for="joberole" value="Job Role:" />
+						<p:inputText id="joberole" value="#{hrBean.candidate.jobTitle}" required="true" requiredMessage="Enter Job Role"
+							placeholder="Job Role" />
+						<p:message for="joberole" />
+					</h:panelGrid>
+				</div>
+			</div>
+
+
+			<div class="ui-g">
+				<div class="ui-g-12 ui-md-6 ui-lg-4">
+					<h:panelGrid style="width:100%">
+						<p:outputLabel for="recruiter" value="Recruiter Name:" />
+						<p:inputText id="recruiter" value="#{hrBean.candidate.employee.name}" readonly="true" />
+						<p:message for="recruiter" />
+					</h:panelGrid>
+				</div>
+
+				<div class="ui-g-12 ui-md-6 ui-lg-4">
+					<h:panelGrid style="width:100%">
+						<p:outputLabel for="availiability" value="Availiability:" />
+						<p:inputText id="availiability" value="#{hrBean.candidate.availiability}" required="true"
+							requiredMessage="Enter Availability" />
+						<p:message for="availiability" />
+					</h:panelGrid>
+				</div>
+
+				<div class="ui-g-12 ui-md-6 ui-lg-4">
+					<h:panelGrid style="width:100%">
+						<p:outputLabel for="totalexp" value="Total Experience:" />
+						<p:inputText id="totalexp" value="#{hrBean.candidate.totalExp}" required="true"
+							requiredMessage="Enter Total Experience" placeholder="Total Experience">
+						</p:inputText>
+						<p:message for="totalexp" />
+					</h:panelGrid>
+				</div>
+			</div>
+
+
+			<div class="ui-g">
+				<div class="ui-g-12 ui-md-6 ui-lg-4">
+					<h:panelGrid style="width:100%">
+						<p:outputLabel for="visa" value="VISA:" />
+						<p:selectOneMenu id="visa" value="#{hrBean.candidate.immigrationType}" required="true" requiredMessage="Enter Visa">
+							<f:selectItem itemLabel="Select Visa" itemValue=" " noSelectionOption="true" />
+							<f:selectItems value="#{appDataBean.candidateVisaes}" var="cv" itemLabel="#{cv.visa}" itemValue="#{cv.visa}" />
+						</p:selectOneMenu>
+						<p:message for="visa" />
+					</h:panelGrid>
+				</div>
+
+
+				<div class="ui-g-12 ui-md-6 ui-lg-4">
+					<h:panelGrid style="width:100%">
+						<p:outputLabel for="email" value="Email:" />
+						<p:inputText id="email" value="#{hrBean.candidate.contactAddress.email}" required="true"
+							requiredMessage="Enter Email" validatorMessage="Invalid email format" placeholder="Email">
+							<f:validateRegex pattern="[\w\.-]*[a-zA-Z0-9_]@[\w\.-]*[a-zA-Z0-9]\.[a-zA-Z][a-zA-Z\.]*[a-zA-Z]" />
+						</p:inputText>
+						<p:message for="email" />
+					</h:panelGrid>
+				</div>
+
+				<div class="ui-g-12 ui-md-6 ui-lg-4">
+					<h:panelGrid style="width:100%">
+						<p:outputLabel for="altemail" value="Alt Email:" />
+						<p:inputText id="altemail" value="#{hrBean.candidate.contactAddress.alternateEmail}"
+							validatorMessage="Invalid email format" placeholder="Alt Email">
+							<f:validateRegex pattern="[\w\.-]*[a-zA-Z0-9_]@[\w\.-]*[a-zA-Z0-9]\.[a-zA-Z][a-zA-Z\.]*[a-zA-Z]" />
+						</p:inputText>
+						<p:message for="altemail" />
+					</h:panelGrid>
+				</div>
+			</div>
+
+
+			<div class="ui-g">
+				<div class="ui-g-12 ui-md-6 ui-lg-4">
+					<h:panelGrid style="width:100%">
+						<p:outputLabel for="contactnumber" value="Contact Number:" />
+						<p:inputText id="contactnumber" value="#{hrBean.candidate.contactAddress.workMobile}" required="true"
+							requiredMessage="Enter Contact Number" placeholder="Contact Number" />
+						<p:message for="contactnumber" />
+					</h:panelGrid>
+				</div>
+
+				<div class="ui-g-12 ui-md-6 ui-lg-4">
+					<h:panelGrid style="width:100%">
+						<p:outputLabel for="altcontactnumber" value="Alt Contact Number:" />
+						<p:inputText id="altcontactnumber" value="#{hrBean.candidate.contactAddress.homeMobile}"
+							placeholder="Alt Contact Number" />
+						<p:message for="altcontactnumber" />
+					</h:panelGrid>
+				</div>
+			</div>
+
+
+			<f:facet name="footer">
+				<p:commandButton value="Save" actionListener="#{hrBean.saveHotlist()}" onclick="PF('statusDialog').show()" oncomplete="PF('statusDialog').hide()" update=":mainBody" />
+			</f:facet>
+		</p:panel>
+	</h:form>
+</ui:composition>

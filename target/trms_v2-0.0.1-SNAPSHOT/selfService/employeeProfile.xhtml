@@ -1,0 +1,164 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:p="http://primefaces.org/ui">
+
+<br></br><br></br>
+	<h:form id="form">
+
+		<p:panelGrid columns="4" style="margin-left:30%">
+
+			<f:facet name="header">
+				<h:outputText value="My Profile" />
+			</f:facet>
+
+			<h:outputText value="Id:" />
+			<h:outputText value="#{adminBean.employee.empId}" />
+
+			<h:outputText value="Name:" />
+			<h:outputText value="#{adminBean.employee.name}" />
+
+			<h:outputText value="Date Of Birth:" />
+			<h:outputText value="#{adminBean.employee.dateOfJoining}" />
+
+			<h:outputText value="Gender:" />
+			<h:outputText value="#{adminBean.employee.gender}" />
+
+			<h:outputText value="Marital Status:" />
+			<h:outputText value="#{adminBean.employee.maritalStatus}" />
+
+			<h:outputText value="Address Line1:" />
+			<h:outputText value="#{adminBean.employee.contactAddress.address1}" />
+
+			<h:outputText value="Address Line2:" />
+
+			<h:outputText value="#{adminBean.employee.contactAddress.address2}" />
+
+			<h:outputText value="Landmark:" />
+
+			<h:outputText value="#{adminBean.employee.contactAddress.landmark}" />
+
+			<h:outputText value="Postal Code:" />
+
+			<h:outputText value="#{adminBean.employee.contactAddress.postalCode}" />
+
+			<h:outputText value="Country:" />
+
+			<h:outputText value="#{adminBean.employee.contactAddress.country}" />
+
+
+			<h:outputText value="State:" />
+
+			<h:outputText value="#{adminBean.employee.contactAddress.state}" />
+
+
+			<h:outputText value="City:" />
+
+
+			<h:outputText value="#{adminBean.employee.contactAddress.city}" />
+
+
+			<h:outputText value="Work Mobile:" />
+
+
+			<h:outputText value="#{adminBean.employee.contactAddress.workMobile}" />
+
+
+			<h:outputText value="Work Phone:" />
+
+
+			<h:outputText value="#{adminBean.employee.contactAddress.workPhone}" />
+
+
+			<h:outputText value="Home Phone:" />
+
+
+			<h:outputText value="#{adminBean.employee.contactAddress.homePhone}" />
+
+
+			<h:outputText value="Home Mobile:" />
+
+			<h:outputText value="#{adminBean.employee.contactAddress.homeMobile}" />
+
+			<h:outputText value="Office Email:" />
+
+
+			<h:outputText value="#{adminBean.employee.contactAddress.email}" />
+
+
+			<h:outputText value="Personal Email:" />
+
+
+			<h:outputText value="#{adminBean.employee.contactAddress.alternateEmail}" />
+
+
+			<h:outputText value="Fax:" />
+
+
+			<h:outputText value="#{adminBean.employee.contactAddress.fax}" />
+
+
+			<h:outputText value="Linkedin:" />
+
+
+			<h:outputText value="#{adminBean.employee.contactAddress.linkedin}" />
+
+			<h:outputText value="Facebook:" />
+
+
+			<h:outputText value="#{adminBean.employee.contactAddress.facebook}" />
+
+
+			<h:outputText value="Twitter:" />
+
+
+			<h:outputText value="#{adminBean.employee.contactAddress.twitter}" />
+
+			<h:outputText value="Skype:" />
+
+
+			<h:outputText value="#{adminBean.employee.contactAddress.skype}" />
+
+
+			<h:outputText value="Msn:" />
+
+
+			<h:outputText value="#{adminBean.employee.contactAddress.msn}" />
+
+
+			<h:outputText value="Date Of Joining:" />
+
+
+			<h:outputText value="#{adminBean.employee.dateOfJoining}" />
+
+
+			<h:outputText value="Department:" />
+
+
+			<h:outputText value="#{adminBean.employee.department.departmentName}" />
+
+			<h:outputText value="Designation:" />
+
+
+			<h:outputText value="#{adminBean.employee.designation.designationName}" />
+
+
+			<h:outputText value="Salary:" />
+
+
+			<h:outputText value="#{adminBean.employee.salary}" />
+
+			<h:outputText value="Active:" />
+
+
+			<h:outputText value="#{adminBean.employee.active}" />
+
+
+			<h:outputText value="User Name" />
+
+
+			<h:outputText value="#{adminBean.employee.userProfile.username}" />
+
+
+		</p:panelGrid>
+
+	</h:form>
+</ui:composition>

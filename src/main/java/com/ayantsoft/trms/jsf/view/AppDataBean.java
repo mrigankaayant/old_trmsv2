@@ -1,0 +1,331 @@
+package com.ayantsoft.trms.jsf.view;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import javax.annotation.PostConstruct;
+import javax.faces.bean.ApplicationScoped;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
+
+import com.ayantsoft.trms.hibernate.dao.CandidateCourseDao;
+import com.ayantsoft.trms.hibernate.dao.CandidateRemarksDao;
+import com.ayantsoft.trms.hibernate.dao.CandidateVisaDao;
+import com.ayantsoft.trms.hibernate.dao.CheckListTypeDao;
+import com.ayantsoft.trms.hibernate.dao.CityDao;
+import com.ayantsoft.trms.hibernate.dao.DepartmentDao;
+import com.ayantsoft.trms.hibernate.dao.DesignationDao;
+import com.ayantsoft.trms.hibernate.dao.EmployeeDao;
+import com.ayantsoft.trms.hibernate.dao.RoleDao;
+import com.ayantsoft.trms.hibernate.dao.StateDao;
+import com.ayantsoft.trms.hibernate.dao.TrainerDao;
+import com.ayantsoft.trms.hibernate.pojo.CandidateCourse;
+import com.ayantsoft.trms.hibernate.pojo.CandidateRemarks;
+import com.ayantsoft.trms.hibernate.pojo.CandidateVisa;
+import com.ayantsoft.trms.hibernate.pojo.CheckListType;
+import com.ayantsoft.trms.hibernate.pojo.Department;
+import com.ayantsoft.trms.hibernate.pojo.Designation;
+import com.ayantsoft.trms.hibernate.pojo.Employee;
+import com.ayantsoft.trms.hibernate.pojo.Role;
+import com.ayantsoft.trms.hibernate.pojo.Trainer;
+
+@ManagedBean(eager=true)
+@ApplicationScoped
+public class AppDataBean implements Serializable {
+
+	/**
+	 * serialVersionUID
+	 */
+	private static final long serialVersionUID = 755462139479994552L;
+
+	@ManagedProperty(value="#{cityDao}")
+	private CityDao cityDao;
+
+	@ManagedProperty("#{departmentDao}")
+	private DepartmentDao departmentDao;
+
+	@ManagedProperty("#{designationDao}")
+	private DesignationDao designationDao;
+
+	@ManagedProperty("#{roleDao}")
+	private RoleDao roleDao;
+
+	@ManagedProperty("#{candidateRemarksDao}")
+	private CandidateRemarksDao candidateRemarksDao;
+
+	@ManagedProperty("#{candidateCourseDao}")
+	private CandidateCourseDao candidateCourseDao;
+
+	@ManagedProperty("#{candidateVisaDao}")
+	private CandidateVisaDao candidateVisaDao;
+
+	@ManagedProperty("#{employeeDao}")
+	private EmployeeDao employeeDao;
+
+	@ManagedProperty("#{checkListTypeDao}")
+	private CheckListTypeDao checkListTypeDao; 
+
+	@ManagedProperty("#{trainerDao}")
+	private TrainerDao trainerDao; 
+
+	@ManagedProperty("#{stateDao}")
+	private StateDao stateDao; 
+
+
+
+	private List<Department> departments = new ArrayList<Department>();
+	private List<Designation> designations = new ArrayList<Designation>();
+	private List<Role> roles = new ArrayList<Role>();
+	private List<String> citiList=new ArrayList<String>();
+	private List<CandidateRemarks>candidateStatuses=new ArrayList<CandidateRemarks>();
+	private List<CandidateCourse> candidateCourses=new ArrayList<CandidateCourse>();
+	private List<CandidateVisa>candidateVisaes=new ArrayList<CandidateVisa>();
+	private List<CandidateRemarks>candidateStatusesTillEnrolled=new ArrayList<CandidateRemarks>();
+	private List<Employee> employees = new ArrayList<Employee>();
+	private List<Employee> supervisors = new ArrayList<Employee>();
+	private List<CheckListType> checkListTypes = new ArrayList<CheckListType>();
+	private List<Trainer> trainers = new ArrayList<Trainer>();
+	private List<String> statesList = new ArrayList<String>();
+	private List<Employee> recruiterList = new ArrayList<Employee>();
+
+
+	@PostConstruct
+	public void init(){
+
+		departments=departmentDao.findAllDepartments();
+		designations = designationDao.findAllDesignations();
+		roles = roleDao.findAllRoles(); 
+		citiList = cityDao.getCitiesByCountry("US");
+		candidateStatuses=candidateRemarksDao.getcandidateRemarks();
+		candidateCourses=candidateCourseDao.getcandidateCourse();
+		candidateVisaes=candidateVisaDao.getcandidateVisa();
+		candidateStatusesTillEnrolled=candidateRemarksDao.getcandidateRemarksTillEnrolled();
+		employees = employeeDao.findAllEmployee();
+		supervisors = employeeDao.findSupervisor();
+		checkListTypes = checkListTypeDao.getCheckListTypes();
+		trainers = trainerDao.getTrainersForGenerateInvoice();
+		statesList = stateDao.getStatesByCountry("US");
+		recruiterList = employeeDao.findAllRecruiter();
+
+	}
+
+	public List<String> filterCityList(String filter){
+
+		String f = filter.toLowerCase();
+		List<String> filteredCities = citiList.stream().filter(city -> city.toLowerCase().contains(f)).collect(Collectors.toList());
+		return filteredCities;
+	}
+
+
+	public List<String> filterStateList(String filter){
+
+		String f = filter.toLowerCase();
+		List<String> filteredStates = statesList.stream().filter(state -> state.toLowerCase().contains(f)).collect(Collectors.toList());
+		return filteredStates;
+	}  
+
+	public CityDao getCityDao() {
+		return cityDao;
+	}
+
+	public void setCityDao(CityDao cityDao) {
+		this.cityDao = cityDao;
+	}
+
+	public DepartmentDao getDepartmentDao() {
+		return departmentDao;
+	}
+
+	public void setDepartmentDao(DepartmentDao departmentDao) {
+		this.departmentDao = departmentDao;
+	}
+
+	public DesignationDao getDesignationDao() {
+		return designationDao;
+	}
+
+	public void setDesignationDao(DesignationDao designationDao) {
+		this.designationDao = designationDao;
+	}
+
+	public RoleDao getRoleDao() {
+		return roleDao;
+	}
+
+	public void setRoleDao(RoleDao roleDao) {
+		this.roleDao = roleDao;
+	}
+
+	public List<Department> getDepartments() {
+		return departments;
+	}
+
+	public void setDepartments(List<Department> departments) {
+		this.departments = departments;
+	}
+
+	public List<Designation> getDesignations() {
+		return designations;
+	}
+
+	public void setDesignations(List<Designation> designations) {
+		this.designations = designations;
+	}
+
+	public List<Role> getRoles() {
+		return roles;
+	}
+
+	public void setRoles(List<Role> roles) {
+		this.roles = roles;
+	}
+
+	public List<String> getCitiList() {
+		return citiList;
+	}
+
+	public void setCitiList(List<String> citiList) {
+		this.citiList = citiList;
+	}
+
+	public CandidateRemarksDao getCandidateRemarksDao() {
+		return candidateRemarksDao;
+	}
+
+	public void setCandidateRemarksDao(CandidateRemarksDao candidateRemarksDao) {
+		this.candidateRemarksDao = candidateRemarksDao;
+	}
+
+	public List<CandidateRemarks> getCandidateStatuses() {
+		return candidateStatuses;
+	}
+
+	public void setCandidateStatuses(List<CandidateRemarks> candidateStatuses) {
+		this.candidateStatuses = candidateStatuses;
+	}
+
+	public CandidateCourseDao getCandidateCourseDao() {
+		return candidateCourseDao;
+	}
+
+	public void setCandidateCourseDao(CandidateCourseDao candidateCourseDao) {
+		this.candidateCourseDao = candidateCourseDao;
+	}
+
+	public List<CandidateCourse> getCandidateCourses() {
+		return candidateCourses;
+	}
+
+	public void setCandidateCourses(List<CandidateCourse> candidateCourses) {
+		this.candidateCourses = candidateCourses;
+	}
+
+	public CandidateVisaDao getCandidateVisaDao() {
+		return candidateVisaDao;
+	}
+
+	public void setCandidateVisaDao(CandidateVisaDao candidateVisaDao) {
+		this.candidateVisaDao = candidateVisaDao;
+	}
+
+	public List<CandidateVisa> getCandidateVisaes() {
+		return candidateVisaes;
+	}
+
+	public void setCandidateVisaes(List<CandidateVisa> candidateVisaes) {
+		this.candidateVisaes = candidateVisaes;
+	}
+
+	public List<CandidateRemarks> getCandidateStatusesTillEnrolled() {
+		return candidateStatusesTillEnrolled;
+	}
+
+	public void setCandidateStatusesTillEnrolled(List<CandidateRemarks> candidateStatusesTillEnrolled) {
+		this.candidateStatusesTillEnrolled = candidateStatusesTillEnrolled;
+	}
+
+	public EmployeeDao getEmployeeDao() {
+		return employeeDao;
+	}
+
+	public void setEmployeeDao(EmployeeDao employeeDao) {
+		this.employeeDao = employeeDao;
+	}
+
+	public List<Employee> getEmployees() {
+		return employees;
+	}
+
+	public void setEmployees(List<Employee> employees) {
+		this.employees = employees;
+	}
+
+	public List<Employee> getSupervisors() {
+		return supervisors;
+	}
+
+	public void setSupervisors(List<Employee> supervisors) {
+		this.supervisors = supervisors;
+	}
+
+	public CheckListTypeDao getCheckListTypeDao() {
+		return checkListTypeDao;
+	}
+
+	public void setCheckListTypeDao(CheckListTypeDao checkListTypeDao) {
+		this.checkListTypeDao = checkListTypeDao;
+	}
+
+	public List<CheckListType> getCheckListTypes() {
+		return checkListTypes;
+	}
+
+	public void setCheckListTypes(List<CheckListType> checkListTypes) {
+		this.checkListTypes = checkListTypes;
+	}
+
+	public TrainerDao getTrainerDao() {
+		return trainerDao;
+	}
+
+	public void setTrainerDao(TrainerDao trainerDao) {
+		this.trainerDao = trainerDao;
+	}
+
+	public List<Trainer> getTrainers() {
+		return trainers;
+	}
+
+	public void setTrainers(List<Trainer> trainers) {
+		this.trainers = trainers;
+	}
+
+	public StateDao getStateDao() {
+		return stateDao;
+	}
+
+	public void setStateDao(StateDao stateDao) {
+		this.stateDao = stateDao;
+	}
+
+	public List<String> getStatesList() {
+		return statesList;
+	}
+
+	public void setStatesList(List<String> statesList) {
+		this.statesList = statesList;
+	}
+
+	public List<Employee> getRecruiterList() {
+		return recruiterList;
+	}
+
+	public void setRecruiterList(List<Employee> recruiterList) {
+		this.recruiterList = recruiterList;
+	}
+	
+	
+
+}

@@ -1,0 +1,100 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+	<h:form id="datatable-form">
+	<p:growl id="growl" showDetail="true" sticky="true" /> 
+	
+		<p:panel style="margin-top:9%">
+
+			<f:facet name="header">Hotlist</f:facet>
+
+			<p:dataTable id="candidate-datatable" var="candi" value="#{salesBean.candidateLazyModel}" paginator="true" rows="10"
+				resizableColumns="true" resizeMode="true" widgetVar="advanceSearch" sortBy="#{candi.candidateId}"
+				sortOrder="descending"
+				paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
+				rowsPerPageTemplate="10,20,50,100,500,1000" rowKey="#{candi.candidateId}" lazy="true"
+				tableStyle="width:auto;table-layout:auto">
+
+				<f:facet name="header">Candidates</f:facet>
+
+				<p:column headerText="Resume">
+					<h:commandLink actionListener="#{hrBean.downloadFile}" styleClass="btn btn-default" style="color:blue;">
+						<h:graphicImage value="/resources/demo/images/icon/download.png"></h:graphicImage>
+						<f:param name="filePath" value="#{candi.resumePath}" />
+					</h:commandLink>
+				</p:column>
+
+				<p:column headerText="Name" sortBy="#{candi.firstName}" filterBy="#{candi.firstName}">
+					<h:outputText value="#{candi.firstName}" />
+				</p:column>
+
+				<p:column headerText="Email" sortBy="#{candi.contactAddress.email}" filterBy="#{candi.contactAddress.email}">
+					<h:outputText value="#{candi.contactAddress.email}" />
+				</p:column>
+
+				<p:column headerText="Mobile" sortBy="#{candi.contactAddress.workMobile}"
+					filterBy="#{candi.contactAddress.workMobile}">
+					<h:outputText value="#{candi.contactAddress.workMobile}" />
+				</p:column>
+
+				<p:column headerText="Job Role" sortBy="#{candi.jobTitle}" filterBy="#{candi.jobTitle}" style="text-align:center">
+					<h:outputText value="#{candi.jobTitle}" />
+				</p:column>
+
+				<p:column headerText="Total Exp." sortBy="#{candi.totalExp}" filterBy="#{candi.totalExp}" style="text-align:center">
+					<h:outputText value="#{candi.totalExp}" />
+				</p:column>
+
+				<p:column headerText="Bill Rate" sortBy="#{candi.billRate}" filterBy="#{candi.billRate}" style="text-align:center">
+					<h:outputText value="#{candi.billRate}" />
+				</p:column>
+
+
+				<p:column headerText="Visa" sortBy="#{candi.immigrationType}" filterBy="#{candi.immigrationType}"
+					filterMatchMode="contains">
+					<f:facet name="filter">
+						<p:selectOneMenu onchange="PF('advanceSearch').filter()">
+							<f:selectItem itemLabel="Select Visa" itemValue=" " noSelectionOption="true" />
+							<f:selectItems value="#{appDataBean.candidateVisaes}" var="cv" itemLabel="#{cv.visa}" itemValue="#{cv.visa}" />
+						</p:selectOneMenu>
+					</f:facet>
+					<h:outputText value="#{candi.immigrationType}" />
+				</p:column>
+
+
+				<p:column headerText="Cur. Location" sortBy="#{candi.currentLocation}" filterBy="#{candi.currentLocation}"
+					style="text-align:center">
+					<h:outputText value="#{candi.currentLocation}" />
+				</p:column>
+
+				<p:column headerText="Pref. Location" sortBy="#{candi.preferedLocation}" filterBy="#{candi.preferedLocation}"
+					style="text-align:center">
+					<h:outputText value="#{candi.preferedLocation}" />
+				</p:column>
+
+				<p:column headerText="Availiability" sortBy="#{candi.availiability}" filterBy="#{candi.availiability}"
+					style="text-align:center">
+					<h:outputText value="#{candi.availiability}" />
+				</p:column>
+
+				<p:column headerText="Sales Responsibility" style="text-align:center">
+					<h:dataTable value="#{candi.employees}" var="emp">
+						<p:column>
+							<h:outputText value="#{emp.name}" />
+						</p:column>
+					</h:dataTable>
+				</p:column>
+
+				<p:column headerText="Action">
+					<h:commandLink actionListener="#{salesBean.candidateAssignToPlaced()}" update=":mainBody" value="Palaced"
+						style="color:blue;" onclick="return confirm('Is Candidate Placed?')">
+						<f:param name="candidateId" value="#{candi.candidateId}" />
+					</h:commandLink>
+				</p:column>
+
+			</p:dataTable>
+		</p:panel>
+	</h:form>
+
+</ui:composition>

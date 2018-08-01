@@ -1,0 +1,33 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+    <p:messages for="messages" showDetail="true" autoUpdate="true" closable="true" />
+		<p:panel>
+
+			<f:facet name="header">
+				<p:outputLabel>Successfully Candidates Skip To Enrollment Form</p:outputLabel>
+			</f:facet>
+
+				<p:panelGrid columns="6" cellpadding="10" style="width:100%;margin-top:1%;">
+					<f:facet name="header">Candidate ID: #{trainerBean.candidate.candidateId}</f:facet>
+					
+					<h:outputText value="Candidate Name:" />
+					<h:outputText value="#{trainerBean.candidate.firstName}" />
+
+					<h:outputText value="Email:" />
+					<h:outputText value="#{trainerBean.candidate.contactAddress.email}" />
+
+					<h:outputText value="Phone No.:" />
+					<h:outputText value="#{trainerBean.candidate.contactAddress.workMobile}" />
+
+					<h:outputText value="Course Name:" />
+					<h:outputText value="#{trainerBean.candidate.candidateCourse.course}" />
+
+					<h:outputText value="Recruiter Name:" />
+					<h:outputText value="#{trainerBean.candidate.employee.name}" />
+
+				</p:panelGrid>
+           
+		</p:panel>
+</ui:composition>

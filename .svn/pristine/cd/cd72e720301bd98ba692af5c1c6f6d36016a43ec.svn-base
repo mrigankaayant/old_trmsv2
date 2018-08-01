@@ -1,0 +1,51 @@
+package com.ayantsoft.trms.jsf.model;
+
+import com.ayantsoft.trms.hibernate.pojo.Candidate;
+import com.ayantsoft.trms.hibernate.pojo.CandidateCourse;
+import com.ayantsoft.trms.hibernate.pojo.CandidateRemarks;
+import com.ayantsoft.trms.hibernate.pojo.ContactAddress;
+import com.ayantsoft.trms.hibernate.pojo.Employee;
+
+public class FreePoolCandidatesDto {
+	
+	private Candidate candidate;
+	private CandidateCourse candidateCourse;
+	private ContactAddress contactAddress;
+	private Employee employee;
+	private CandidateRemarks candidateRemarks;
+	
+	public CandidateRemarks getCandidateRemarks() {
+		return candidateRemarks;
+	}
+	public void setCandidateRemarks(CandidateRemarks candidateRemarks) {
+		this.candidateRemarks = candidateRemarks;
+	}
+	public Candidate getCandidate() {
+		return candidate;
+	}
+	public void setCandidate(Candidate candidate) {
+		this.candidate = candidate;
+	}
+	public CandidateCourse getCandidateCourse() {
+		return candidateCourse;
+	}
+	public void setCandidateCourse(CandidateCourse candidateCourse) {
+		this.candidateCourse = candidateCourse;
+	}
+	public ContactAddress getContactAddress() {
+		return contactAddress;
+	}
+	public void setContactAddress(ContactAddress contactAddress) {
+		this.contactAddress = contactAddress;
+	}
+	public Employee getEmployee() {
+		return employee;
+	}
+	public void setEmployee(Employee employee) {
+		this.employee = employee;
+	}
+	
+	
+	
+	
+}

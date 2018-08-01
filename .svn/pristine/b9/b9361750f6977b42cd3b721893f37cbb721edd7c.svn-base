@@ -1,0 +1,143 @@
+package com.ayantsoft.trms.hibernate.dao;
+
+import java.io.Serializable;
+import java.util.Date;
+import java.util.List;
+
+import javax.faces.bean.ApplicationScoped;
+import javax.faces.bean.ManagedBean;
+
+import org.hibernate.Criteria;
+import org.hibernate.HibernateException;
+import org.hibernate.Query;
+import org.hibernate.SQLQuery;
+import org.hibernate.Session;
+import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Restrictions;
+import org.hibernate.transform.Transformers;
+
+import com.ayantsoft.trms.hibernate.pojo.Candidate;
+import com.ayantsoft.trms.hibernate.pojo.FollowUp;
+import com.ayantsoft.trms.hibernate.util.HibernateUtil;
+import com.ayantsoft.trms.jsf.model.CandidatePaymentModel;
+import com.ayantsoft.trms.jsf.model.FreePoolCandidatesDto;
+
+/**
+ * @author Somnath Biswas
+ * 
+ * FollowUpDao is implemented to do database operation for FolloUp entity
+ */
+@ManagedBean
+@ApplicationScoped
+public class FollowUpDao implements Serializable{
+
+	/**
+	 * serialVersionUID
+	 */
+	private static final long serialVersionUID = -2396596313051366256L;
+
+
+	/**
+	 * @param followUp
+	 */
+	public void saveFollowUp(FollowUp followUp,Candidate candidate){
+		Session session=HibernateUtil.getSessionFactory().openSession();
+		candidate.setNextFollowUpDate(followUp.getNextFollowUpDate());
+		followUp.setFollowUpDate(new Date());
+		try{
+			session.beginTransaction();
+			session.saveOrUpdate(candidate);
+			session.saveOrUpdate(followUp);
+			session.getTransaction().commit();
+		}catch(Exception e){ 
+			e.printStackTrace();
+			session.getTransaction().rollback();
+			throw new HibernateException("Data save exception");
+		}finally{
+			session.close();
+		}
+
+	}
+
+
+
+	/**
+	 * @param candidateId
+	 * @return
+	 */
+	public List<FollowUp> returnFollowUpList(Integer candidateId){
+		Session session=HibernateUtil.getSessionFactory().openSession();
+		List<FollowUp> list=null;
+		try{
+			Criteria criteria = session.createCriteria(FollowUp.class,"followUp");
+			criteria.createAlias("followUp.employee","emp");
+			criteria.add(Restrictions.eq("followUp.candidate.candidateId",candidateId));
+			criteria.addOrder(Order.desc("followUp.followUpDate"));
+			list= criteria.list();
+		}catch(Exception ex){
+			ex.printStackTrace();
+			throw new HibernateException("Data access exception");
+		}finally{
+			session.close();
+		}
+		return list;
+	}
+
+	
+	public List<FreePoolCandidatesDto> findFreePoolCandidates(Date checkingDate){
+
+		Session session = HibernateUtil.getSessionFactory().openSession();
+		List<FreePoolCandidatesDto> candidates = null;
+		try{
+
+			String hql="SELECT "
+					+ "c.candidateId as candidateId, "
+					+ "c.currentLocation as currentLocation, "
+					+ "c.firstName as candidateName, "
+					+ "c.preferedLocation as preferedLocation, " 
+					+ "c.immigrationType as visa, "
+					+ "r.statusType as candidateRemarks, "
+					+ "r.id as candidateRemarksId, "
+					+ "add.email as candidateEmail, "
+					+ "add.workMobile as candidateMobile, "
+					+ "course.course as candidateCourse, "
+					+ "course.id as candidateCourseId, "
+					+ "emp.name as recruiterName, "
+					+ "emp.empId as recruiterId "
+					
+			        + "FROM "
+			        
+			        + "FollowUp f "
+			        + "INNER JOIN f.candidate c " 
+			        + "INNER JOIN c.candidateRemarks r "
+			        + "INNER JOIN c.contactAddress add " 
+			        + "INNER JOIN c.employee emp " 
+			        + "LEFT OUTER JOIN c.candidateCourse course " 
+			        
+			        + "GROUP BY "
+			        
+			        + "c.candidateId "
+			        + "HAVING "
+			        + "(max(f.followUpDate) < :checkingDate "
+			        + "AND r.statusType = 'Not Responding' ) "
+			        + "OR (max(f.followUpDate) < :checkingDate "
+			        + "AND r.statusType = 'Voicemail' ) "
+			        + "OR (r.statusType='Not Interested') ";
+			
+
+			Query query = session.createQuery(hql)
+					.setResultTransformer(Transformers.aliasToBean(FreePoolCandidatesDto.class));
+
+				query.setParameter("checkingDate", checkingDate);
+
+			candidates = query.list();
+
+		}catch(HibernateException e){
+			e.printStackTrace();
+		}finally {
+			session.close();
+		}
+		return candidates;
+	}
+
+}

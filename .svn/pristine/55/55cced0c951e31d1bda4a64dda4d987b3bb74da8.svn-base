@@ -1,0 +1,51 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+	<p:growl id="growl" showDetail="true" sticky="false" autoUpdate="true" />
+
+	<h:form id="form">
+		<p:panel style="margin-top:9%">
+			<f:facet name="header">
+				<p:outputLabel>Offer Letter Sending</p:outputLabel>
+			</f:facet>
+
+			<div class="ui-g">
+
+				<div class="ui-g-12 ui-md-6 ui-lg-3">
+					<h:panelGrid style="width:100%">
+						<p:outputLabel for="subject" value="Subject:" />
+						<p:inputText id="subject" value="#{hrBean.offerletterModel.subject}"
+							placeholder="Enter Subject" required="true" />
+						<p:message for="subject" />
+					</h:panelGrid>
+				</div>
+				
+				<div class="ui-g-12 ui-md-6 ui-lg-9">
+					<h:panelGrid style="width:100%">
+						<p:outputLabel for="message" value="Message:" />
+						<p:inputTextarea id="message" value="#{hrBean.offerletterModel.bodyContent}"
+							placeholder="Enter Message" required="true" />
+						<p:message for="message" />
+					</h:panelGrid>
+				</div>
+				
+
+				<div class="ui-g-12 ui-md-6 ui-lg-6">
+					<h:panelGrid style="width:100%">
+						<p:outputLabel for="candidateDoc" value="Upload Documents:" />
+						<p:fileUpload id="candidateDoc" value="#{hrBean.uplodedfile}" fileUploadListener="#{hrBean.handleFileUploadForOfferLetter}"
+							multiple="true" mode="advanced" skinSimple="true" required="true" requiredMessage="Select a document" />
+						<p:message for="candidateDoc" />
+					</h:panelGrid>
+				</div>
+	
+			</div>
+
+			<f:facet name="footer">
+				<p:commandButton value="Send" actionListener="#{hrBean.sendOfferLetter()}" onclick="PF('statusDialog').show()" oncomplete="PF('statusDialog').hide()" />
+			</f:facet>
+
+		</p:panel>
+	</h:form>
+</ui:composition>

@@ -1,0 +1,351 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+	<h:form id="form">
+		<p:panel id="toggleable" header="Profile Snapshot" toggleable="true" toggleSpeed="500" closeSpeed="500"
+			widgetVar="panel-profile" style="margin-bottom:20px">
+
+			<f:facet name="actions">
+				<h:commandLink action="#{hrBean.edit}" value="Edit" update=":mainBody" style="color:blue;">
+					<f:param name="pageArg" value="Profile" />
+				</h:commandLink>
+			</f:facet>
+
+			<p:panelGrid columns="3" layout="grid">
+				<h:outputText value="Candidate Name    : #{hrBean.candidateCheckList.candidate.firstName}" />
+				<h:outputText value="Job Title    : #{hrBean.candidateCheckList.candidate.jobTitle}" />
+				<h:outputText value="Experience years in Usa    : #{hrBean.candidateCheckList.candidate.expYearsInUsa}" />
+
+				<h:outputText value="Current Location    : #{hrBean.candidateCheckList.candidate.currentLocation}" />
+				<h:outputText value="Prefered Location    : #{hrBean.candidateCheckList.candidate.preferedLocation}" />
+			</p:panelGrid>
+
+		</p:panel>
+
+
+
+		<p:panel id="toggleableAuth" header="Candidate Authentication" toggleable="true" toggleSpeed="500" closeSpeed="500"
+			widgetVar="panel-auth" style="margin-bottom:20px">
+
+			<f:facet name="actions">
+
+				<h:commandLink action="#{hrBean.edit}" value="Edit" update=":mainBody" style="color:blue;">
+					<f:param name="pageArg" value="Authentication" />
+				</h:commandLink>
+
+			</f:facet>
+
+			<p:panelGrid columns="3" layout="grid">
+				<h:outputText value="Office Email    : #{hrBean.candidateCheckList.candidate.userProfile.officeEmail}" />
+				<h:outputText value="Office Email Password    : #{hrBean.candidateCheckList.candidate.userProfile.officeEmailPwd}" />
+				<h:outputText value="User Name    : #{hrBean.candidateCheckList.candidate.userProfile.username}" />
+				<h:outputText value="Password    : #{hrBean.candidateCheckList.candidate.userProfile.password}" />
+			</p:panelGrid>
+
+		</p:panel>
+
+
+
+
+
+		<p:panel id="toggleable1" header="Personnel Information" toggleable="true" toggleSpeed="500" closeSpeed="500"
+			widgetVar="panel-personnel" style="margin-bottom:20px">
+
+			<f:facet name="actions">
+				<h:commandLink action="#{hrBean.edit}" value="Edit" update=":mainBody" style="color:blue;">
+					<f:param name="pageArg" value="Personel" />
+				</h:commandLink>
+
+			</f:facet>
+
+			<p:panelGrid columns="3" layout="grid">
+				<h:outputText value="Name    : #{hrBean.candidateCheckList.candidate.firstName}" />
+				<h:outputText value="Date of Birth    : #{hrBean.candidateCheckList.candidate.birthDate}" />
+				<h:outputText value="Gender    : #{hrBean.candidateCheckList.candidate.gender}" />
+				<h:outputText value="Marital Status    : #{hrBean.candidateCheckList.candidate.maritalStatus}" />
+
+				<h:outputText value="SSN    : #{hrBean.candidateCheckList.candidate.ssn}" />
+				<h:outputText value="Graduation Date    : #{hrBean.candidateCheckList.candidate.yearOfPassing}" />
+				<h:outputText value="Email    : #{hrBean.candidateCheckList.candidate.contactAddress.email}" />
+
+				<h:outputText value="Alternate Email    : #{hrBean.candidateCheckList.candidate.contactAddress.alternateEmail}" />
+				<h:outputText value="City    : #{hrBean.candidateCheckList.candidate.contactAddress.city}" />
+				<h:outputText value="Country    : #{hrBean.candidateCheckList.candidate.contactAddress.country}" />
+
+				<h:outputText value="Home Mobile    : #{hrBean.candidateCheckList.candidate.contactAddress.homeMobile}" />
+				<h:outputText value="Home Phone    : #{hrBean.candidateCheckList.candidate.contactAddress.homePhone}" />
+				<h:outputText value="Landmark    : #{hrBean.candidateCheckList.candidate.contactAddress.landmark}" />
+
+				<h:outputText value="Postal Code    : #{hrBean.candidateCheckList.candidate.contactAddress.postalCode}" />
+				<h:outputText value="Current Location    : #{hrBean.candidateCheckList.candidate.currentLocation}" />
+				<h:outputText value="Prefered Location    : #{hrBean.candidateCheckList.candidate.preferedLocation}" />
+			</p:panelGrid>
+
+		</p:panel>
+
+
+
+
+
+
+		<p:panel id="toggleable2" header="Professional Information" toggleable="true" toggleSpeed="500" closeSpeed="500"
+			widgetVar="panel-professional" style="margin-bottom:20px">
+			<f:facet name="actions">
+				<h:commandLink action="#{hrBean.edit}" value="Edit" update=":mainBody" style="color:blue;">
+					<f:param name="pageArg" value="Professional" />
+				</h:commandLink>
+			</f:facet>
+
+			<p:panelGrid columns="3" layout="grid">
+				<h:outputText value="Course Name    : #{hrBean.candidateCheckList.candidate.candidateCourse.course}" />
+				<h:outputText value="Facebook    : #{hrBean.candidateCheckList.candidate.contactAddress.facebook}" />
+				<h:outputText value="Fax    : #{hrBean.candidateCheckList.candidate.contactAddress.fax}" />
+				<h:outputText value="LinkedIn    : #{hrBean.candidateCheckList.candidate.contactAddress.linkedin}" />
+
+				<h:outputText value="MSN    : #{hrBean.candidateCheckList.candidate.contactAddress.msn}" />
+				<h:outputText value="Twitter    : #{hrBean.candidateCheckList.candidate.contactAddress.twitter}" />
+				<h:outputText value="Work Mobile    : #{hrBean.candidateCheckList.candidate.contactAddress.workMobile}" />
+
+				<h:outputText value="Work Phone    : #{hrBean.candidateCheckList.candidate.contactAddress.workPhone}" />
+				<h:outputText value="Recruiter Name    : #{hrBean.candidateCheckList.candidate.employee.name}" />
+				<h:outputText value="Visa    : #{hrBean.candidateCheckList.candidate.credentialType}" />
+
+				<h:outputText value="Visa Start Date    : #{hrBean.candidateCheckList.candidate.immigrationStartDate}" />
+				<h:outputText value="Skype    : #{hrBean.candidateCheckList.candidate.contactAddress.skype}" />
+				<h:outputText value="Joining Date    : #{hrBean.candidateCheckList.candidate.joiningDate}" />
+
+				<h:outputText value="Job Title    : #{hrBean.candidateCheckList.candidate.jobTitle}" />
+				<h:outputText value="Payrate    : #{hrBean.candidateCheckList.candidate.payRate}" />
+				<h:outputText value="Pay Type    : #{hrBean.candidateCheckList.candidate.payType}" />
+
+				<h:outputText value="Total Experience    : #{hrBean.candidateCheckList.candidate.totalExp}" />
+				<h:outputText value="Years in USA    : #{hrBean.candidateCheckList.candidate.yearsInUsa}" />
+			</p:panelGrid>
+
+		</p:panel>
+
+
+
+
+		<p:panel id="toggleable4" header="IT-Skill" toggleable="true" toggleSpeed="500" closeSpeed="500"
+			widgetVar="panel-it-skill" style="margin-bottom:20px">
+			<f:facet name="actions">
+
+				<h:commandLink action="#{hrBean.addSkill(hrBean.candidateCheckList.candidate.candidateId)}" value="Add"
+					update=":mainBody" style="color:blue;" /> / 
+
+				<h:commandLink action="#{hrBean.edit}" value="Edit" update=":mainBody" style="color:blue;">
+					<f:param name="pageArg" value="Skill" />
+				</h:commandLink>
+
+			</f:facet>
+			<p:dataTable var="canSkill" value="#{hrBean.candidateSkills}">
+				<p:column headerText="Experties Level">
+					<h:outputText value="#{canSkill.expertiesLevel}" />
+				</p:column>
+
+				<p:column headerText="Tech Skill">
+					<h:outputText value="#{canSkill.techSkill}" />
+				</p:column>
+
+				<p:column headerText="Last Used">
+					<h:outputText value="#{canSkill.lastUsed}" />
+				</p:column>
+
+				<p:column headerText="Years Of Experience">
+					<h:outputText value="#{canSkill.yearsOfExp}" />
+				</p:column>
+			</p:dataTable>
+
+		</p:panel>
+
+
+
+
+		<p:panel id="toggleable5" header="Education" toggleable="true" toggleSpeed="500" closeSpeed="500"
+			widgetVar="panel-education" style="margin-bottom:20px">
+			<f:facet name="actions">
+
+				<h:commandLink actionListener="#{hrBean.addEducation(hrBean.candidateCheckList.candidate.candidateId)}" value="Add"
+					 update=":mainBody" style="color:blue;" /> / 
+
+				<h:commandLink action="#{hrBean.edit}" value="Edit" update=":mainBody" style="color:blue;">
+					<f:param name="pageArg" value="Education" />
+				</h:commandLink>
+			</f:facet>
+			<p:dataTable var="canEdu" value="#{hrBean.educationCertificateList}">
+
+				<p:column headerText="Country">
+					<h:outputText value="#{canEdu.country}" />
+				</p:column>
+				<p:column headerText="Credential">
+					<h:outputText value="#{canEdu.credential}" />
+				</p:column>
+
+				<p:column headerText="CredentialType">
+					<h:outputText value="#{canEdu.credentialType}" />
+				</p:column>
+
+				<p:column headerText="Pergentage">
+					<h:outputText value="#{canEdu.pergentage}" />
+				</p:column>
+
+				<p:column headerText="University">
+					<h:outputText value="#{canEdu.university}" />
+				</p:column>
+
+				<p:column headerText="YearOfPassing">
+					<h:outputText value="#{canEdu.yearOfPassing}">
+						<f:convertDateTime pattern="MM/dd/yyyy" />
+					</h:outputText>
+				</p:column>
+			</p:dataTable>
+
+		</p:panel>
+
+
+
+
+
+		<p:panel id="documentsPanel" header="Documents" toggleable="true" toggleSpeed="500" closeSpeed="500"
+			widgetVar="panel-education">
+			<f:facet name="actions">
+
+				<h:commandLink actionListener="#{hrBean.addDocuments(hrBean.candidateCheckList.candidate.candidateId)}" value="Add"
+					update=":mainBody" style="color:blue;" />
+			</f:facet>
+			<p:dataTable var="doc" value="#{hrBean.documents}" sortBy="#{doc.name}" style="text-align:center;">
+
+				<p:column headerText="Document Name" sortBy="#{doc.name}">
+					<h:outputText value="#{doc.name}" />
+				</p:column>
+				<p:column headerText="File name" sortBy="#{doc.filename}">
+					<h:outputText value="#{doc.filename}" />
+				</p:column>
+
+				<p:column headerText="Description" sortBy="#{doc.description}">
+					<h:outputText value="#{doc.description}" />
+				</p:column>
+				
+				<p:column headerText="Exp. Date" sortBy="#{doc.expriedDate}">
+					<h:outputText value="#{doc.expriedDate}" />
+				</p:column>
+
+				<p:column headerText="Created" sortBy="#{doc.created}">
+					<h:outputText value="#{doc.created}" />
+				</p:column>
+
+
+				<p:column headerText="Action">
+
+					<h:commandLink actionListener="#{hrBean.showFile()}" update=":form:documentsPanel" value="Show" style="color:blue;"
+						target="_blank">
+						<f:param name="fileName" value="#{doc.filename}" />
+						<f:param name="filePath" value="#{doc.filepath}" />
+					</h:commandLink>
+
+				</p:column>
+
+				<p:column headerText="Action">
+
+
+					<h:commandLink actionListener="#{hrBean.downloadFile}" update=":form:documentsPanel" value="Download"
+						style="color:blue;">
+						<f:param name="fileName" value="#{doc.filename}" />
+						<f:param name="filePath" value="#{doc.filepath}" />
+					</h:commandLink>
+
+				</p:column>
+
+				<p:column headerText="Action">
+
+					<h:commandLink actionListener="#{hrBean.deleteFile}" update=":form:documentsPanel" value="Delete"
+						style="color:blue;" onclick="return confirm('Do you want to delete!')">
+						<f:param name="docId" value="#{doc.id}" />
+						<f:param name="filePath" value="#{doc.filepath}" />
+						<f:param name="candidateId" value="#{hrBean.candidateCheckList.candidate.candidateId}" />
+					</h:commandLink>
+
+				</p:column>
+
+			</p:dataTable>
+
+		</p:panel>
+
+
+
+
+		<p:panel id="checkList" header="CheckList" toggleable="true" toggleSpeed="500" closeSpeed="500"
+			widgetVar="panel-checklist">
+
+			<p:dataTable var="checkList" value="#{hrBean.candidateCheckLists}">
+
+				<p:column headerText="Check List Type Name">
+					<h:outputText value="#{checkList.checkListType.checkListTypeName}" />
+				</p:column>
+
+				<p:column headerText="Check List Status">
+					<h:outputText value="#{checkList.checkListStatus}" />
+				</p:column>
+
+				<p:column headerText="Check List Date">
+					<h:outputText value="#{checkList.checkListDate}" />
+				</p:column>
+
+				<p:column headerText="Documents">
+					<ui:repeat var="doc" value="#{checkList.documentses}">
+						<h:commandLink actionListener="#{hrBean.downloadFile}" value="#{doc.name}" style="color:blue;">
+							<f:param name="filePath" value="#{doc.filepath}" />
+						</h:commandLink>
+					</ui:repeat>
+				</p:column>
+				
+				<p:column headerText="Remarks">
+					<h:outputText value="#{checkList.remarks}" />
+				</p:column>
+
+				<p:column headerText="Action">
+					<h:commandLink actionListener="#{hrBean.uploadCheckListDoc}" update=":mainBody" value="Upload" style="color:blue;"
+						rendered="#{checkList.checkListType.isDocumentsMandatory}">
+						<f:param name="candidateId" value="#{checkList.candidate.candidateId}" />
+						<f:param name="candidateName" value="#{checkList.candidate.firstName}" />
+						<f:param name="candidateChecklistId" value="#{checkList.id}" />
+						<f:param name="checkListName" value="#{checkList.checkListType.checkListTypeName}" />
+					</h:commandLink>
+					
+					<h:commandLink actionListener="#{hrBean.remarksForMockOrGraduation()}" update=":mainBody" value="Complete" style="color:blue;"
+						rendered="#{checkList.checkListType.checkListTypeName.contains('Mock Preparation')}">
+						<f:param name="candidateId" value="#{checkList.candidate.candidateId}" />
+						<f:param name="candidateChecklistId" value="#{checkList.id}" />
+						<f:param name="checkListName" value="#{checkList.checkListType.checkListTypeName}" />
+					</h:commandLink>
+					
+					<h:commandLink actionListener="#{hrBean.remarksForMockOrGraduation()}" update=":mainBody" value="Complete" style="color:blue;"
+						rendered="#{checkList.checkListType.checkListTypeName.contains('Graduation')}">
+						<f:param name="candidateId" value="#{checkList.candidate.candidateId}" />
+						<f:param name="candidateChecklistId" value="#{checkList.id}" />
+						<f:param name="checkListName" value="#{checkList.checkListType.checkListTypeName}" />
+					</h:commandLink>
+					
+					<h:commandLink actionListener="#{hrBean.remarksForMockOrGraduation()}" update=":mainBody" value="Complete" style="color:blue;"
+						rendered="#{checkList.checkListType.checkListTypeName.contains('Documents')}">
+						<f:param name="candidateId" value="#{checkList.candidate.candidateId}" />
+						<f:param name="candidateChecklistId" value="#{checkList.id}" />
+						<f:param name="checkListName" value="#{checkList.checkListType.checkListTypeName}" />
+					</h:commandLink>
+					
+					<h:commandLink actionListener="#{hrBean.hotlistStatus()}" update=":mainBody" value="Complete" style="color:blue;"
+						rendered="#{checkList.checkListType.checkListTypeName.contains('Hotlist')}" onclick="return confirm('Do you want to add in hotlist!')">
+						<f:param name="candidateId" value="#{checkList.candidate.candidateId}" />
+						<f:param name="candidateChecklistId" value="#{checkList.id}" />
+						<f:param name="checkListName" value="#{checkList.checkListType.checkListTypeName}" />
+					</h:commandLink>
+					
+				</p:column>
+
+			</p:dataTable>
+
+		</p:panel>
+	</h:form>
+</ui:composition>

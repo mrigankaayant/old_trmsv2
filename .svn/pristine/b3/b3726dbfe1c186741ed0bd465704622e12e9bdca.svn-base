@@ -1,0 +1,99 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:p="http://primefaces.org/ui">
+
+	<p:growl id="growl" showDetail="true" sticky="false" autoUpdate="true" />
+
+	<h:form id="form">
+		<p:panel style="margin-top:9%">
+			<f:facet name="header">Invoice List</f:facet>
+
+			<p:dataTable var="tinvoice" value="#{trainerBean.trainerInvoiceLazyModel}" paginator="true" rows="20"
+				paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
+				sortBy="#{tinvoice.trainerInvoiceId}" sortOrder="descending" rowsPerPageTemplate="10,25,50,100"
+				id="trainerInvoice-table" lazy="true" widgetVar="trainerInvoiceTable" tableStyle="width:auto;table-layout:auto">
+
+				<p:column headerText="Id" sortBy="#{tinvoice.trainerInvoiceId}" filterBy="#{tinvoice.trainerInvoiceId}"
+					style="text-align:center">
+					<h:outputText value="#{tinvoice.trainerInvoiceId}" />
+				</p:column>
+
+				<p:column headerText="Batch Id" sortBy="#{tinvoice.programmeSchedule.id}"
+					filterBy="#{tinvoice.programmeSchedule.id}" style="text-align:center">
+					<h:outputText value="#{tinvoice.programmeSchedule.id}" />
+				</p:column>
+
+				<p:column headerText="Batch Title" sortBy="#{tinvoice.programmeSchedule.title}"
+					filterBy="#{tinvoice.programmeSchedule.title}" style="text-align:center">
+					<h:outputText value="#{tinvoice.programmeSchedule.title}" />
+				</p:column>
+
+				<p:column headerText="Trainer Name" sortBy="#{tinvoice.trainer.trainerName}"
+					filterBy="#{tinvoice.trainer.trainerName}" style="text-align:center">
+					<h:outputText value="#{tinvoice.trainer.trainerName}" />
+				</p:column>
+
+				<p:column headerText="Course" sortBy="#{tinvoice.candidateCourse.course}"
+					filterBy="#{tinvoice.candidateCourse.course}" style="text-align:center">
+
+					<f:facet name="filter">
+						<p:selectOneMenu onchange="PF('trainerInvoiceTable').filter()">
+							<f:selectItem itemLabel="Select One" itemValue="#{null}" noSelectionOption="true" />
+							<f:selectItems value="#{appDataBean.candidateCourses}" var="c" itemLabel="#{c.course}" itemValue="#{c.course}" />
+						</p:selectOneMenu>
+					</f:facet>
+
+					<h:outputText value="#{tinvoice.candidateCourse.course}" />
+				</p:column>
+
+				<p:column headerText="Pay Month" sortBy="#{tinvoice.payMonth}" filterBy="#{tinvoice.payMonth}"
+					style="text-align:center">
+					<h:outputText value="#{tinvoice.payMonth}" />
+				</p:column>
+
+				<p:column headerText="Amount" sortBy="#{tinvoice.amount}" filterBy="#{tinvoice.amount}" style="text-align:center">
+					<h:outputText value="#{tinvoice.amount}" />
+				</p:column>
+
+				<p:column headerText="Invoice Date" sortBy="#{tinvoice.invoiceDate}" filterBy="#{tinvoice.invoiceDate}"
+					style="text-align:center">
+					<f:facet name="filter">
+						<p:calendar pattern="MM/dd/yyyy" showButtonPanel="true">
+							<p:ajax event="dateSelect" oncomplete="PF('trainerInvoiceTable').filter()" />
+						</p:calendar>
+					</f:facet>
+					<h:outputText value="#{tinvoice.invoiceDate}">
+						<f:convertDateTime pattern="MM/dd/yyyy" />
+					</h:outputText>
+				</p:column>
+
+				<p:column headerText="No Of Days" sortBy="#{tinvoice.noOfDays}" filterBy="#{tinvoice.noOfDays}"
+					style="text-align:center">
+					<h:outputText value="#{tinvoice.noOfDays}" />
+				</p:column>
+
+				<p:column headerText="Pan No." sortBy="#{tinvoice.trainerPanNo}" filterBy="#{tinvoice.trainerPanNo}"
+					style="text-align:center">
+					<h:outputText value="#{tinvoice.trainerPanNo}" />
+				</p:column>
+
+				<p:column headerText="Bank Name" sortBy="#{tinvoice.trainerBankName}" filterBy="#{tinvoice.trainerBankName}"
+					style="text-align:center">
+					<h:outputText value="#{tinvoice.trainerBankName}" />
+				</p:column>
+
+				<p:column headerText="Bank Account" sortBy="#{tinvoice.bankAccount}" filterBy="#{tinvoice.bankAccount}"
+					style="text-align:center">
+					<h:outputText value="#{tinvoice.bankAccount}" />
+				</p:column>
+
+				<p:column headerText="bank IFSC" sortBy="#{tinvoice.bankIfsc}" filterBy="#{tinvoice.bankIfsc}"
+					style="text-align:center">
+					<h:outputText value="#{tinvoice.bankIfsc}" />
+				</p:column>
+
+			</p:dataTable>
+
+		</p:panel>
+
+	</h:form>
+</ui:composition>

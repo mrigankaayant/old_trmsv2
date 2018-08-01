@@ -1,0 +1,200 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:fn="http://java.sun.com/jsp/jstl/functions">
+
+	<h:form id="datatable-form">
+		<p:panel style="margin-top:1%">
+
+			<p:dataTable id="candidate-datatable" var="candi" value="#{recruitmentBean.freepoolCandidatesLazyModel}"
+				paginator="true" rows="20" resizableColumns="true" resizeMode="true" widgetVar="advanceSearch" sortBy="#{candi.id}"
+				sortOrder="descending"
+				paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
+				rowsPerPageTemplate="20,30,50,100,500,1000,2000,3000,4000,5000" selectionMode="single"
+				selection="#{recruitmentBean.selectedFreePoolCandidate}" rowKey="#{candi.id}" lazy="true"
+				tableStyle="width:auto;table-layout:auto">
+
+				<f:facet name="header">Free Pool Candidates</f:facet>
+
+				<p:ajax event="rowDblselect" listener="#{recruitmentBean.onRowSelectForFreePool}" update=":candidate-details-form,:followup-list"
+					process="@form" onstart="PF('statusDialog').show()" oncomplete="PF('statusDialog').hide()" />
+
+				<p:column headerText="Id" sortBy="#{candi.candidateId}" filterBy="#{candi.candidateId}">
+					<h:outputText value="#{candi.candidateId}" />
+				</p:column>
+
+				<p:column headerText="Name" sortBy="#{candi.candidateName}" filterBy="#{candi.candidateName}">
+					<h:outputText value="#{candi.candidateName}" />
+				</p:column>
+
+				<p:column headerText="Email" sortBy="#{candi.candidateEmail}" filterBy="#{candi.candidateEmail}">
+					<h:outputText value="#{candi.candidateEmail}" />
+				</p:column>
+
+				<p:column headerText="Mobile" sortBy="#{candi.candidateMobile}" filterBy="#{candi.candidateMobile}">
+					<h:outputText value="#{candi.candidateMobile}" />
+				</p:column>
+
+				<p:column headerText="Cur. Location" sortBy="#{candi.curLocation}" filterBy="#{candi.curLocation}"
+					style="text-align:center">
+					<h:outputText value="#{candi.curLocation}" />
+				</p:column>
+
+				<p:column headerText="Skills" sortBy="#{candi.skill}" filterBy="#{candi.skill}">
+					<f:facet name="filter">
+						<p:selectOneMenu onchange="PF('advanceSearch').filter()">
+							<f:selectItem itemLabel="Select Skill" itemValue=" " noSelectionOption="true" />
+							<f:selectItems value="#{appDataBean.candidateCourses}" var="course" itemLabel="#{course.course}"
+								itemValue="#{course.course}" />
+						</p:selectOneMenu>
+					</f:facet>
+					<h:outputText value="#{candi.skill}" />
+				</p:column>
+
+				<p:column headerText="Status" sortBy="#{candi.status}" filterBy="#{candi.status}">
+					<f:facet name="filter">
+						<p:selectOneMenu onchange="PF('advanceSearch').filter()">
+							<f:selectItem itemLabel="Select Status" itemValue="" noSelectionOption="true" />
+							<f:selectItems value="#{appDataBean.candidateStatuses}" var="cr" itemLabel="#{cr.statusType}"
+								itemValue="#{cr.statusType}" />
+						</p:selectOneMenu>
+					</f:facet>
+					<h:outputText value="#{candi.status}" />
+				</p:column>
+
+
+				<p:column headerText="Visa" sortBy="#{candi.visa}" filterBy="#{candi.visa}" filterMatchMode="contains">
+					<f:facet name="filter">
+						<p:selectOneMenu onchange="PF('advanceSearch').filter()">
+							<f:selectItem itemLabel="Select Visa" itemValue=" " noSelectionOption="true" />
+							<f:selectItems value="#{appDataBean.candidateVisaes}" var="cv" itemLabel="#{cv.visa}" itemValue="#{cv.visa}" />
+						</p:selectOneMenu>
+					</f:facet>
+					<h:outputText value="#{candi.visa}" />
+				</p:column>
+
+
+				<p:column headerText="Recruiter" sortBy="#{candi.recruiterName}" filterBy="#{candi.recruiterName}">
+					<h:outputText value="#{candi.recruiterName}" />
+				</p:column>
+			</p:dataTable>
+		</p:panel>
+
+	</h:form>
+	
+	
+	<h:form id="candidate-details-form">
+	
+	     	<p:panel style="margin-top:1%" rendered="#{recruitmentBean.candidate.candidateId != null}">
+			<f:facet name="header">#{recruitmentBean.candidate.candidateId} #{recruitmentBean.candidate.firstName}</f:facet>
+
+			<div class="ui-g">
+				<div class="ui-g-12 ui-md-6 ui-lg-4">
+					<h:panelGrid style="width:100%">
+						<p:outputLabel for="candidate-name" value="Candidate Name:" />
+						<p:inputText value="#{recruitmentBean.candidate.firstName}" required="true" id="candidate-name"
+							requiredMessage="Enter Candidate Name" placeholder="Enter Name" />
+						<p:message for="candidate-name" />
+					</h:panelGrid>
+				</div>
+				<div class="ui-g-12 ui-md-6 ui-lg-4">
+					<h:panelGrid style="width:100%">
+						<p:outputLabel for="candidate-email" value="Email:" />
+						<p:inputText id="candidate-email" value="#{recruitmentBean.candidate.contactAddress.email}"
+							validator="#{recruitmentBean.emailValidate}" validatorMessage="Invalid email format"
+							placeholder="Enter valid email" required="true" requiredMessage="Enter candidate's email">
+							<f:validateRegex pattern="[\w\.-]*[a-zA-Z0-9_]@[\w\.-]*[a-zA-Z0-9]\.[a-zA-Z][a-zA-Z\.]*[a-zA-Z]" />
+							<p:ajax update="candidate-email-msg" event="blur" />
+						</p:inputText>
+						<p:message for="candidate-email" id="candidate-email-msg" />
+					</h:panelGrid>
+				</div>
+				<div class="ui-g-12 ui-md-6 ui-lg-4">
+					<h:panelGrid style="width:100%">
+						<p:outputLabel for="candidate-workMobile" value="Work Mobile:" />
+						<p:inputText id="candidate-workMobile" value="#{recruitmentBean.candidate.contactAddress.workMobile}"
+							required="true" placeholder="Enter Work Mobile" requiredMessage="Enter work mobile"
+							validator="#{recruitmentBean.mobileValidate}" validatorMessage="Only positive numeric value with in 10 digits">
+							<f:validateRegex pattern="^\d{1,10}$" />
+							<p:ajax update="candidate-workMobile-msg" event="blur" />
+						</p:inputText>
+						<p:message for="candidate-workMobile" id="candidate-workMobile-msg" />
+					</h:panelGrid>
+				</div>
+				<div class="ui-g-12 ui-md-6 ui-lg-4">
+					<h:panelGrid style="width:100%">
+						<p:outputLabel for="candidate-techSkills" value="Candidate Skill:" />
+						<p:selectOneMenu id="candidate-techSkills" value="#{recruitmentBean.candidateCourse.id}">
+							<f:selectItem itemLabel="Select Skill" itemValue="" noSelectionOption="true" />
+							<f:selectItems value="#{appDataBean.candidateCourses}" var="course" itemLabel="#{course.course}"
+								itemValue="#{course.id}" />
+						</p:selectOneMenu>
+						<p:message for="candidate-techSkills" />
+					</h:panelGrid>
+				</div>
+				<div class="ui-g-12 ui-md-6 ui-lg-4">
+					<h:panelGrid style="width:100%">
+						<p:outputLabel for="candidate-immigrationType" value="Visa:" />
+						<p:selectOneMenu id="candidate-immigrationType" value="#{recruitmentBean.candidate.immigrationType}">
+							<f:selectItem itemLabel="Select Visa" itemValue=" " noSelectionOption="true" />
+							<f:selectItems value="#{appDataBean.candidateVisaes}" var="cv" itemLabel="#{cv.visa}" itemValue="#{cv.visa}" />
+						</p:selectOneMenu>
+						<p:message for="candidate-immigrationType" />
+					</h:panelGrid>
+				</div>
+				
+				<div class="ui-g-12 ui-md-6 ui-lg-4">
+					<h:panelGrid style="width:100%">
+						<p:outputLabel for="candidate-status" value="Status:" />
+						<p:selectOneMenu id="candidate-status" value="#{recruitmentBean.candidateRemarks.id}">
+							<f:selectItem itemLabel="Select Status" itemValue=" " noSelectionOption="true" />
+							<f:selectItems value="#{appDataBean.candidateStatuses}" var="s" itemLabel="#{s.statusType}" itemValue="#{s.id}" />
+						</p:selectOneMenu>
+						<p:message for="candidate-status" />
+					</h:panelGrid>
+				</div>
+				
+			</div>
+			<f:facet name="footer">
+				<p:commandButton action="#{recruitmentBean.getCandidateFromFreePool()}"
+					update=":datatable-form,:candidate-details-form,:followup-list" value="GET CANDIDATE" onclick="PF('statusDialog').show()"
+					oncomplete="PF('statusDialog').hide()"></p:commandButton>
+			</f:facet>
+		</p:panel>
+		  
+	</h:form>
+	
+	
+	
+	<h:form id="followup-list">
+	    
+	     <p:panel rendered="#{recruitmentBean.recruiterFollowupList != null}">
+	     
+	         <p:dataTable id="followup-datatable" var="fu" value="#{recruitmentBean.recruiterFollowupList}" style="margin-top:5px;">
+
+				<p:column headerText="Last Followed Up" sortable="true" sortBy="#{fu.followUpDate}">
+					<h:outputText value="#{fu.followUpDate}">
+						<f:convertDateTime pattern="MM/dd/yyyy hh:mm" />
+					</h:outputText>
+				</p:column>
+				<p:column headerText="Remarks" sortable="true">
+					<h:outputText value="#{fu.followUpRemarks}" />
+				</p:column>
+				<p:column headerText="Status" sortable="true">
+					<h:outputText value="#{fu.followUpType}" />
+				</p:column>
+				<p:column headerText="Follow Up by" sortable="true">
+					<h:outputText value="#{fu.employee.name}" />
+				</p:column>
+				<p:column headerText="Next Follow Up" sortable="true">
+					<h:outputText value="#{fu.nextFollowUpDate}">
+						<f:convertDateTime pattern="MM/dd/yyyy" />
+					</h:outputText>
+				</p:column>
+			</p:dataTable>
+	     
+	     </p:panel>
+	
+	</h:form>
+
+</ui:composition>
+

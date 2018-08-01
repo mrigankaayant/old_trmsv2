@@ -1,0 +1,87 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:p="http://primefaces.org/ui">
+
+	<p:growl id="growl" showDetail="true" sticky="false" autoUpdate="true" />
+
+
+	<p:panelGrid columns="6" cellpadding="10" style="width:100%;margin-top:8%;">
+		<f:facet name="header">Batch Details</f:facet>
+		<h:outputText value="Id: " />
+		<h:outputText value="#{hrBean.programmeSchedule.id}" />
+		<h:outputText value="Course Name: " />
+		<h:outputText value="#{hrBean.programmeSchedule.candidateCourse.course}" />
+
+		<h:outputText value="Trainer Name: " />
+		<h:outputText value="#{hrBean.programmeSchedule.trainer.trainerName}" />
+
+		<h:outputText value="Start Date: " />
+		<h:outputText value="#{hrBean.programmeSchedule.startDate}" />
+
+		<h:outputText value="End Date: " />
+		<h:outputText value="#{hrBean.programmeSchedule.endDate}" />
+
+		<h:outputText value="Start Time: " />
+		<h:outputText value="#{hrBean.programmeSchedule.startTime}" />
+		
+		<h:outputText value="End Time: " />
+		<h:outputText value="#{hrBean.programmeSchedule.endTime}" />
+		
+		<h:outputText value="Day Of Week: " />
+		<h:outputText value="#{hrBean.programmeSchedule.dayOfWeek}" />
+	</p:panelGrid>
+	
+	
+	
+	<h:form id="form">
+		<p:panel style="width:100%;margin-top:1%;">
+
+			<f:facet name="header" style="text-align:center">
+				<p:outputLabel>All Candidates</p:outputLabel>
+			</f:facet>
+
+
+			<p:dataTable var="can" value="#{hrBean.candidates}" paginator="true" rows="20" rowKey="#{can.candidateId}"
+				selection="#{hrBean.selectedCandidates}" resizableColumns="true" resizeMode="true"
+				paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
+				sortBy="#{can.candidateId}" sortOrder="descending" rowsPerPageTemplate="10,25,50,100" filterEvent="change"
+				id="candidate-table" lazy="true" widgetVar="candidateTable" tableStyle="table-layout: auto">
+
+
+				<p:column selectionMode="multiple" style="width:16px;text-align:center" />
+
+				<p:column headerText="Id" style="text-align:center">
+					<h:outputText value="#{can.candidateId}" />
+				</p:column>
+
+				<p:column headerText="Candidate Name" style="text-align:center">
+					<h:outputText value="#{can.firstName}" />
+				</p:column>
+
+				<p:column headerText="Email" style="text-align:center">
+					<h:outputText value="#{can.contactAddress.email}" />
+				</p:column>
+
+				<p:column headerText="Phone No." style="text-align:center">
+					<h:outputText value="#{can.contactAddress.workMobile}" />
+				</p:column>
+
+				<p:column headerText="Course Name" style="text-align:center">
+					<h:outputText value="#{can.candidateCourse.course}" />
+				</p:column>
+
+				<p:column headerText="Recruiter Name" style="text-align:center">
+					<h:outputText value="#{can.employee.name}" />
+				</p:column>
+
+
+			</p:dataTable>
+
+			<f:facet name="footer" style="text-align:left">
+				<p:commandButton value="Assign" action="#{hrBean.assignCandidate()}" onclick="PF('statusDialog').show()" oncomplete="PF('statusDialog').hide()" />
+			</f:facet>
+		</p:panel>
+
+	</h:form>
+
+	
+</ui:composition>

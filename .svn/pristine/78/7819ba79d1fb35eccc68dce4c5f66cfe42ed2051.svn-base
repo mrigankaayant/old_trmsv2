@@ -1,0 +1,65 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+
+	<h:form>
+		<p:panel style="margin-top:9%;">
+			<f:facet name="header">Remarks And Status For #{hrBean.offerletterModel.checkListName}</f:facet>
+
+
+			<p:panel style="width:40%;margin-left:29%;margin-top:2%;">
+				<f:facet name="header">Fill The Fields</f:facet>
+				<div class="ui-g">
+					<div class="ui-g-12 ui-md-6 ui-lg-12">
+						<h:panelGrid style="width:100%">
+							<p:outputLabel for="remarks" value="Remarks:" />
+							<p:inputTextarea id="remarks" value="#{hrBean.offerletterModel.remarks}" required="true"
+								requiredMessage="Enter Remarks" placeholder="Remarks" />
+							<p:message for="remarks" />
+						</h:panelGrid>
+					</div>
+				</div>
+
+				<div class="ui-g">
+					<div class="ui-g-12 ui-md-6 ui-lg-12">
+						<h:panelGrid style="width:100%">
+							<p:outputLabel for="status" value="Status:" />
+							<p:selectOneRadio id="status" value="#{hrBean.offerletterModel.status}" required="true"
+								requiredMessage="Enter Status">
+								<f:selectItem itemValue="Re-Schedule" itemLabel="Re-Schedule" />
+								<f:selectItem itemValue="Completed" itemLabel="Completed" />
+							</p:selectOneRadio>
+							<p:message for="status" />
+						</h:panelGrid>
+					</div>
+				</div>
+				
+				
+				<f:facet name="footer">
+					<p:commandButton value="Submit" actionListener="#{hrBean.saveRemarksForMockOrGraduation}" onclick="PF('statusDialog').show()" oncomplete="PF('statusDialog').hide()" update=":mainBody" />
+				</f:facet>
+			</p:panel>
+			<f:facet name="footer">
+				<br></br>
+			</f:facet>
+			<br></br>
+			<br></br>
+			<br></br>
+			<br></br>
+			<br></br>
+			<br></br>
+			<br></br>
+			<br></br>
+			<br></br>
+			<br></br>
+			<br></br>
+			<br></br>
+			<br></br>
+			<br></br>
+			<br></br>
+			<br></br>
+			<br></br>
+		</p:panel>
+	</h:form>
+</ui:composition>

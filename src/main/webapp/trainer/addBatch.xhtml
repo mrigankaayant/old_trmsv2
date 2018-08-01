@@ -1,0 +1,157 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+	<h:form id="batch-form">
+
+		<p:panel style="margin-top:9%;">
+			<f:facet name="header">Enter Batch Detail</f:facet>
+
+			<div class="ui-g">
+				<div class="ui-g-12 ui-md-6 ui-lg-3">
+					<h:panelGrid style="width:100%">
+						<p:outputLabel for="batch-title" value="Batch Title:" />
+						<p:inputText value="#{trainerBean.programmeSchedule.title}" required="true" id="batch-title"
+							requiredMessage="Enter Batch Title" placeholder="Enter Batch Title" />
+						<p:message for="batch-title" />
+					</h:panelGrid>
+				</div>
+				
+				
+				<div class="ui-g-12 ui-md-6 ui-lg-3">
+					<h:panelGrid style="width:100%">
+						<p:outputLabel for="batch-coursename" value="Course Name:" />
+						<p:selectOneMenu id="batch-coursename" value="#{trainerBean.programmeSchedule.candidateCourse.id}" required="true"
+							requiredMessage="Enter Course Name" validator="#{trainerBean.addTrainerByCourseId}">
+							<f:selectItem itemLabel="Select Course" itemValue="" noSelectionOption="true" />
+							<f:selectItems value="#{appDataBean.candidateCourses}" var="course" itemLabel="#{course.course}" itemValue="#{course.id}" />
+							<p:ajax update="batch-trainername" event="change" />
+						</p:selectOneMenu>
+						<p:message for="batch-coursename" />
+					</h:panelGrid>
+				</div>
+
+				<div class="ui-g-12 ui-md-6 ui-lg-3">
+					<h:panelGrid style="width:100%">
+						<p:outputLabel for="batch-trainername" value="Trainer Name:" />
+						<p:selectOneMenu id="batch-trainername" value="#{trainerBean.programmeSchedule.trainer.id}" required="true"
+							requiredMessage="Enter Trainer Name">
+							<f:selectItem itemLabel="Select Trainer" itemValue="" noSelectionOption="true" />
+							<f:selectItems value="#{trainerBean.trainers}" var="t" itemLabel="#{t.trainerName}" itemValue="#{t.id}" />
+						</p:selectOneMenu>
+						<p:message for="batch-trainername" />
+					</h:panelGrid>
+				</div>
+
+
+				<div class="ui-g-12 ui-md-6 ui-lg-3">
+					<h:panelGrid style="width:100%">
+						<p:outputLabel for="batch-startdate" value="Start Date: (mm/dd/YYYY):" />
+						<p:calendar id="batch-startdate" value="#{trainerBean.programmeSchedule.startDate}" pattern="MM/dd/yyyy"
+							mask="true" required="true" requiredMessage="Enter Start Date" />
+						<p:message for="batch-startdate" />
+					</h:panelGrid>
+				</div>
+
+
+				<div class="ui-g-12 ui-md-6 ui-lg-3">
+					<h:panelGrid style="width:100%">
+						<p:outputLabel for="batch-enddate" value="End Date: (mm/dd/YYYY):" />
+						<p:calendar id="batch-enddate" value="#{trainerBean.programmeSchedule.endDate}" pattern="MM/dd/yyyy" mask="true" />
+						<p:message for="batch-enddate" />
+					</h:panelGrid>
+				</div>
+
+				<div class="ui-g-12 ui-md-6 ui-lg-3">
+					<h:panelGrid style="width:100%">
+						<p:outputLabel for="batch-starttime" value="Start Time:" />
+						<p:calendar id="batch-starttime" value="#{trainerBean.programmeSchedule.startTime}" pattern="HH:mm"
+							timeOnly="true" />
+						<p:message for="batch-starttime" />
+					</h:panelGrid>
+				</div>
+
+
+				<div class="ui-g-12 ui-md-6 ui-lg-3">
+					<h:panelGrid style="width:100%">
+						<p:outputLabel for="batch-endtime" value="End Time:" />
+						<p:calendar id="batch-endtime" value="#{trainerBean.programmeSchedule.endTime}" pattern="HH:mm" timeOnly="true" />
+						<p:message for="batch-endtime" />
+					</h:panelGrid>
+				</div>
+
+
+				<div class="ui-g-12 ui-md-6 ui-lg-3">
+					<h:panelGrid style="width:100%">
+						<p:outputLabel for="batch-incomplete" value="Completed:" />
+						<p:selectOneRadio id="batch-incomplete" value="#{trainerBean.programmeSchedule.isComplete}" required="true"
+							requiredMessage="Click Yes or No">
+							<f:selectItem itemLabel="YES" itemValue="YES" />
+							<f:selectItem itemLabel="NO" itemValue="NO" />
+						</p:selectOneRadio>
+						<p:message for="batch-incomplete" />
+					</h:panelGrid>
+				</div>
+
+
+				<div class="ui-g-12 ui-md-6 ui-lg-12">
+					<h:panelGrid style="width:100%">
+						<p:outputLabel for="batch-dayOfWeek" value="Day Of Week:" />
+						<p:selectManyCheckbox id="batch-dayOfWeek" value="#{trainerBean.multipleDay}" required="true"
+							requiredMessage="Select Day Of Week">
+							<f:selectItem itemLabel="Monday" itemValue="Monday" />
+							<f:selectItem itemLabel="Tuesday" itemValue="Tuesday" />
+							<f:selectItem itemLabel="Wednesday" itemValue="Wednesday" />
+							<f:selectItem itemLabel="Thursday" itemValue="Thursday" />
+							<f:selectItem itemLabel="Friday" itemValue="Friday" />
+							<f:selectItem itemLabel="Saturday" itemValue="Saturday" />
+							<f:selectItem itemLabel="Sunday" itemValue="Sunday" />
+						</p:selectManyCheckbox>
+						<p:message for="batch-dayOfWeek" />
+					</h:panelGrid>
+				</div>
+
+
+				<f:facet name="footer">
+					<p:commandButton value="Save" actionListener="#{trainerBean.saveBatch()}" onclick="PF('statusDialog').show()" oncomplete="PF('statusDialog').hide()" update=":mainBody" />
+				</f:facet>
+			</div>
+		</p:panel>
+	</h:form>
+
+
+
+	 <h:form id="candidate-form">
+		<p:panel style="margin-top:2%" rendered="#{not empty trainerBean.candidates}">
+			<f:facet name="header">Candidates In This Batch</f:facet>
+			<p:dataTable var="can" value="#{trainerBean.candidates}" paginator="true" rows="20"
+				resizableColumns="true" resizeMode="true"
+				paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
+				 sortOrder="descending" rowsPerPageTemplate="10,25,50,100"
+				id="candidate-table" lazy="true" widgetVar="candidateTable" tableStyle="table-layout: auto">
+				<f:facet name="header">Candidates</f:facet>
+				
+				<p:column headerText="Id" style="text-align:center">
+					<h:outputText value="#{can.candidateId}" />
+				</p:column>
+				
+				<p:column headerText="Candidate Name" style="text-align:center">
+					<h:outputText value="#{can.firstName}" />
+				</p:column>
+				
+				<p:column headerText="Email" style="text-align:center">
+					<h:outputText value="#{can.contactAddress.email}" />
+				</p:column>
+				
+				<p:column headerText="Phone No." style="text-align:center">
+					<h:outputText value="#{can.contactAddress.workMobile}" />
+				</p:column>
+				
+				<p:column headerText="Course Name" style="text-align:center">
+					<h:outputText value="#{can.candidateCourse.course}" />
+				</p:column>
+				
+			</p:dataTable>
+		</p:panel>
+	</h:form> 
+</ui:composition>

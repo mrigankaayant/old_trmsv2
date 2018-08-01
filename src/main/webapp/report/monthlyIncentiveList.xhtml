@@ -1,0 +1,163 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+
+	<p:growl id="growl" showDetail="true" sticky="false" autoUpdate="true" />
+
+
+	<h:form id="form">
+
+		<p:panel id="individualPanel" style="margin-top:9%;margin-bottom:10px;background-color:Gray;"
+			rendered="#{reportBean.hideMonthlyIncentive}">
+
+			<h:panelGrid style="margin-left:40%;">
+				<h:outputText value="Individual Incentive Table" style="color:black;font-weight: bold;font-size: 150%;" />
+			</h:panelGrid>
+
+		</p:panel>
+
+
+		<p:dataTable var="cp" value="#{reportBean.candidatePaymentsForDebits}" id="incentiveTable"
+			sortBy="#{cp.employee.empId}" rendered="#{reportBean.hideMonthlyIncentive}" style="text-align:center">
+
+			<f:facet name="header" rendered="#{not empty reportBean.candidatePaymentsForDebits}">
+				<p:panel id="chartPanel" style="margin-left:90%;">
+					<p:panelGrid>
+						<p:commandButton value="Bar" action="#{reportBean.showIncentiveDetailsWithBarCharts()}" update=":mainBody" />
+						<p:commandButton value="Pie" action="#{reportBean.showIncentiveDetailsWithPieCharts()}" update=":mainBody" />
+					</p:panelGrid>
+				</p:panel>
+			</f:facet>
+
+
+			<p:column headerText="Date">
+				<h:outputText value="#{cp.transactionDate}" />
+			</p:column>
+
+
+			<p:column headerText="Candidate Name">
+				<h:outputText value="#{cp.candidate.firstName}" />
+			</p:column>
+
+			<p:column headerText="Course">
+				<h:outputText value="#{cp.candidateCourse.course}" />
+			</p:column>
+
+			<p:column headerText="Receiver">
+				<h:outputText value="#{cp.receiver}" />
+			</p:column>
+
+			<p:column headerText="Mode Of Payment">
+				<h:outputText value="#{cp.modeOfPayment}" />
+			</p:column>
+
+			<p:column headerText="Transaction Id">
+				<h:outputText value="#{cp.transactionId}" />
+			</p:column>
+
+			<p:column headerText="Recruiter Name">
+				<h:outputText value="#{cp.employee.name}" />
+			</p:column>
+
+			<p:column headerText="Paid Amount USD">
+				<h:outputText value="#{cp.debit}" />
+			</p:column>
+
+			<p:column headerText="Incentive INR">
+				<h:outputText value="" />
+			</p:column>
+
+			<p:summaryRow>
+				<p:column colspan="7" style="text-align:right">
+					<h:outputText value="#{cp.employee.name}:" />
+				</p:column>
+				<p:column>
+					<h:outputText value="#{reportBean.getTotalAmountByEmp(cp.employee.empId)}">
+						<f:convertNumber type="currency" currencySymbol="$" />
+					</h:outputText>
+				</p:column>
+
+				<p:column>
+					<h:outputText
+						value="RS  #{reportBean.getTotalIncentiveForIndividual(reportBean.getTotalAmountByEmp(cp.employee.empId))}" />
+				</p:column>
+
+			</p:summaryRow>
+
+		</p:dataTable>
+
+
+
+
+		<p:panel id="tlPanel" style="margin-top:10px;margin-bottom:10px;background-color:Gray;"
+			rendered="#{reportBean.isteamLeaderIncentive}">
+
+			<h:panelGrid style="margin-left:40%;">
+				<h:outputText value="Team Leader Incentive Table" style="color:black;font-weight: bold;font-size: 150%;" />
+			</h:panelGrid>
+
+		</p:panel>
+
+		<p:dataTable var="cp" value="#{reportBean.recruiterUnderTeamLeader}" id="incentiveTableForLeader"
+			sortBy="#{cp.employee.employee.empId}" rendered="#{reportBean.isteamLeaderIncentive}" style="text-align:center">
+
+			<f:facet name="header">
+				<p:panel id="chartPanelForLeader" style="margin-left:90%;">
+					<p:panelGrid>
+						<p:commandButton value="Bar" action="#{reportBean.showIncentiveDetailsWithBarChartsForTeamLeader()}"
+							update=":mainBody" />
+						<p:commandButton value="Pie" action="#{reportBean.showIncentiveDetailsWithPieChartsForTeamLeader()}"
+							update=":mainBody" />
+					</p:panelGrid>
+				</p:panel>
+			</f:facet>
+
+
+
+			<p:column headerText="Team Leader Id">
+				<h:outputText value="#{cp.employee.employee.empId}" />
+			</p:column>
+
+
+			<p:column headerText="Team Leader Name">
+				<h:outputText value="#{cp.employee.employee.name}" />
+			</p:column>
+
+
+			<p:column headerText="Recruiter Name">
+				<h:outputText value="#{cp.employee.name}" />
+			</p:column>
+
+			<p:column headerText="Paid Amount USD">
+				<h:outputText value="#{reportBean.getTotalAmountByEmp(cp.employee.empId)}" />
+			</p:column>
+
+			<p:column headerText="Incentive INR">
+				<h:outputText value="" />
+			</p:column>
+
+
+			<p:summaryRow>
+				<p:column colspan="3" style="text-align:right">
+					<h:outputText value="#{cp.employee.employee.name}:" />
+				</p:column>
+				<p:column>
+					<h:outputText value="#{reportBean.totalPaidAmountOfTeam(cp.employee.employee)}">
+						<f:convertNumber type="currency" currencySymbol="$" />
+					</h:outputText>
+				</p:column>
+
+				<p:column>
+					<h:outputText
+						value="RS  #{reportBean.getTotalIncentiveForTeamLeader(reportBean.totalPaidAmountOfTeam(cp.employee.employee))}" />
+				</p:column>
+
+			</p:summaryRow>
+
+
+		</p:dataTable>
+
+	</h:form>
+
+</ui:composition>

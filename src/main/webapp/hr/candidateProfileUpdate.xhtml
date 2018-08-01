@@ -1,0 +1,760 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+	<h:form>
+		<p:panel rendered="#{hrBean.pageSectionArgument =='Profile'}" id="profile-panel">
+			<div class="ui-g">
+				<div class="ui-g-12 ui-md-6 ui-lg-3">
+					<h:panelGrid style="width:100%">
+						<p:outputLabel for="candidate-name" value="Candidate Name:" />
+						<p:inputText id="candidate-name" value="#{hrBean.candidateCheckList.candidate.firstName}" required="true"
+							requiredMessage="Enter Candidate Name" placeholder="Enter Name" />
+						<p:message for="candidate-name" />
+					</h:panelGrid>
+				</div>
+				<div class="ui-g-12 ui-md-6 ui-lg-3">
+					<h:panelGrid style="width:100%">
+						<p:outputLabel for="candidate-jobtitle" value="Job Title :" />
+						<p:inputText id="candidate-jobtitle" value="#{hrBean.candidateCheckList.candidate.jobTitle}" required="true" />
+					</h:panelGrid>
+				</div>
+				<div class="ui-g-12 ui-md-6 ui-lg-3">
+					<h:panelGrid style="width:100%">
+						<p:outputLabel for="candidate-currentLocation" value="Current Location :" />
+						<p:inputText id="candidate-currentLocation" value="#{hrBean.candidateCheckList.candidate.currentLocation}" />
+					</h:panelGrid>
+				</div>
+				<div class="ui-g-12 ui-md-6 ui-lg-3">
+					<h:panelGrid style="width:100%">
+						<p:outputLabel for="candidate-expYearsInUsa" value="Experience Years In Usa :" />
+						<p:inputText id="candidate-expYearsInUsa" value="#{hrBean.candidateCheckList.candidate.expYearsInUsa}" />
+					</h:panelGrid>
+				</div>
+				<div class="ui-g-12 ui-md-6 ui-lg-3">
+					<h:panelGrid style="width:100%">
+						<p:outputLabel for="candidate-preferedLocation" value="Prefered Location :" />
+						<p:inputText id="candidate-preferedLocation" value="#{hrBean.candidateCheckList.candidate.preferedLocation}" />
+					</h:panelGrid>
+				</div>
+				<div class="ui-g-12 ui-md-6 ui-lg-3">
+					<h:panelGrid style="width:100%">
+						<p:outputLabel for="candidate-birthDate" value="Birth Date :" />
+						<p:calendar id="candidate-birthDate" value="#{hrBean.candidateCheckList.candidate.birthDate}" pattern="MM/dd/yyyy"
+							mask="true" />
+					</h:panelGrid>
+				</div>
+				<div class="ui-g-12 ui-md-6 ui-lg-3">
+					<h:panelGrid style="width:100%">
+						<p:outputLabel for="candidate-postalCode" value="Postal Code :" />
+						<p:inputText id="candidate-postalCode" value="#{hrBean.candidateCheckList.candidate.contactAddress.postalCode}" />
+					</h:panelGrid>
+				</div>
+				<div class="ui-g-12 ui-md-6 ui-lg-3">
+					<h:panelGrid style="width:100%">
+						<p:outputLabel for="candidate-gender" value="Gender :(M/F)" />
+						<p:inputText id="candidate-gender" value="#{hrBean.candidateCheckList.candidate.gender}" />
+					</h:panelGrid>
+				</div>
+				<div class="ui-g-12 ui-md-6 ui-lg-3">
+					<h:panelGrid style="width:100%">
+						<p:outputLabel for="candidate-maritalStatus" value="Marital Status :" />
+						<p:inputText id="candidate-maritalStatus" value="#{hrBean.candidateCheckList.candidate.maritalStatus}" />
+					</h:panelGrid>
+				</div>
+
+			</div>
+			<f:facet name="footer">
+				<p:commandButton value="Save" actionListener="#{hrBean.saveCandidateProfile()}" onclick="PF('statusDialog').show()" oncomplete="PF('statusDialog').hide()" update=":mainBody" />
+			</f:facet>
+		</p:panel>
+
+
+
+
+
+		<p:panel rendered="#{hrBean.pageSectionArgument =='Authentication'}" id="authenticate-panel">
+			<div class="ui-g">
+				<div class="ui-g-12 ui-g-nopad">
+					<div class="ui-g">
+						<div class="ui-g-12 ui-md-6">
+							<h:panelGrid style="width:100%">
+								<p:outputLabel for="candidate-userProfile-officeEmail" value="Office Email :" />
+								<p:inputText id="candidate-userProfile-officeEmail"
+									value="#{hrBean.candidateCheckList.candidate.userProfile.officeEmail}" />
+							</h:panelGrid>
+
+						</div>
+						<div class="ui-g-12 ui-md-6">
+							<h:panelGrid style="width:100%">
+								<p:outputLabel for="candidate-userProfile-officeEmailPwd" value="Office EmailPassword :" />
+								<p:inputText id="candidate-userProfile-officeEmailPwd"
+									value="#{hrBean.candidateCheckList.candidate.userProfile.officeEmailPwd}" />
+							</h:panelGrid>
+						</div>
+
+					</div>
+					<div class="ui-g">
+						<div class="ui-g-12 ui-md-6">
+							<h:panelGrid style="width:100%">
+								<p:outputLabel for="candidate-userProfile-username" value="Office Username :" />
+								<p:inputText id="candidate-userProfile-username"
+									value="#{hrBean.candidateCheckList.candidate.userProfile.username}" />
+							</h:panelGrid>
+
+						</div>
+						<div class="ui-g-12 ui-md-6">
+							<h:panelGrid style="width:100%">
+								<p:outputLabel for="candidate-userProfile-password" value="Office Password :" />
+								<p:inputText id="candidate-userProfile-password"
+									value="#{hrBean.candidateCheckList.candidate.userProfile.password}" />
+							</h:panelGrid>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<f:facet name="footer">
+				<p:commandButton value="Save" actionListener="#{hrBean.saveCandidateProfile()}" onclick="PF('statusDialog').show()" oncomplete="PF('statusDialog').hide()" update=":mainBody" />
+			</f:facet>
+		</p:panel>
+
+
+
+
+
+		<p:panel rendered="#{hrBean.pageSectionArgument =='Personel'}" id="personel-panel">
+			<div class="ui-g">
+				<div class="ui-g-12 ui-md-6 ui-lg-3">
+					<h:panelGrid style="width:100%">
+						<p:outputLabel for="candidate-fullName" value="Candidate Name:" />
+						<p:inputText id="candidate-fullName" value="#{hrBean.candidateCheckList.candidate.firstName}" required="true"
+							requiredMessage="Enter Candidate Name" placeholder="Enter Name" />
+						<p:message for="candidate-name" />
+					</h:panelGrid>
+				</div>
+				<div class="ui-g-12 ui-md-6 ui-lg-3">
+					<h:panelGrid style="width:100%">
+						<p:outputLabel for="candidate-dateOfBirth" value="Date Of Birth:" />
+						<p:calendar id="candidate-dateOfBirth" value="#{hrBean.candidateCheckList.candidate.birthDate}"
+							pattern="MM/dd/yyyy" mask="true" />
+					</h:panelGrid>
+				</div>
+				<div class="ui-g-12 ui-md-6 ui-lg-3">
+					<h:panelGrid style="width:100%">
+						<p:outputLabel for="candidate-gen" value="Gender:" />
+						<p:inputText id="candidate-gen" value="#{hrBean.candidateCheckList.candidate.gender}" />
+					</h:panelGrid>
+				</div>
+				<div class="ui-g-12 ui-md-6 ui-lg-3">
+					<h:panelGrid style="width:100%">
+						<p:outputLabel for="candidate-maritalstatus" value="Marital Status:" />
+						<p:inputText id="candidate-maritalstatus" value="#{hrBean.candidateCheckList.candidate.maritalStatus}" />
+					</h:panelGrid>
+				</div>
+				<div class="ui-g-12 ui-md-6 ui-lg-3">
+					<h:panelGrid style="width:100%">
+						<p:outputLabel for="candidate-ssn" value="Ssn:" />
+						<p:inputText id="candidate-ssn" value="#{hrBean.candidateCheckList.candidate.ssn}" />
+					</h:panelGrid>
+				</div>
+				<div class="ui-g-12 ui-md-6 ui-lg-3">
+					<h:panelGrid style="width:100%">
+						<p:outputLabel for="candidate-yearOfpassing" value="Year Of Passing:" />
+						<p:calendar id="candidate-yearOfpassing" value="#{hrBean.candidateCheckList.candidate.yearOfPassing}"
+							pattern="MM/dd/yyyy" mask="true" />
+					</h:panelGrid>
+				</div>
+				<div class="ui-g-12 ui-md-6 ui-lg-3">
+					<h:panelGrid style="width:100%">
+						<p:outputLabel for="candidate-email" value="Email:" />
+						<p:inputText id="candidate-email" value="#{hrBean.candidateCheckList.candidate.contactAddress.email}"
+							required="true" />
+					</h:panelGrid>
+				</div>
+				<div class="ui-g-12 ui-md-6 ui-lg-3">
+					<h:panelGrid style="width:100%">
+						<p:outputLabel for="candidate-altemail" value="Alt Email:" />
+						<p:inputText id="candidate-altemail" value="#{hrBean.candidateCheckList.candidate.contactAddress.alternateEmail}" />
+					</h:panelGrid>
+				</div>
+				<div class="ui-g-12 ui-md-6 ui-lg-3">
+					<h:panelGrid style="width:100%">
+						<p:outputLabel for="candidate-city" value="City:" />
+						<p:inputText id="candidate-city" value="#{hrBean.candidateCheckList.candidate.contactAddress.city}" />
+					</h:panelGrid>
+				</div>
+
+				<div class="ui-g-12 ui-md-6 ui-lg-3">
+					<h:panelGrid style="width:100%">
+						<p:outputLabel for="candidate-country" value="country:" />
+						<p:inputText id="candidate-country" value="#{hrBean.candidateCheckList.candidate.contactAddress.country}" />
+					</h:panelGrid>
+				</div>
+
+				<div class="ui-g-12 ui-md-6 ui-lg-3">
+					<h:panelGrid style="width:100%">
+						<p:outputLabel for="candidate-homemobile" value="HomeMobile:" />
+						<p:inputText id="candidate-homemobile" value="#{hrBean.candidateCheckList.candidate.contactAddress.homeMobile}" />
+					</h:panelGrid>
+				</div>
+
+				<div class="ui-g-12 ui-md-6 ui-lg-3">
+					<h:panelGrid style="width:100%">
+						<p:outputLabel for="candidate-homephone" value="Home Phone:" />
+						<p:inputText id="candidate-homephone" value="#{hrBean.candidateCheckList.candidate.contactAddress.homePhone}" />
+					</h:panelGrid>
+				</div>
+
+				<div class="ui-g-12 ui-md-6 ui-lg-3">
+					<h:panelGrid style="width:100%">
+						<p:outputLabel for="candidate-landMark" value="Landmark:" />
+						<p:inputText id="candidate-landMark" value="#{hrBean.candidateCheckList.candidate.contactAddress.landmark}" />
+					</h:panelGrid>
+				</div>
+
+				<div class="ui-g-12 ui-md-6 ui-lg-3">
+					<h:panelGrid style="width:100%">
+						<p:outputLabel for="candidate-postalcode" value="Postal Code:" />
+						<p:inputText id="candidate-postalcode" value="#{hrBean.candidateCheckList.candidate.contactAddress.postalCode}" />
+					</h:panelGrid>
+				</div>
+
+				<div class="ui-g-12 ui-md-6 ui-lg-3">
+					<h:panelGrid style="width:100%">
+						<p:outputLabel for="candidate-currentloc" value="Current Location:" />
+						<p:inputText id="candidate-currentloc" value="#{hrBean.candidateCheckList.candidate.currentLocation}" />
+					</h:panelGrid>
+				</div>
+
+				<div class="ui-g-12 ui-md-6 ui-lg-3">
+					<h:panelGrid style="width:100%">
+						<p:outputLabel for="candidate-preferedlocation" value="Prefered Location:" />
+						<p:inputText id="candidate-preferedlocation" value="#{hrBean.candidateCheckList.candidate.preferedLocation}" />
+					</h:panelGrid>
+				</div>
+
+			</div>
+			<f:facet name="footer">
+				<p:commandButton value="Save" actionListener="#{hrBean.saveCandidateProfile()}" onclick="PF('statusDialog').show()" oncomplete="PF('statusDialog').hide()" update=":mainBody" />
+			</f:facet>
+		</p:panel>
+
+
+
+
+
+
+		<p:panel rendered="#{hrBean.pageSectionArgument =='Professional'}" id="professional-panel">
+			<div class="ui-g">
+				<div class="ui-g-12 ui-md-6 ui-lg-3">
+					<h:panelGrid style="width:100%">
+						<p:outputLabel for="candidate-course" value="Course Name:" />
+						<p:inputText id="candidate-course" value="#{hrBean.candidateCheckList.candidate.candidateCourse.course}" />
+					</h:panelGrid>
+				</div>
+				<div class="ui-g-12 ui-md-6 ui-lg-3">
+					<h:panelGrid style="width:100%">
+						<p:outputLabel for="candidate-facebook" value="Facebook:" />
+						<p:inputText id="candidate-facebook" value="#{hrBean.candidateCheckList.candidate.contactAddress.facebook}" />
+					</h:panelGrid>
+
+				</div>
+				<div class="ui-g-12 ui-md-6 ui-lg-3">
+					<h:panelGrid style="width:100%">
+						<p:outputLabel for="candidate-fax" value="Fax:" />
+						<p:inputText id="candidate-fax" value="#{hrBean.candidateCheckList.candidate.contactAddress.fax}" />
+					</h:panelGrid>
+				</div>
+				<div class="ui-g-12 ui-md-6 ui-lg-3">
+					<h:panelGrid style="width:100%">
+						<p:outputLabel for="candidate-linkedin" value="Linkedin:" />
+						<p:inputText id="candidate-linkedin" value="#{hrBean.candidateCheckList.candidate.contactAddress.linkedin}" />
+					</h:panelGrid>
+				</div>
+				<div class="ui-g-12 ui-md-6 ui-lg-3">
+					<h:panelGrid style="width:100%">
+						<p:outputLabel for="candidate-msn" value="Msn:" />
+						<p:inputText id="candidate-msn" value="#{hrBean.candidateCheckList.candidate.contactAddress.msn}" />
+					</h:panelGrid>
+				</div>
+				<div class="ui-g-12 ui-md-6 ui-lg-3">
+					<h:panelGrid style="width:100%">
+						<p:outputLabel for="candidate-twitter" value="Twitter:" />
+						<p:inputText id="candidate-twitter" value="#{hrBean.candidateCheckList.candidate.contactAddress.twitter}" />
+					</h:panelGrid>
+				</div>
+				<div class="ui-g-12 ui-md-6 ui-lg-3">
+					<h:panelGrid style="width:100%">
+						<p:outputLabel for="candidate-workMobile" value="Work Mobile:" />
+						<p:inputText id="candidate-workMobile" value="#{hrBean.candidateCheckList.candidate.contactAddress.workMobile}"
+							required="true" />
+					</h:panelGrid>
+				</div>
+				<div class="ui-g-12 ui-md-6 ui-lg-3">
+					<h:panelGrid style="width:100%">
+						<p:outputLabel for="candidate-workPhone" value="Work Phone:" />
+						<p:inputText id="candidate-workPhone" value="#{hrBean.candidateCheckList.candidate.contactAddress.workPhone}" />
+					</h:panelGrid>
+				</div>
+				<div class="ui-g-12 ui-md-6 ui-lg-3">
+					<h:panelGrid style="width:100%">
+						<p:outputLabel for="candidate-recruiterName" value="Recruiter Name:" />
+						<p:inputText id="candidate-recruiterName" value="#{hrBean.candidateCheckList.candidate.employee.name}" />
+					</h:panelGrid>
+				</div>
+
+				<div class="ui-g-12 ui-md-6 ui-lg-3">
+					<h:panelGrid style="width:100%">
+						<p:outputLabel for="candidate-immigrationStartDate" value="Visa Start Date:" />
+						<p:calendar id="candidate-immigrationStartDate"
+							value="#{hrBean.candidateCheckList.candidate.immigrationStartDate}" pattern="MM/dd/yyyy" mask="true" />
+					</h:panelGrid>
+				</div>
+
+				<div class="ui-g-12 ui-md-6 ui-lg-3">
+					<h:panelGrid style="width:100%">
+						<p:outputLabel for="candidate-skype" value="Skype:" />
+						<p:inputText id="candidate-skype" value="#{hrBean.candidateCheckList.candidate.contactAddress.skype}" />
+					</h:panelGrid>
+				</div>
+
+				<div class="ui-g-12 ui-md-6 ui-lg-3">
+					<h:panelGrid style="width:100%">
+						<p:outputLabel for="candidate-joiningDate" value="Joining Date:" />
+						<p:calendar id="candidate-joiningDate" value="#{hrBean.candidateCheckList.candidate.joiningDate}"
+							pattern="MM/dd/yyyy" mask="true" />
+					</h:panelGrid>
+				</div>
+
+				<div class="ui-g-12 ui-md-6 ui-lg-3">
+					<h:panelGrid style="width:100%">
+						<p:outputLabel for="candidate-jobTitle" value="Job Title:" />
+						<p:inputText id="candidate-jobTitle" value="#{hrBean.candidateCheckList.candidate.jobTitle}" />
+					</h:panelGrid>
+				</div>
+
+				<div class="ui-g-12 ui-md-6 ui-lg-3">
+					<h:panelGrid style="width:100%">
+						<p:outputLabel for="candidate-payRate" value="Pay Rate:" />
+						<p:inputText id="candidate-payRate" value="#{hrBean.candidateCheckList.candidate.payRate}" />
+					</h:panelGrid>
+				</div>
+
+				<div class="ui-g-12 ui-md-6 ui-lg-3">
+					<h:panelGrid style="width:100%">
+						<p:outputLabel for="candidate-payType" value="Pay Type:" />
+						<p:inputText id="candidate-payType" value="#{hrBean.candidateCheckList.candidate.payType}" />
+					</h:panelGrid>
+				</div>
+
+				<div class="ui-g-12 ui-md-6 ui-lg-3">
+					<h:panelGrid style="width:100%">
+						<p:outputLabel for="candidate-totalExp" value="Total Exp:" />
+						<p:inputText id="candidate-totalExp" value="#{hrBean.candidateCheckList.candidate.totalExp}" />
+					</h:panelGrid>
+				</div>
+
+				<div class="ui-g-12 ui-md-6 ui-lg-3">
+					<h:panelGrid style="width:100%">
+						<p:outputLabel for="candidate-yearsInUsa" value="Years In Usa:" />
+						<p:inputText id="candidate-yearsInUsa" value="#{hrBean.candidateCheckList.candidate.yearsInUsa}" />
+					</h:panelGrid>
+				</div>
+
+			</div>
+			<f:facet name="footer">
+				<p:commandButton value="Save" actionListener="#{hrBean.saveCandidateProfile()}" onclick="PF('statusDialog').show()" oncomplete="PF('statusDialog').hide()" update=":mainBody" />
+			</f:facet>
+		</p:panel>
+
+	</h:form>
+
+
+
+
+	<h:form id="form">
+		<p:growl id="msgs" showDetail="true" sticky="false" autoUpdate="true" />
+		<p:panel rendered="#{hrBean.pageSectionArgument =='Skill'}" id="skill-Panel">
+
+			<p:dataTable id="skill-table" var="canSkill" value="#{hrBean.candidateSkills}" editable="true"
+				style="margin-bottom:20px">
+				<f:facet name="header">
+           Candidate Skills
+       </f:facet>
+
+				<p:ajax event="rowEdit" listener="#{hrBean.onRowEditForCandidateSkill}" update=":form:msgs" />
+				<p:ajax event="rowEditCancel" listener="#{hrBean.onRowCancelForCandidateSkill}" update=":form:msgs" />
+
+				<p:column headerText="Experties Level">
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{canSkill.expertiesLevel}" />
+						</f:facet>
+						<f:facet name="input">
+							<p:inputText id="modelInput" value="#{canSkill.expertiesLevel}" style="width:100%" />
+						</f:facet>
+					</p:cellEditor>
+				</p:column>
+
+				<p:column headerText="Tech Skill">
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{canSkill.techSkill}" />
+						</f:facet>
+						<f:facet name="input">
+							<p:inputText value="#{canSkill.techSkill}" style="width:100%" />
+						</f:facet>
+					</p:cellEditor>
+				</p:column>
+
+				<p:column headerText="Last Used">
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{canSkill.lastUsed}" />
+						</f:facet>
+						<f:facet name="input">
+							<p:calendar value="#{canSkill.lastUsed}" pattern="MM/dd/yyyy" mask="true" style="width:100%" />
+						</f:facet>
+					</p:cellEditor>
+				</p:column>
+
+				<p:column headerText="Years Of Experience">
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{canSkill.yearsOfExp}" />
+						</f:facet>
+						<f:facet name="input">
+							<p:inputText value="#{canSkill.yearsOfExp}" style="width:100%" />
+						</f:facet>
+					</p:cellEditor>
+				</p:column>
+
+				<p:column style="width:32px">
+					<p:rowEditor />
+				</p:column>
+
+				<f:facet name="footer">
+					<p:commandButton value="Back" actionListener="#{hrBean.goToProfile}" onclick="PF('statusDialog').show()" oncomplete="PF('statusDialog').hide()" update=":mainBody" />
+				</f:facet>
+			</p:dataTable>
+
+		</p:panel>
+	</h:form>
+
+
+
+	<h:form id="skill-form">
+		<p:panel rendered="#{hrBean.pageSectionArgument =='AddSkill'}" id="addSkill-panel">
+			<div class="ui-g">
+				<div class="ui-g-12 ui-md-6 ui-lg-3">
+					<h:panelGrid style="width:100%">
+						<p:outputLabel for="skill-expertiesLevel" value="Experties Level:" />
+						<p:inputText id="skill-expertiesLevel" value="#{hrBean.candidateSkill.expertiesLevel}"
+							placeholder="Enter Experties Level" />
+					</h:panelGrid>
+				</div>
+				<div class="ui-g-12 ui-md-6 ui-lg-3">
+					<h:panelGrid style="width:100%">
+						<p:outputLabel for="skill-lastUsed" value="Last Used:" />
+						<p:calendar id="skill-lastUsed" value="#{hrBean.candidateSkill.lastUsed}" pattern="MM/dd/yyyy" mask="true"
+							placeholder="Enter Last Used" />
+					</h:panelGrid>
+				</div>
+				<div class="ui-g-12 ui-md-6 ui-lg-3">
+					<h:panelGrid style="width:100%">
+						<p:outputLabel for="skill-techSkill" value="Tech Skill:" />
+						<p:inputText id="skill-techSkill" value="#{hrBean.candidateSkill.techSkill}" placeholder="Enter Tech Skill" />
+					</h:panelGrid>
+				</div>
+				<div class="ui-g-12 ui-md-6 ui-lg-3">
+					<h:panelGrid style="width:100%">
+						<p:outputLabel for="skill-yearsOfExp" value="Years Of Experence:" />
+						<p:inputText id="skill-yearsOfExp" value="#{hrBean.candidateSkill.yearsOfExp}"
+							placeholder="Enter Years Of Experence" />
+					</h:panelGrid>
+				</div>
+			</div>
+			<f:facet name="footer">
+				<p:commandButton value="Save" actionListener="#{hrBean.saveSkill()}" onclick="PF('statusDialog').show()" oncomplete="PF('statusDialog').hide()" update=":mainBody" />
+
+				<p:commandButton value="Back" actionListener="#{hrBean.goToProfile}" onclick="PF('statusDialog').show()" oncomplete="PF('statusDialog').hide()" update=":mainBody" />
+			</f:facet>
+		</p:panel>
+	</h:form>
+
+
+
+	<h:form id="education-form">
+		<p:panel rendered="#{hrBean.pageSectionArgument =='AddEducation'}" id="addeducation-panel">
+			<div class="ui-g">
+				<div class="ui-g-12 ui-md-6 ui-lg-3">
+					<h:panelGrid style="width:100%">
+						<p:outputLabel for="education-country" value="Country:" />
+						<p:inputText id="education-country" value="#{hrBean.educationCertification.country}" placeholder="Enter Country" />
+					</h:panelGrid>
+				</div>
+
+
+				<div class="ui-g-12 ui-md-6 ui-lg-3">
+					<h:panelGrid style="width:100%">
+						<p:outputLabel for="education-credential" value="Credential:" />
+						<p:inputText id="education-credential" value="#{hrBean.educationCertification.credential}"
+							placeholder="Enter Credential" />
+					</h:panelGrid>
+				</div>
+
+
+				<div class="ui-g-12 ui-md-6 ui-lg-3">
+					<h:panelGrid style="width:100%">
+						<p:outputLabel for="education-credentialType" value="Credential Type:" />
+						<p:inputText id="education-credentialType" value="#{hrBean.educationCertification.credentialType}"
+							placeholder="Enter Credential Type" />
+					</h:panelGrid>
+				</div>
+
+				<div class="ui-g-12 ui-md-6 ui-lg-3">
+					<h:panelGrid style="width:100%">
+						<p:outputLabel for="education-pergentage" value="Pergentage:" />
+						<p:inputText id="education-pergentage" value="#{hrBean.educationCertification.pergentage}"
+							placeholder="Enter Pergentage" />
+					</h:panelGrid>
+				</div>
+
+
+				<div class="ui-g-12 ui-md-6 ui-lg-3">
+					<h:panelGrid style="width:100%">
+						<p:outputLabel for="education-university" value="University:" />
+						<p:inputText id="education-university" value="#{hrBean.educationCertification.university}"
+							placeholder="Enter University" />
+					</h:panelGrid>
+				</div>
+
+
+				<div class="ui-g-12 ui-md-6 ui-lg-3">
+					<h:panelGrid style="width:100%">
+						<p:outputLabel for="education-yearOfPassing" value="Year Of Passing" />
+						<p:calendar id="education-yearOfPassing" value="#{hrBean.educationCertification.yearOfPassing}"
+							pattern="MM/dd/yyyy" mask="true" placeholder="Enter Year Of Passing" />
+					</h:panelGrid>
+				</div>
+
+			</div>
+			<f:facet name="footer">
+				<p:commandButton value="Save" actionListener="#{hrBean.saveEducation()}" onclick="PF('statusDialog').show()" oncomplete="PF('statusDialog').hide()" update=":mainBody" />
+
+				<p:commandButton value="Back" actionListener="#{hrBean.goToProfile}" onclick="PF('statusDialog').show()" oncomplete="PF('statusDialog').hide()" update=":mainBody" />
+			</f:facet>
+		</p:panel>
+	</h:form>
+
+
+
+
+	<h:form id="edite-education-form">
+		<p:growl id="editEducationMsgs" showDetail="true" sticky="false" autoUpdate="true" />
+		<p:panel rendered="#{hrBean.pageSectionArgument =='Education'}" id="education-Panel">
+
+			<p:dataTable id="education-table" var="canEdu" value="#{hrBean.educationCertificateList}" editable="true"
+				style="margin-bottom:20px">
+				<f:facet name="header">
+           Candidate Educations
+       </f:facet>
+
+				<p:ajax event="rowEdit" listener="#{hrBean.onRowEditForEducation}" update=":edite-education-form:editEducationMsgs" />
+				<p:ajax event="rowEditCancel" listener="#{hrBean.onRowCancelForEducation}"
+					update=":edite-education-form:editEducationMsgs" />
+
+				<p:column headerText="Country">
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{canEdu.country}" />
+						</f:facet>
+						<f:facet name="input">
+							<p:inputText id="modelInput" value="#{canEdu.country}" style="width:100%" />
+						</f:facet>
+					</p:cellEditor>
+				</p:column>
+
+				<p:column headerText="Credential">
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{canEdu.credential}" />
+						</f:facet>
+						<f:facet name="input">
+							<p:inputText value="#{canEdu.credential}" style="width:100%" />
+						</f:facet>
+					</p:cellEditor>
+				</p:column>
+
+				<p:column headerText="Credential Type">
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{canEdu.credentialType}" />
+						</f:facet>
+						<f:facet name="input">
+							<p:inputText value="#{canEdu.credentialType}" style="width:100%" />
+						</f:facet>
+					</p:cellEditor>
+				</p:column>
+
+				<p:column headerText="Pergentage">
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{canEdu.pergentage}" />
+						</f:facet>
+						<f:facet name="input">
+							<p:inputText value="#{canEdu.pergentage}" style="width:100%" />
+						</f:facet>
+					</p:cellEditor>
+				</p:column>
+
+
+				<p:column headerText="University">
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{canEdu.university}" />
+						</f:facet>
+						<f:facet name="input">
+							<p:inputText value="#{canEdu.university}" style="width:100%" />
+						</f:facet>
+					</p:cellEditor>
+				</p:column>
+
+				<p:column headerText="Year Of Passing">
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{canEdu.yearOfPassing}" />
+						</f:facet>
+						<f:facet name="input">
+							<p:calendar value="#{canEdu.yearOfPassing}" pattern="MM/dd/yyyy" mask="true" style="width:100%" />
+						</f:facet>
+					</p:cellEditor>
+				</p:column>
+
+				<p:column style="width:32px">
+					<p:rowEditor />
+				</p:column>
+
+				<f:facet name="footer">
+					<p:commandButton value="Back" actionListener="#{hrBean.goToProfile}" onclick="PF('statusDialog').show()" oncomplete="PF('statusDialog').hide()" update=":mainBody" />
+				</f:facet>
+			</p:dataTable>
+
+		</p:panel>
+	</h:form>
+
+	<h:form id="addDocuments-form">
+		<p:panel rendered="#{hrBean.pageSectionArgument =='AddDocuments'}" id="addDocument-panel">
+			<div class="ui-g">
+				<div class="ui-g-12 ui-md-6 ui-lg-6">
+					<h:panelGrid style="width:100%">
+						<p:outputLabel for="candidate-documentname" value="Document Type:" />
+						<p:selectOneMenu id="candidate-documentname" value="#{hrBean.document.name}" required="true"
+							requiredMessage="Select Document Type ">
+							<f:selectItem itemLabel="-----Select Document Type----" itemValue="" noSelectionOption="true" />
+							<f:selectItem itemLabel="SSN" itemValue="SSN" />
+							<f:selectItem itemLabel="Passport" itemValue="Passport" />
+							<f:selectItem itemLabel="Visa" itemValue="Visa" />
+							<f:selectItem itemLabel="Driving Licence" itemValue="Driving Licence" />
+						</p:selectOneMenu>
+						<p:message for="candidate-documentname" />
+					</h:panelGrid>
+				</div>
+
+
+				<div class="ui-g-12 ui-md-6 ui-lg-6">
+					<h:panelGrid style="width:100%">
+						<p:outputLabel for="candidate-document" value="Upload Documents:" />
+						<p:fileUpload id="candidate-document" value="#{hrBean.uplodedfile}"
+							fileUploadListener="#{hrBean.handleFileUpload}" multiple="true" mode="advanced" skinSimple="true" required="true"
+							requiredMessage="Select a document" />
+						<p:message for="candidate-document" />
+					</h:panelGrid>
+				</div>
+
+
+
+				<div class="ui-g-12 ui-md-6 ui-lg-9">
+					<h:panelGrid style="width:100%">
+						<p:outputLabel for="candidate-descriptions" value="Descriptions:" />
+						<p:inputTextarea id="candidate-descriptions" value="#{hrBean.document.description}"
+							placeholder="Enter Descriptions" required="true" />
+						<p:message for="candidate-descriptions" />
+					</h:panelGrid>
+				</div>
+
+
+				<div class="ui-g-12 ui-md-6 ui-lg-3">
+					<h:panelGrid style="width:100%">
+						<p:outputLabel for="candidate-expriedDate" value=" Expried Date:" />
+						<p:calendar value="#{hrBean.document.expriedDate}" id="candidate-expriedDate" pattern="MM/dd/yyyy" mask="true"
+							mindate="#{currentDate}" />
+						<p:message for="candidate-expriedDate" />
+					</h:panelGrid>
+				</div>
+
+
+			</div>
+
+			<f:facet name="footer">
+				<p:commandButton value="Save" actionListener="#{hrBean.saveDocuments()}" update=":mainBody">
+					<f:param name="candidateId" value="#{hrBean.candidateId}" />
+				</p:commandButton>
+
+				<p:commandButton value="Back" actionListener="#{hrBean.goToProfile}" onclick="PF('statusDialog').show()" oncomplete="PF('statusDialog').hide()" update=":mainBody" immediate="true" />
+			</f:facet>
+		</p:panel>
+	</h:form>
+	
+	
+	
+	<h:form id="addDocumentsForCheckList-form">
+		<p:panel rendered="#{hrBean.pageSectionArgument =='AddDocumentsForcheckList'}" id="addDocumentForCheckList-panel">
+			<div class="ui-g">
+
+				<div class="ui-g-12 ui-md-6 ui-lg-9">
+					<h:panelGrid style="width:100%">
+						<p:outputLabel for="candidateDoc" value="Upload Documents:" />
+						<p:fileUpload id="candidateDoc" value="#{hrBean.uplodedfile}"
+							fileUploadListener="#{hrBean.handleFileUpload}" multiple="true" mode="advanced" skinSimple="true" required="true"
+							requiredMessage="Select a document" />
+						<p:message for="candidateDoc" />
+					</h:panelGrid>
+				</div>
+				
+				
+				<div class="ui-g-12 ui-md-6 ui-lg-3">
+					<h:panelGrid style="width:100%">
+						<p:outputLabel for="candidateExpriedDate" value=" Expried Date:" />
+						<p:calendar value="#{hrBean.document.expriedDate}" id="candidateExpriedDate" pattern="MM/dd/yyyy" mask="true"
+							mindate="#{currentDate}" />
+						<p:message for="candidateExpriedDate" />
+					</h:panelGrid>
+				</div>
+
+
+
+				<div class="ui-g-12 ui-md-6 ui-lg-12">
+					<h:panelGrid style="width:100%">
+						<p:outputLabel for="candidateDescriptions" value="Descriptions:" />
+						<p:inputTextarea id="candidateDescriptions" value="#{hrBean.document.description}"
+							placeholder="Enter Descriptions" required="true" />
+						<p:message for="candidateDescriptions" />
+					</h:panelGrid>
+				</div>
+				
+			</div>
+
+			<f:facet name="footer">
+				<p:commandButton value="Save" actionListener="#{hrBean.saveCheckListDocuments()}" onclick="PF('statusDialog').show()" oncomplete="PF('statusDialog').hide()" update=":mainBody">
+					<f:param name="candidateId" value="#{hrBean.candidateId}" />
+					<f:param name="checkListFileName" value="#{hrBean.checkListFileName}" />
+				</p:commandButton>
+
+				<p:commandButton value="Back" actionListener="#{hrBean.goToProfile}" update=":mainBody" immediate="true" />
+			</f:facet>
+		</p:panel>
+	</h:form>
+
+</ui:composition>

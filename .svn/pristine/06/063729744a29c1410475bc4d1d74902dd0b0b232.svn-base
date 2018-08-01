@@ -1,0 +1,88 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:p="http://primefaces.org/ui">
+
+	<p:growl id="growl" showDetail="true" sticky="false" autoUpdate="true" />
+
+	<h:form id="form">
+		<p:panel style="margin-top:9%;">
+
+			<f:facet name="header">
+				<p:outputLabel>All Candidates</p:outputLabel>
+			</f:facet>
+
+			<p:panelGrid columns="6" cellpadding="10" style="width:100%;">
+				<f:facet name="header">Batch Details</f:facet>
+				<h:outputText value="Id: " />
+				<h:outputText value="#{trainerBean.selectedProgrameScheduleModel.programeSchedule.id}" />
+				<h:outputText value="Course Name: " />
+				<h:outputText value="#{trainerBean.selectedProgrameScheduleModel.programeSchedule.candidateCourse.course}" />
+
+				<h:outputText value="Trainer Name: " />
+				<h:outputText value="#{trainerBean.selectedProgrameScheduleModel.programeSchedule.trainer.trainerName}" />
+
+				<h:outputText value="Start Date: " />
+				<h:outputText value="#{trainerBean.selectedProgrameScheduleModel.programeSchedule.startDate}" />
+
+				<h:outputText value="End Date: " />
+				<h:outputText value="#{trainerBean.selectedProgrameScheduleModel.programeSchedule.endDate}" />
+
+				<h:outputText value="Start Time: " />
+				<h:outputText value="#{trainerBean.selectedProgrameScheduleModel.programeSchedule.startTime}" />
+
+				<h:outputText value="End Time: " />
+				<h:outputText value="#{trainerBean.selectedProgrameScheduleModel.programeSchedule.endTime}" />
+
+				<h:outputText value="Day Of Week: " />
+				<h:outputText value="#{trainerBean.selectedProgrameScheduleModel.programeSchedule.dayOfWeek}" />
+			</p:panelGrid>
+
+
+
+			<p:dataTable var="can" value="#{trainerBean.candidates}" paginator="true" rows="20" rowKey="#{can.candidateId}"
+				resizableColumns="true" sortBy="#{can.candidateId}" sortOrder="descending"
+				paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
+				rowsPerPageTemplate="20,25,50,100" selection="#{trainerBean.selectedCandidates}" resizeMode="true"
+				widgetVar="candidateTable" tableStyle="table-layout: auto">
+
+
+				<f:facet name="header" style="text-align:center">
+					<p:outputLabel>All Candidates</p:outputLabel>
+				</f:facet>
+
+				<p:column selectionMode="multiple" style="width:16px;text-align:center" />
+
+				<p:column headerText="Id" sortBy="#{can.candidateId}" filterBy="#{can.candidateId}">
+					<h:outputText value="#{can.candidateId}" />
+				</p:column>
+
+				<p:column headerText="Candidate Name" sortBy="#{can.firstName}" filterBy="#{can.firstName}">
+					<h:outputText value="#{can.firstName}" />
+				</p:column>
+
+				<p:column headerText="Email" sortBy="#{can.contactAddress.email}" filterBy="#{can.contactAddress.email}">
+					<h:outputText value="#{can.contactAddress.email}" />
+				</p:column>
+
+				<p:column headerText="Phone No." sortBy="#{can.contactAddress.workMobile}" filterBy="#{can.contactAddress.workMobile}">
+					<h:outputText value="#{can.contactAddress.workMobile}" />
+				</p:column>
+
+				<p:column headerText="Course Name" sortBy="#{can.candidateCourse.course}" filterBy="#{can.candidateCourse.course}">
+					<h:outputText value="#{can.candidateCourse.course}" />
+				</p:column>
+
+				<p:column headerText="Recruiter Name" sortBy="#{can.employee.name}" filterBy="#{can.employee.name}">
+					<h:outputText value="#{can.employee.name}" />
+				</p:column>
+
+			</p:dataTable>
+
+
+			<f:facet name="footer" style="text-align:left">
+				<p:commandButton value="Assign" action="#{trainerBean.assignCandidate()}" onclick="PF('statusDialog').show()"
+					oncomplete="PF('statusDialog').hide()" update=":mainBody" />
+			</f:facet>
+
+		</p:panel>
+	</h:form>
+</ui:composition>

@@ -1,0 +1,85 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:p="http://primefaces.org/ui">
+
+	<p:growl id="growl" showDetail="true" sticky="false" autoUpdate="true" />
+
+	<h:form id="form">
+		<p:panel style="margin-top:9%;">
+
+			<f:facet name="header">
+				<p:outputLabel>Assign Candidate</p:outputLabel>
+			</f:facet>
+
+
+			<p:dataTable var="psm" value="#{trainerBean.programeScheduleModels}" paginator="true" rows="20"
+				rowKey="#{psm.programeSchedule.id}" resizableColumns="true" sortBy="#{p.id}" sortOrder="descending"
+				paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
+				rowsPerPageTemplate="10,25,50,100" selection="#{trainerBean.selectedProgrameScheduleModel}" resizeMode="true"
+				id="programeschedule-table" widgetVar="programescheduleTable" tableStyle="table-layout: auto">
+
+
+				<f:facet name="header">Running Batch</f:facet>
+
+				<p:column selectionMode="single" style="width:16px;text-align:center" />
+
+				<p:column headerText="Id" sortBy="#{psm.programeSchedule.id}" filterBy="#{psm.programeSchedule.id}">
+					<h:outputText value="#{psm.programeSchedule.id}" />
+				</p:column>
+
+				<p:column headerText="Batch Title" sortBy="#{psm.programeSchedule.title}" filterBy="#{psm.programeSchedule.title}">
+					<h:outputText value="#{psm.programeSchedule.title}" />
+				</p:column>
+
+				<p:column headerText="Course Name" sortBy="#{psm.programeSchedule.candidateCourse.course}"
+					filterBy="#{psm.programeSchedule.candidateCourse.course}">
+					<h:outputText value="#{psm.programeSchedule.candidateCourse.course}" />
+				</p:column>
+
+				<p:column headerText="Trainer Name" sortBy="#{psm.programeSchedule.trainer.trainerName}"
+					filterBy="#{psm.programeSchedule.trainer.trainerName}">
+					<h:outputText value="#{psm.programeSchedule.trainer.trainerName}" />
+				</p:column>
+
+				<p:column headerText="Start Date" sortBy="#{psm.programeSchedule.startDate}"
+					filterBy="#{psm.programeSchedule.startDate}">
+					<h:outputText value="#{psm.programeSchedule.startDate}" />
+				</p:column>
+
+				<p:column headerText="End Date" sortBy="#{psm.programeSchedule.endDate}" filterBy="#{psm.programeSchedule.endDate}">
+					<h:outputText value="#{psm.programeSchedule.endDate}" />
+				</p:column>
+
+				<p:column headerText="Start Time" sortBy="#{psm.programeSchedule.startTime}"
+					filterBy="#{psm.programeSchedule.startTime}">
+					<h:outputText value="#{psm.programeSchedule.startTime}" />
+				</p:column>
+
+				<p:column headerText="End Time" sortBy="#{psm.programeSchedule.endTime}" filterBy="#{psm.programeSchedule.endTime}">
+					<h:outputText value="#{psm.programeSchedule.endTime}" />
+				</p:column>
+
+				<p:column headerText="Day Of Week" sortBy="#{psm.programeSchedule.dayOfWeek}"
+					filterBy="#{psm.programeSchedule.dayOfWeek}">
+					<h:outputText value="#{psm.programeSchedule.dayOfWeek}" />
+				</p:column>
+
+				<p:column headerText="Total Candidate" sortBy="#{psm.totalCandidate}" filterBy="#{psm.totalCandidate}">
+					<h:outputText value="#{psm.totalCandidate}" />
+				</p:column>
+
+			</p:dataTable>
+
+			<f:facet name="footer" style="text-align:left">
+				<p:commandButton value="Next For Assign" action="#{trainerBean.candidateListForAssign()}" onclick="PF('statusDialog').show()"
+					oncomplete="PF('statusDialog').hide()" update=":mainBody" />
+
+				<p:commandButton value="Transfer" action="#{trainerBean.candidateListInABatch()}"
+					onclick="PF('statusDialog').show()" oncomplete="PF('statusDialog').hide()" update=":mainBody" />
+
+				<p:commandButton value="Remove" action="#{trainerBean.candidateListInABatchForRemove()}"
+					onclick="PF('statusDialog').show()" oncomplete="PF('statusDialog').hide()" update=":mainBody" />
+			</f:facet>
+		</p:panel>
+
+	</h:form>
+</ui:composition>

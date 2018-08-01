@@ -1,0 +1,45 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:p="http://primefaces.org/ui">
+
+	<h:form enctype="multipart/form-data" id="candidate-form">
+	<p:panel style="margin-top:9%">
+		<p:panel style="width:40%;margin-left:29%;margin-top:2%;">
+			<f:facet name="header">
+				<f:facet name="header">Enter start date and end date</f:facet>
+			</f:facet>
+
+			<div class="ui-g">
+				<div class="ui-g-12 ui-md-6 ui-lg-12">
+					<h:panelGrid style="width:100%">
+						<p:outputLabel for="startDate" value="Start Date (MM/DD/YYYY):" />
+						<p:calendar id="startDate" value="#{accountBean.startDate}"
+							pattern="MM/dd/yyyy" required="true" requiredMessage="Enter Start Date"/>
+						<p:message for="startDate" />
+					</h:panelGrid>
+				</div>
+			</div>
+
+			<div class="ui-g">
+				<div class="ui-g-12 ui-md-6 ui-lg-12">
+					<h:panelGrid style="width:100%">
+						<p:outputLabel for="endDate" value="End Date (MM/DD/YYYY):" />
+						<p:calendar id="endDate" value="#{accountBean.endDate}"
+							pattern="MM/dd/yyyy" required="true" requiredMessage="Enter End Date" />
+						<p:message for="endDate" />
+					</h:panelGrid>
+				</div>
+			</div>
+
+			<f:facet name="footer">
+				<p:commandButton value="Search" actionListener="#{accountBean.paymentListByStartDateEndDate()}" update=":mainBody" />
+			</f:facet>
+
+		</p:panel>
+		<br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br>
+		</p:panel>
+	</h:form>
+</ui:composition>
+
+
+
+

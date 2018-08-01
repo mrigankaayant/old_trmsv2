@@ -1,0 +1,77 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:p="http://primefaces.org/ui"
+	template="/templates/common.xhtml">
+	
+	<ui:define name="submenu">
+		
+			<div class="ui-ribbon-groups ui-helper-clearfix">
+			<h:form>
+				<table class="ui-ribbon-group-content ui-ribbon-group ui-widget">
+					<tr>
+						<td>
+							<p:commandButton value="New" icon="ui-ribbonicon-new" styleClass="ui-ribbon-bigbutton"
+								action="#{adminBean.newEmployeeForm()}" onclick="PF('statusDialog').show()" oncomplete="PF('statusDialog').hide()" update=":mainBody" />
+						</td>
+						
+					</tr>
+					<tfoot>
+						<tr>
+							<td colspan="2" class="ui-ribbon-group-label">Employee</td>
+						</tr>
+					</tfoot>
+				</table>
+				
+				<table class="ui-ribbon-group-content ui-ribbon-group ui-widget">
+					<tr>
+						<td>
+							<p:commandButton value="Add City" icon="ui-ribbonicon-new" styleClass="ui-ribbon-bigbutton" id="add-city-button"
+								action="#{adminBean.addCity()}" onclick="PF('statusDialog').show()" oncomplete="PF('statusDialog').hide()" update=":mainBody" />
+						</td>
+						
+					</tr>
+					<tfoot>
+						<tr>
+							<td colspan="2" class="ui-ribbon-group-label">City</td>
+						</tr>
+					</tfoot>
+				</table>
+				
+				
+				</h:form>
+				<h:form>
+				
+				<table class="ui-ribbon-group-content ui-ribbon-group ui-widget">
+					<tr>
+						<td>
+							<p:commandButton value="Profile" styleClass="ui-ribbon-bigbutton" icon="ui-ribbonicon-candidateProfile" action="#{adminBean.employeeAdvanceSearch()}" onclick="PF('statusDialog').show()" oncomplete="PF('statusDialog').hide()" update=":mainBody" />
+						</td>
+						
+					</tr>
+					<tfoot>
+						<tr>
+							<td colspan="2" class="ui-ribbon-group-label">Search</td>
+						</tr>
+					</tfoot>
+				</table>
+				
+				<table class="ui-ribbon-group-content ui-ribbon-group ui-widget">
+					<tr>
+					    <td>
+							<p:commandButton value="Logout" icon="ui-ribbonicon-logout" styleClass="ui-ribbon-bigbutton" id="logout-button"
+								action="#{loginBean.logout()}" onclick="PF('statusDialog').show()" oncomplete="PF('statusDialog').hide()" update=":mainBody" />
+						</td>
+					</tr>
+					<tfoot>
+						<tr>
+							<td colspan="7" class="ui-ribbon-group-label">Logout</td>
+						</tr>
+					</tfoot>
+				</table>
+				
+				</h:form>
+			</div>
+			
+	</ui:define>
+	
+</ui:composition>

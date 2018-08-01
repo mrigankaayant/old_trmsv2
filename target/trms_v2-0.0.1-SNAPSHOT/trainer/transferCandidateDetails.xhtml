@@ -1,0 +1,93 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:fn="http://java.sun.com/jsp/jstl/functions">
+
+	<p:growl id="growl" showDetail="true" sticky="false" autoUpdate="true" />
+
+	<h:form id="form">
+		<p:panel style="margin-top:9%;">
+
+			<f:facet name="header">
+				<p:outputLabel>Transfer Candidate Form Batch To Another Batch</p:outputLabel>
+			</f:facet>
+
+			<p:dataTable var="c" value="#{trainerBean.candidateLazyModelForRemove}" paginator="true" rows="20"
+				rowKey="#{c.candidateId}" resizableColumns="true" resizeMode="true" selection="#{trainerBean.candidate}"
+				paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
+				sortBy="#{c.candidateId}" sortOrder="descending" rowsPerPageTemplate="20,25,50,100" id="candidate-table" lazy="true"
+				widgetVar="candidateTable" tableStyle="table-layout: auto">
+
+				<f:facet name="header">Candidates</f:facet>
+
+				<p:column selectionMode="single" style="width:16px;text-align:center" />
+
+				<p:column headerText="Id" sortBy="#{c.candidateId}" filterBy="#{c.candidateId}" style="text-align:center">
+					<h:outputText value="#{c.candidateId}" />
+				</p:column>
+
+
+				<p:column headerText="Name" sortBy="#{c.firstName}" filterBy="#{c.firstName}" style="text-align:center">
+					<h:outputText value="#{c.firstName}" />
+				</p:column>
+				
+				
+				<p:column headerText="Email" sortBy="#{c.contactAddress.email}" filterBy="#{c.contactAddress.email}" style="text-align:center">
+					<h:outputText value="#{c.contactAddress.email}" />
+				</p:column>
+				
+				<p:column headerText="Phone No." sortBy="#{c.contactAddress.workMobile}" filterBy="#{c.contactAddress.workMobile}" style="text-align:center">
+					<button type="button"  onclick="clickToCall('#{trainerBean.phoneExtension}','#{fn:replace(c.contactAddress.workMobile,'[^0-9]','')}')">#{fn:replace(c.contactAddress.workMobile,'[^0-9]','')}</button>
+				</p:column>
+
+				<p:column headerText="Course" sortBy="#{c.candidateCourse.course}" filterBy="#{c.candidateCourse.course}"
+					style="text-align:center">
+
+					<f:facet name="filter">
+						<p:selectOneMenu onchange="PF('candidateTable').filter()">
+							<f:selectItem itemLabel="Select One" itemValue="#{null}" noSelectionOption="true" />
+							<f:selectItems value="#{appDataBean.candidateCourses}" var="course" itemLabel="#{course.course}"
+								itemValue="#{course.course}" />
+						</p:selectOneMenu>
+					</f:facet>
+
+					<h:outputText value="#{c.candidateCourse.course}" />
+				</p:column>
+				
+				<p:column headerText="Recruiter Name" sortBy="#{c.employee.name}" filterBy="#{c.employee.name}" style="text-align:center">
+					<h:outputText value="#{c.employee.name}" />
+				</p:column>
+				
+			</p:dataTable>
+			
+			<f:facet name="footer" style="text-align:left">
+				<p:commandButton value="Next" action="#{trainerBean.batchListForTransfer()}" onclick="PF('statusDialog').show()" oncomplete="PF('statusDialog').hide()" update=":mainBody" />
+			</f:facet>
+			
+		</p:panel>
+	</h:form>
+	
+	
+	
+	<script type="text/javascript">
+	
+	function clickToCall(fromnum,tonum) {
+
+		$.ajax({
+ 	       url: 'http://globalitexperts.vitelglobal.com/clicktocall/index.php'+'?fromnum=' + fromnum + '&amp;tonum=' + tonum,
+            type: 'POST',
+            crossOrigin: true,
+            success: function (response) {
+            console.log(response.status);
+          },
+          error: function (response) {
+            console.log(response.status);
+         }
+        });
+           
+        alert('calling to '+ tonum);
+	}
+
+  </script>
+  
+  
+</ui:composition>

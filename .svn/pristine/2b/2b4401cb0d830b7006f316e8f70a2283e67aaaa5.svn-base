@@ -1,0 +1,69 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:p="http://primefaces.org/ui">
+
+	<h:form id="form">
+		<p:panel style="margin-top:9%">
+			<f:facet name="header">Payment Remender</f:facet>
+			<p:dataTable id="candidate-payment-due-table" var="candidatePaymentModel"
+				value="#{recruitmentBean.candidatePaymentModel}" paginator="true" rows="10" resizableColumns="true"
+				resizeMode="true" sortBy="#{candidatePaymentModel.candidate.candidateId}" sortOrder="ascending"
+				rowKey="#{candidatePaymentModel}"
+				paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
+				rowsPerPageTemplate="10,25,50,100" selection="#{recruitmentBean.selectedCandidates}"
+				tableStyle="table-layout: auto">
+
+				<f:facet name="header">
+					<div align="left">
+						<h:commandLink actionListener="#{recruitmentBean.emailSend}" update=":mainBody">
+							<h:graphicImage value="/resources/demo/images/icon/email.png" />
+						</h:commandLink>
+
+						<h:commandLink style="margin-left:8px;">
+							<h:graphicImage value="/resources/demo/images/icon/pdf.png" />
+							<p:dataExporter type="pdf" target="candidate-payment-due-table" fileName="candidate-payment-due-report" pageOnly="true" />
+						</h:commandLink>
+
+						<h:commandLink style="margin-left:8px;">
+							<h:graphicImage value="/resources/demo/images/icon/excel.png" />
+							<p:dataExporter type="xls" target="candidate-payment-due-table" fileName="candidate-payment-due-report" pageOnly="true" />
+						</h:commandLink>
+					</div>
+				</f:facet>
+
+				<p:column selectionMode="multiple" style="width:16px;text-align:center" />
+
+				<p:column headerText="Id" sortBy="#{candidatePaymentModel.candidate.candidateId}"
+					filterBy="#{candidatePaymentModel.candidate.candidateId}">
+					<h:outputText value="#{candidatePaymentModel.candidate.candidateId}" />
+				</p:column>
+
+				<p:column headerText="Name" sortBy="#{candidatePaymentModel.candidate.firstName}"
+					filterBy="#{candidatePaymentModel.candidate.firstName}">
+					<h:outputText value="#{candidatePaymentModel.candidate.firstName}" />
+				</p:column>
+
+				<p:column headerText="Email" sortBy="#{candidatePaymentModel.candidateEmail}"
+					filterBy="#{candidatePaymentModel.candidateEmail}">
+					<h:outputText value="#{candidatePaymentModel.candidateEmail}" />
+				</p:column>
+
+				<p:column headerText="Mobile" sortBy="#{candidatePaymentModel.candidateMobile}"
+					filterBy="#{candidatePaymentModel.candidateMobile}">
+					<h:outputText value="#{candidatePaymentModel.candidateMobile}" />
+				</p:column>
+
+				<p:column headerText="Due Amount" sortBy="#{candidatePaymentModel.dueAmount}"
+					filterBy="#{candidatePaymentModel.dueAmount}">
+					<h:outputText value="#{candidatePaymentModel.dueAmount}" />
+				</p:column>
+
+				<p:column headerText="Recruiter" sortBy="#{candidatePaymentModel.recruiterName}"
+					filterBy="#{candidatePaymentModel.recruiterName}">
+					<h:outputText value="#{candidatePaymentModel.recruiterName}" />
+				</p:column>
+
+			</p:dataTable>
+		</p:panel>
+	</h:form>
+
+</ui:composition>

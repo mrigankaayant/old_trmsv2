@@ -1,0 +1,92 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html" xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:fn="http://java.sun.com/jsp/jstl/functions">
+
+<ui:composition template="/hr/hrTemplate.xhtml">
+	<ui:define name="content">
+		<h:panelGroup id="mainBody">
+			<c:choose>
+
+				<c:when test="#{hrBean.action == 'CANDIDATELIST'}">
+					<ui:include src="/hr/candidateListForCheckList.xhtml" />
+				</c:when>
+
+				<c:when test="#{hrBean.action == 'ENROLLMENTFORMSUCCESS'}">
+					<ui:include src="/hr/enrollmentSuccessForm.xhtml" />
+				</c:when>
+
+				<c:when test="#{hrBean.action == 'CANDIDATEPROFILE'}">
+					<ui:include src="/hr/candidateProfile.xhtml" />
+				</c:when>
+
+				<c:when test="#{hrBean.action == 'CANDIDATEPROFILEUPDATE'}">
+					<ui:include src="/hr/candidateProfileUpdate.xhtml" />
+				</c:when>
+
+				<c:when test="#{hrBean.action == 'ADDBATCH'}">
+					<ui:include src="/hr/addBatch.xhtml" />
+				</c:when>
+
+				<c:when test="#{hrBean.action == 'BATCHLIST'}">
+					<ui:include src="/hr/listBatch.xhtml" />
+				</c:when>
+
+				<c:when test="#{hrBean.action == 'ASSIGNCANDIDATE'}">
+					<ui:include src="/hr/assignCandidate.xhtml" />
+				</c:when>
+
+				<c:when test="#{hrBean.action == 'CANDIDATEFORASSIGN'}">
+					<ui:include src="/hr/candidateList.xhtml" />
+				</c:when>
+
+				<c:when test="#{hrBean.action == 'OFFERLETTERSENDFORM'}">
+					<ui:include src="/hr/offerletterSendForm.xhtml" />
+				</c:when>
+
+				<c:when test="#{hrBean.action == 'TRAININGCHECKLISTPENDING'}">
+					<ui:include src="/hr/trainingCheckList.xhtml" />
+				</c:when>
+
+				<c:when test="#{hrBean.action == 'RESUMEPENDING'}">
+					<ui:include src="/hr/resumeCheckList.xhtml" />
+				</c:when>
+
+				<c:when test="#{hrBean.action == 'MAILFORMOCKORGRADUATIONPREPARATION'}">
+					<ui:include src="/hr/mailSendingFormForMock.xhtml" />
+				</c:when>
+
+				<c:when test="#{hrBean.action == 'REMARKSFORMOCKORGRADUATION'}">
+					<ui:include src="/hr/mockremarksForm.xhtml" />
+				</c:when>
+
+				<c:when test="#{hrBean.action == 'MAILSENDINGFORM'}">
+					<ui:include src="/hr/mailSendingForm.xhtml" />
+				</c:when>
+
+				<c:when test="#{hrBean.action == 'HOTLISTCHECKLISTPENDING'}">
+					<ui:include src="/hr/hotlistCheckList.xhtml" />
+				</c:when>
+
+				<c:when test="#{hrBean.action == 'HOTLISTFORM'}">
+					<ui:include src="/hr/hotlistForm.xhtml" />
+				</c:when>
+				
+				<c:when test="#{hrBean.action == 'MOCKCHECKLISTPENDING'}">
+					<ui:include src="/hr/mockCheckList.xhtml" />
+				</c:when>
+				
+				<c:when test="#{hrBean.action == 'W2LIST'}">
+					<ui:include src="/hr/w2list.xhtml" />
+				</c:when>
+				
+				<c:when test="#{hrBean.action == 'MAILDETAILS'}">
+					<ui:include src="/hr/mailDetails.xhtml" />
+				</c:when>
+				
+			</c:choose>
+		</h:panelGroup>
+	</ui:define>
+</ui:composition>
+
+</html>

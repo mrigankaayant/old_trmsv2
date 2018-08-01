@@ -1,0 +1,119 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:p="http://primefaces.org/ui">
+
+	<p:growl id="growl" showDetail="true" sticky="false" autoUpdate="true" />
+
+	<h:form id="form">
+		<p:panel style="margin-top:9%">
+			<f:facet name="header">Batch List</f:facet>
+
+			<p:dataTable var="p" value="#{recruitmentBean.programmeScheduleLazyModel}" paginator="true" rows="20"
+				rowKey="#{p.id}" resizableColumns="true" resizeMode="true" selectionMode="single"
+				paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
+				sortBy="#{p.id}" sortOrder="descending" rowsPerPageTemplate="10,25,50,100" id="programeShedule-table" lazy="true"
+				widgetVar="programeSheduleTable" tableStyle="table-layout: auto">
+
+				<p:column headerText="Id" sortBy="#{p.id}" filterBy="#{p.id}" style="text-align:center">
+					<h:outputText value="#{p.id}" />
+				</p:column>
+
+
+				<p:column headerText="Batch Title" sortBy="#{p.title}" filterBy="#{p.title}" style="text-align:center">
+					<h:outputText value="#{p.title}" />
+				</p:column>
+
+
+				<p:column headerText="Trainer Name" sortBy="#{p.trainer.trainerName}" filterBy="#{p.trainer.trainerName}"
+					style="text-align:center">
+
+					<f:facet name="filter">
+						<p:selectOneMenu onchange="PF('programeSheduleTable').filter()">
+							<f:selectItem itemLabel="Select One" itemValue="#{null}" noSelectionOption="true" />
+							<f:selectItems value="#{appDataBean.trainers}" var="t" itemLabel="#{t.trainerName}" itemValue="#{t.trainerName}" />
+						</p:selectOneMenu>
+					</f:facet>
+
+					<h:outputText value="#{p.trainer.trainerName}" />
+				</p:column>
+
+
+				<p:column headerText="Course" sortBy="#{p.candidateCourse.course}" filterBy="#{p.candidateCourse.course}"
+					style="text-align:center">
+
+					<f:facet name="filter">
+						<p:selectOneMenu onchange="PF('programeSheduleTable').filter()">
+							<f:selectItem itemLabel="Select One" itemValue="#{null}" noSelectionOption="true" />
+							<f:selectItems value="#{appDataBean.candidateCourses}" var="course" itemLabel="#{course.course}"
+								itemValue="#{course.course}" />
+						</p:selectOneMenu>
+					</f:facet>
+
+					<h:outputText value="#{p.candidateCourse.course}" />
+				</p:column>
+
+
+				<p:column headerText="Start Date" sortBy="#{p.startDate}" filterBy="#{p.startDate}" style="text-align:center">
+
+					<f:facet name="filter">
+						<p:calendar pattern="MM/dd/yyyy" showButtonPanel="true">
+							<p:ajax event="dateSelect" oncomplete="PF('programeSheduleTable').filter()" />
+						</p:calendar>
+					</f:facet>
+
+					<h:outputText value="#{p.startDate}">
+						<f:convertDateTime pattern="MM/dd/yyyy" />
+					</h:outputText>
+
+				</p:column>
+
+				<p:column headerText="End Date" sortBy="#{p.endDate}" filterBy="#{p.endDate}" style="text-align:center">
+
+					<f:facet name="filter">
+						<p:calendar pattern="MM/dd/yyyy" showButtonPanel="true">
+							<p:ajax event="dateSelect" oncomplete="PF('programeSheduleTable').filter()" />
+						</p:calendar>
+					</f:facet>
+
+					<h:outputText value="#{p.endDate}">
+						<f:convertDateTime pattern="MM/dd/yyyy" />
+					</h:outputText>
+				</p:column>
+
+
+				<p:column headerText="Start Time" sortBy="#{p.startTime}" filterBy="#{p.startTime}" style="text-align:center">
+
+					<f:facet name="filter">
+						<p:calendar pattern="HH:mm" showButtonPanel="true" timeOnly="true">
+							<p:ajax event="dateSelect" oncomplete="PF('programeSheduleTable').filter()" />
+						</p:calendar>
+					</f:facet>
+
+					<h:outputText value="#{p.startTime}" />
+				</p:column>
+
+
+				<p:column headerText="End Time" sortBy="#{p.endTime}" filterBy="#{p.endTime}" style="text-align:center">
+
+					<f:facet name="filter">
+						<p:calendar pattern="HH:mm" showButtonPanel="true" timeOnly="true">
+							<p:ajax event="dateSelect" oncomplete="PF('programeSheduleTable').filter()" />
+						</p:calendar>
+					</f:facet>
+
+					<h:outputText value="#{p.endTime}" />
+				</p:column>
+
+
+				<p:column headerText="Complete" sortBy="#{p.isComplete}" filterBy="#{p.isComplete}" style="text-align:center">
+					<h:outputText value="#{p.isComplete}" />
+				</p:column>
+
+
+				<p:column headerText="Day Of Week" sortBy="#{p.dayOfWeek}" filterBy="#{p.dayOfWeek}" style="text-align:center">
+					<h:outputText value="#{p.dayOfWeek}" />
+				</p:column>
+
+			</p:dataTable>
+		</p:panel>
+	</h:form>
+</ui:composition>

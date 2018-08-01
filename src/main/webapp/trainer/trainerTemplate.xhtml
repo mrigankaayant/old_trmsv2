@@ -1,0 +1,129 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:p="http://primefaces.org/ui"
+	template="/templates/common.xhtml">
+	<ui:define name="submenu">
+		<div class="ui-ribbon-groups ui-helper-clearfix">
+
+			<h:form>
+
+
+				<table class="ui-ribbon-group-content ui-ribbon-group ui-widget">
+
+					<tr>
+						<td>
+							<p:commandButton value="Trainee List" styleClass="ui-ribbon-bigbutton" icon="ui-ribbonicon-candidateProfile"
+								action="#{trainerBean.traineeList()}" onclick="PF('statusDialog').show()" oncomplete="PF('statusDialog').hide()" update=":mainBody" />
+						</td>
+					</tr>
+
+					<tfoot>
+						<tr>
+							<td colspan="3" class="ui-ribbon-group-label">Candidate List</td>
+						</tr>
+					</tfoot>
+				</table>
+
+				<table class="ui-ribbon-group-content ui-ribbon-group ui-widget">
+
+					<tr>
+						<td>
+							<p:commandButton value="Add" styleClass="ui-ribbon-bigbutton" icon="ui-ribbonicon-new"
+								action="#{trainerBean.addTrainer()}" onclick="PF('statusDialog').show()" oncomplete="PF('statusDialog').hide()" update=":mainBody" />
+						</td>
+
+						<td>
+							<p:commandButton value="List" styleClass="ui-ribbon-bigbutton" icon="ui-ribbonicon-custombatchlist"
+								action="#{trainerBean.trainerList()}" onclick="PF('statusDialog').show()" oncomplete="PF('statusDialog').hide()" update=":mainBody" />
+						</td>
+					</tr>
+
+					<tfoot>
+						<tr>
+							<td colspan="3" class="ui-ribbon-group-label">Trainer</td>
+						</tr>
+					</tfoot>
+				</table>
+
+
+
+				<table class="ui-ribbon-group-content ui-ribbon-group ui-widget">
+
+					<tr>
+						<td>
+							<p:commandButton value="Add" styleClass="ui-ribbon-bigbutton" icon="ui-ribbonicon-new"
+								action="#{trainerBean.addBatch()}" onclick="PF('statusDialog').show()" oncomplete="PF('statusDialog').hide()" update=":mainBody" />
+						</td>
+
+						<td>
+							<p:commandButton value="List" styleClass="ui-ribbon-bigbutton" icon="ui-ribbonicon-custombatchlist"
+								action="#{trainerBean.batchList()}" onclick="PF('statusDialog').show()" oncomplete="PF('statusDialog').hide()" update=":mainBody" />
+						</td>
+
+						<td>
+							<p:commandButton value="Assign" styleClass="ui-ribbon-bigbutton" icon="ui-ribbonicon-customtassign"
+								action="#{trainerBean.programeScheduleListForAssign()}" onclick="PF('statusDialog').show()" oncomplete="PF('statusDialog').hide()" update=":mainBody" />
+						</td>
+						
+						<td>
+							<p:commandButton value="Transfer" styleClass="ui-ribbon-bigbutton" icon="ui-ribbonicon-transfer"
+								action="#{trainerBean.transferCandidateFromBatch()}" onclick="PF('statusDialog').show()" oncomplete="PF('statusDialog').hide()" update=":mainBody" />
+						</td>
+						
+						<td>
+							<p:commandButton value="Remove" styleClass="ui-ribbon-bigbutton" icon="ui-ribbonicon-remove"
+								action="#{trainerBean.removeCandidateFromBatch()}" onclick="PF('statusDialog').show()" oncomplete="PF('statusDialog').hide()" update=":mainBody" />
+						</td>
+
+
+					</tr>
+
+					<tfoot>
+						<tr>
+							<td colspan="3" class="ui-ribbon-group-label">Batch</td>
+						</tr>
+					</tfoot>
+				</table>
+
+
+
+				<table class="ui-ribbon-group-content ui-ribbon-group ui-widget">
+
+					<tr>
+						<td>
+							<p:commandButton value="Genarate" styleClass="ui-ribbon-bigbutton" icon="ui-ribbonicon-invoice"
+								action="#{trainerBean.generateInvoice()}" onclick="PF('statusDialog').show()" oncomplete="PF('statusDialog').hide()" update=":mainBody" />
+						</td>
+
+
+						<td>
+							<p:commandButton value="List" styleClass="ui-ribbon-bigbutton" icon="ui-ribbonicon-custombatchlist"
+								action="#{trainerBean.listTrainerInvoice()}" onclick="PF('statusDialog').show()" oncomplete="PF('statusDialog').hide()" update=":mainBody" />
+						</td>
+					</tr>
+
+					<tfoot>
+						<tr>
+							<td colspan="3" class="ui-ribbon-group-label">Invoice</td>
+						</tr>
+					</tfoot>
+				</table>
+
+				<table class="ui-ribbon-group-content ui-ribbon-group ui-widget">
+					<tr>
+						<td>
+							<p:commandButton value="Logout" icon="ui-ribbonicon-logout" styleClass="ui-ribbon-bigbutton" id="logout-button"
+								action="#{loginBean.logout()}" onclick="PF('statusDialog').show()" oncomplete="PF('statusDialog').hide()" update=":mainBody" />
+						</td>
+					</tr>
+					<tfoot>
+						<tr>
+							<td colspan="7" class="ui-ribbon-group-label">Logout</td>
+						</tr>
+					</tfoot>
+				</table>
+			</h:form>
+
+		</div>
+	</ui:define>
+</ui:composition>

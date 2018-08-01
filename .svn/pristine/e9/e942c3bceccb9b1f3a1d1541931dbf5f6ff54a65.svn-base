@@ -1,0 +1,403 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:p="http://primefaces.org/ui">
+
+	<h:form id="employee-form">
+		<p:panel style="margin-top:9%">
+			<f:facet name="header">Enter Employee Detail</f:facet>
+			<p:fieldset legend="Personal Details" style="margin-bottom:20px;">
+				<div class="ui-g">
+					<div class="ui-g-12 ui-md-6 ui-lg-3">
+						<h:panelGrid style="width:100%">
+							<p:outputLabel for="employee-name" value="Employee Name:" />
+							<p:inputText value="#{adminBean.employee.name}" required="true" id="employee-name"
+								requiredMessage="Enter Employee Name" placeholder="Enter Employee Name" />
+							<p:message for="employee-name" />
+						</h:panelGrid>
+					</div>
+
+					<div class="ui-g-12 ui-md-6 ui-lg-3">
+						<h:panelGrid style="width:100%">
+							<p:outputLabel for="employee-dob" value="Date Of Birth: (mm/dd/YYYY):" />
+							<p:calendar id="employee-dob" value="#{adminBean.employee.dateOfBirth}" pattern="MM/dd/yyyy" mask="true"
+								required="true" requiredMessage="Enter Date Of Birth" />
+							<p:message for="employee-dob" />
+						</h:panelGrid>
+					</div>
+
+					<div class="ui-g-12 ui-md-6 ui-lg-3">
+						<h:panelGrid style="width:100%">
+							<p:outputLabel for="employee-gender" value="Gender:" />
+							<p:selectOneRadio id="employee-gender" value="#{adminBean.employee.gender}" required="true"
+								requiredMessage="Enter Gender">
+								<f:selectItem itemValue="Male" itemLabel="Male" />
+								<f:selectItem itemValue="Female" itemLabel="Female" />
+							</p:selectOneRadio>
+							<p:message for="employee-gender" />
+						</h:panelGrid>
+					</div>
+
+
+					<div class="ui-g-12 ui-md-6 ui-lg-3">
+						<h:panelGrid style="width:100%">
+							<p:outputLabel for="employee-maritalStatus" value="Marital Status:" />
+							<p:selectOneRadio id="employee-maritalStatus" value="#{adminBean.employee.maritalStatus}">
+								<f:selectItem itemValue="Single" itemLabel="Single" />
+								<f:selectItem itemValue="Married" itemLabel="Married" />
+							</p:selectOneRadio>
+							<p:message for="employee-maritalStatus" />
+						</h:panelGrid>
+					</div>
+
+				</div>
+
+			</p:fieldset>
+
+
+			<p:fieldset legend="Address Details" style="margin-bottom:20px;">
+				<div class="ui-g">
+					<div class="ui-g-12 ui-md-6 ui-lg-3">
+						<h:panelGrid style="width:100%">
+							<p:outputLabel for="employee-addressLine1" value="Address Line1:" />
+							<p:inputText value="#{adminBean.employee.contactAddress.address1}" required="true" id="employee-addressLine1"
+								requiredMessage="Enter Address Line1" placeholder="Enter Address Line1" />
+							<p:message for="employee-addressLine1" />
+						</h:panelGrid>
+					</div>
+
+					<div class="ui-g-12 ui-md-6 ui-lg-3">
+						<h:panelGrid style="width:100%">
+							<p:outputLabel for="employee-addressLine2" value="Address Line2:" />
+							<p:inputText value="#{adminBean.employee.contactAddress.address2}" id="employee-addressLine2"
+								placeholder="Enter Address Line2" />
+							<p:message for="employee-addressLine2" />
+						</h:panelGrid>
+					</div>
+
+					<div class="ui-g-12 ui-md-6 ui-lg-3">
+						<h:panelGrid style="width:100%">
+							<p:outputLabel for="employee-landmark" value="Landmark:" />
+							<p:inputText value="#{adminBean.employee.contactAddress.landmark}" id="employee-landmark"
+								placeholder="Enter Landmark" />
+							<p:message for="employee-landmark" />
+						</h:panelGrid>
+					</div>
+
+					<div class="ui-g-12 ui-md-6 ui-lg-3">
+						<h:panelGrid style="width:100%">
+							<p:outputLabel for="employee-postalCode" value="Postal Code:" />
+							<p:inputText value="#{adminBean.employee.contactAddress.postalCode}" required="true" id="employee-postalCode"
+								requiredMessage="Enter Postal Code" placeholder="Enter Postal Code">
+								<f:validateLength minimum="6" maximum="6" />
+								<f:convertNumber integerOnly="true" />
+							</p:inputText>
+							<p:message for="employee-postalCode" />
+						</h:panelGrid>
+					</div>
+
+					<div class="ui-g-12 ui-md-6 ui-lg-3">
+						<h:panelGrid style="width:100%">
+							<p:outputLabel for="employee-country" value="Country:" />
+							<p:inputText value="#{adminBean.employee.contactAddress.country}" required="true" requiredMessage="Enter Country"
+								id="employee-country" placeholder="Enter Country" />
+							<p:message for="employee-country" />
+						</h:panelGrid>
+					</div>
+
+
+					<div class="ui-g-12 ui-md-6 ui-lg-3">
+						<h:panelGrid style="width:100%">
+							<p:outputLabel for="employee-state" value="State:" />
+							<p:inputText value="#{adminBean.employee.contactAddress.state}" required="true" requiredMessage="Enter State"
+								id="employee-state" placeholder="Enter State" />
+							<p:message for="employee-state" />
+						</h:panelGrid>
+					</div>
+
+
+					<div class="ui-g-12 ui-md-6 ui-lg-6">
+						<h:panelGrid>
+							<p:outputLabel for="employee-city" value="City:" />
+							<p:inputText value="#{adminBean.employee.contactAddress.city}" required="true" requiredMessage="Enter City"
+								id="employee-city" placeholder="Enter City" size="46" />
+							<p:message for="employee-city" />
+						</h:panelGrid>
+					</div>
+				</div>
+			</p:fieldset>
+
+			<p:fieldset legend="Contact Details" style="margin-bottom:20px;">
+				<div class="ui-g">
+					<div class="ui-g-12 ui-md-6 ui-lg-3">
+						<h:panelGrid style="width:100%">
+							<p:outputLabel for="employee-workPhone" value="Work Phone:" />
+							<p:inputText value="#{adminBean.employee.contactAddress.workPhone}" id="employee-workPhone" />
+							<p:message for="employee-workPhone" />
+						</h:panelGrid>
+					</div>
+
+
+					<div class="ui-g-12 ui-md-6 ui-lg-3">
+						<h:panelGrid style="width:100%">
+							<p:outputLabel for="employee-homePhone" value="Home Phone:" />
+							<p:inputText value="#{adminBean.employee.contactAddress.homePhone}" id="employee-homePhone" />
+							<p:message for="employee-workPhone" />
+						</h:panelGrid>
+					</div>
+
+
+					<div class="ui-g-12 ui-md-6 ui-lg-3">
+						<h:panelGrid style="width:100%">
+							<p:outputLabel for="employee-workMobile" value="Work Mobile:" />
+							<p:inputText value="#{adminBean.employee.contactAddress.workMobile}" id="employee-workMobile" required="true"
+								requiredMessage="Enter Work Mobile" validator="#{adminBean.workMobileValidation}"
+								validatorMessage="Only positive numeric value with in 10 digits">
+								<f:validateRegex pattern="^\d{1,10}$" />
+								<p:ajax update="employee-workmobile-msg" event="blur" />
+							</p:inputText>
+							<p:message for="employee-workMobile" id="employee-workmobile-msg" />
+						</h:panelGrid>
+					</div>
+
+
+					<div class="ui-g-12 ui-md-6 ui-lg-3">
+						<h:panelGrid style="width:100%">
+							<p:outputLabel for="employee-homeMobile" value="Home Mobile:" />
+							<p:inputText id="employee-homeMobile" value="#{adminBean.employee.contactAddress.homeMobile}"
+								validator="#{adminBean.workMobileValidation}" validatorMessage="Only positive numeric value with in 10 digits">
+								<f:validateRegex pattern="^\d{1,10}$" />
+								<p:ajax update="employee-homemobile-msg" event="blur" />
+							</p:inputText>
+							<p:message for="employee-homeMobile" id="employee-homemobile-msg" />
+						</h:panelGrid>
+					</div>
+
+
+					<div class="ui-g-12 ui-md-6 ui-lg-3">
+						<h:panelGrid style="width:100%">
+							<p:outputLabel for="employee-officeEmail" value="Office Email:" />
+							<p:inputText id="employee-officeEmail" value="#{adminBean.employee.contactAddress.email}"
+								validator="#{adminBean.emailValidate}" validatorMessage="Invalid email format" placeholder="Enter valid email"
+								required="true" requiredMessage="Enter employee's email">
+								<f:validateRegex pattern="[\w\.-]*[a-zA-Z0-9_]@[\w\.-]*[a-zA-Z0-9]\.[a-zA-Z][a-zA-Z\.]*[a-zA-Z]" />
+								<p:ajax update="employee-officeEmail-msg" event="blur" />
+							</p:inputText>
+							<p:message for="employee-officeEmail" id="employee-officeEmail-msg" />
+						</h:panelGrid>
+					</div>
+
+
+
+					<div class="ui-g-12 ui-md-6 ui-lg-3">
+						<h:panelGrid style="width:100%">
+							<p:outputLabel for="employee-personalEmail" value="Personal Email:" />
+							<p:inputText id="employee-personalEmail" value="#{adminBean.employee.contactAddress.alternateEmail}"
+								validator="#{adminBean.checkPersonalEmail}" validatorMessage="Invalid email format"
+								placeholder="Enter valid email">
+								<f:validateRegex pattern="[\w\.-]*[a-zA-Z0-9_]@[\w\.-]*[a-zA-Z0-9]\.[a-zA-Z][a-zA-Z\.]*[a-zA-Z]" />
+								<p:ajax update="employee-personalEmail-msg" event="blur" />
+							</p:inputText>
+							<p:message for="employee-personalEmail" id="employee-personalEmail-msg" />
+						</h:panelGrid>
+					</div>
+
+
+					<div class="ui-g-12 ui-md-6 ui-lg-3">
+						<h:panelGrid style="width:100%">
+							<p:outputLabel for="employee-fax" value="Fax:" />
+							<p:inputText value="#{adminBean.employee.contactAddress.fax}" id="employee-fax" placeholder="Enter Fax" />
+							<p:message for="employee-fax" />
+						</h:panelGrid>
+					</div>
+
+
+					<div class="ui-g-12 ui-md-6 ui-lg-3">
+						<h:panelGrid style="width:100%">
+							<p:outputLabel for="employee-linkedin" value="Linkedin:" />
+							<p:inputText value="#{adminBean.employee.contactAddress.linkedin}" id="employee-linkedin"
+								placeholder="Enter Linkedin" />
+							<p:message for="employee-linkedin" />
+						</h:panelGrid>
+					</div>
+
+
+
+					<div class="ui-g-12 ui-md-6 ui-lg-3">
+						<h:panelGrid style="width:100%">
+							<p:outputLabel for="employee-facebook" value="Facebook:" />
+							<p:inputText value="#{adminBean.employee.contactAddress.facebook}" id="employee-facebook"
+								placeholder="Enter Facebook" />
+							<p:message for="employee-facebook" />
+						</h:panelGrid>
+					</div>
+
+
+
+					<div class="ui-g-12 ui-md-6 ui-lg-3">
+						<h:panelGrid style="width:100%">
+							<p:outputLabel for="employee-twitter" value="Twitter:" />
+							<p:inputText value="#{adminBean.employee.contactAddress.twitter}" id="employee-twitter"
+								placeholder="Enter Twitter" />
+							<p:message for="employee-twitter" />
+						</h:panelGrid>
+					</div>
+
+
+					<div class="ui-g-12 ui-md-6 ui-lg-3">
+						<h:panelGrid style="width:100%">
+							<p:outputLabel for="employee-skype" value="Skype:" />
+							<p:inputText value="#{adminBean.employee.contactAddress.skype}" id="employee-skype" placeholder="Enter Skype" />
+							<p:message for="employee-skype" />
+						</h:panelGrid>
+					</div>
+
+
+					<div class="ui-g-12 ui-md-6 ui-lg-3">
+						<h:panelGrid style="width:100%">
+							<p:outputLabel for="employee-msn" value="Msn:" />
+							<p:inputText value="#{adminBean.employee.contactAddress.msn}" id="employee-msn" placeholder="Enter Msn" />
+							<p:message for="employee-msn" />
+						</h:panelGrid>
+					</div>
+				</div>
+			</p:fieldset>
+			<p:fieldset legend="Official Details" style="margin-bottom:20px;">
+				<div class="ui-g">
+
+					<div class="ui-g-12 ui-md-6 ui-lg-3">
+						<h:panelGrid style="width:100%">
+							<p:outputLabel for="employee-dateOfJoining" value="Date Of Joining: (mm/dd/YYYY):" />
+							<p:calendar id="employee-dateOfJoining" value="#{adminBean.employee.dateOfJoining}" pattern="MM/dd/yyyy"
+								mask="true" required="true" requiredMessage="Enter Date Of Joining" />
+							<p:message for="employee-dateOfJoining" />
+						</h:panelGrid>
+					</div>
+
+
+					<div class="ui-g-12 ui-md-6 ui-lg-3">
+						<h:panelGrid style="width:100%">
+							<p:outputLabel for="employee-department" value="Department:" />
+							<p:selectOneMenu id="employee-department" value="#{adminBean.employee.department.id}" required="true"
+								requiredMessage="Enter Department">
+								<f:selectItem itemLabel="Select Department" itemValue="" noSelectionOption="true" />
+								<f:selectItems value="#{appDataBean.departments}" var="dept" itemValue="#{dept.id}"
+									itemLabel="#{dept.departmentName}" />
+							</p:selectOneMenu>
+							<p:message for="employee-department" />
+						</h:panelGrid>
+					</div>
+
+
+					<div class="ui-g-12 ui-md-6 ui-lg-3">
+						<h:panelGrid style="width:100%">
+							<p:outputLabel for="employee-designation" value="Designation:" />
+							<p:selectOneMenu id="employee-designation" value="#{adminBean.employee.designation.id}" required="true"
+								requiredMessage="Enter Designation">
+								<f:selectItem itemLabel="Select Designation" itemValue="" noSelectionOption="true" />
+								<f:selectItems value="#{appDataBean.designations}" var="desi" itemValue="#{desi.id}"
+									itemLabel="#{desi.designationName}" />
+							</p:selectOneMenu>
+							<p:message for="employee-designation" />
+						</h:panelGrid>
+					</div>
+
+
+					<div class="ui-g-12 ui-md-6 ui-lg-3">
+						<h:panelGrid style="width:100%">
+							<p:outputLabel for="employee-salary" value="Salary:" />
+							<p:password value="#{adminBean.employee.salary}" required="true" id="employee-salary"
+								requiredMessage="Enter Salary" validatorMessage="Salary Range 1000.00 to 200000.00">
+								<f:validateDoubleRange minimum="1000.00" maximum="200000.00" />
+								<f:convertNumber longOnly="true" />
+							</p:password>
+							<p:message for="employee-salary" />
+						</h:panelGrid>
+					</div>
+
+
+
+					<div class="ui-g-12 ui-md-6 ui-lg-3">
+						<h:panelGrid style="width:100%">
+							<p:outputLabel for="employee-active" value="Active:" />
+							<p:selectOneRadio id="employee-active" value="#{adminBean.employee.active}">
+								<f:selectItem itemValue="true" itemLabel="Yes" />
+								<f:selectItem itemValue="false" itemLabel="No" />
+							</p:selectOneRadio>
+							<p:message for="employee-active" />
+						</h:panelGrid>
+					</div>
+
+					<div class="ui-g-12 ui-md-6 ui-lg-3">
+						<h:panelGrid style="width:100%">
+							<p:outputLabel for="employee-userName" value="User Name" />
+							<p:inputText value="#{adminBean.employee.userProfile.username}" required="true" id="employee-userName"
+								requiredMessage="Enter Username" validator="#{adminBean.checkUsername}" placeholder="Enter Username">
+								<p:ajax update="employee-username-msg" event="blur" />
+							</p:inputText>
+							<p:message for="employee-userName" id="employee-username-msg" />
+						</h:panelGrid>
+					</div>
+
+
+					<div class="ui-g-12 ui-md-6 ui-lg-3">
+						<h:panelGrid style="width:100%">
+							<p:outputLabel for="employee-password" value="Password:" />
+							<p:password value="#{adminBean.employee.userProfile.password}" required="true" id="employee-password"
+								requiredMessage="Enter Password" placeholder="Enter Password">
+								<f:ajax event="blur" listener="#{adminBean.setPasswordByListener()}" />
+							</p:password>
+							<p:message for="employee-password" />
+						</h:panelGrid>
+					</div>
+
+					<div class="ui-g-12 ui-md-6 ui-lg-3">
+						<h:panelGrid style="width:100%">
+							<p:outputLabel for="employee-confirmPassword" value="Confirm Password:" />
+							<p:password validator="#{adminBean.validateSamePassword}" required="true" id="employee-confirmPassword"
+								requiredMessage="Enter Confirm Password" placeholder="Enter Confirm Password">
+								<p:ajax update="employee-password-check-msg" event="blur" />
+							</p:password>
+							<p:message for="employee-confirmPassword" id="employee-password-check-msg" />
+						</h:panelGrid>
+					</div>
+
+
+					<div class="ui-g-12 ui-md-6 ui-lg-3">
+						<h:panelGrid style="width:100%">
+							<p:outputLabel for="employee-role" value="Role:" />
+							<p:selectManyCheckbox id="employee-role" value="#{adminBean.roleTypes}" layout="grid" columns="3" required="true"
+								requiredMessage="Enter Role">
+								<f:selectItems value="#{appDataBean.roles}" var="r" itemValue="#{r.roleType}" itemLabel="#{r.displayValue}" />
+							</p:selectManyCheckbox>
+							<p:message for="employee-role" />
+						</h:panelGrid>
+					</div>
+
+
+					<div class="ui-g-12 ui-md-6 ui-lg-3">
+						<h:panelGrid style="width:100%">
+							<p:outputLabel for="employee-supervisor" value="Supervisor:" />
+							<p:selectOneMenu id="employee-supervisor" value="#{adminBean.employee.employee.empId}">
+								<f:selectItem itemLabel="Select Supervisor" itemValue="" noSelectionOption="true" />
+								<f:selectItems value="#{appDataBean.supervisors}" var="emp" itemValue="#{emp.empId}" itemLabel="#{emp.name}" />
+							</p:selectOneMenu>
+							<p:message for="employee-supervisor" />
+						</h:panelGrid>
+					</div>
+
+					<div class="ui-g-12 ui-md-6 ui-lg-6">
+						<h:panelGrid style="width:100%">
+							<p:outputLabel for="employee-remarks" value="Remarks:" />
+							<p:inputTextarea id="employee-remarks" value="#{adminBean.employee.contactAddress.remarks}"
+								placeholder="Enter Remarks" />
+							<p:message for="employee-remarks" />
+						</h:panelGrid>
+					</div>
+
+				</div>
+			</p:fieldset>
+			<f:facet name="footer">
+				<p:commandButton value="Save" actionListener="#{adminBean.saveEmployee()}" onclick="PF('statusDialog').show()" oncomplete="PF('statusDialog').hide()" update=":mainBody" />
+			</f:facet>
+		</p:panel>
+	</h:form>
+</ui:composition>

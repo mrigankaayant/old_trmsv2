@@ -1,0 +1,10 @@
+globalitDomain = globalitexperts.com
+ayantsoftDomain = ayantsoft.com
+host=submit.notes.na.collabserv.com
+port=465
+notificationSenderEmailId=onboarding@globalitexperts.com
+notificationSenderEmailPassword=!@admin12
+trainerInvoiceFolder=/home/ayant/UPLOAD_FILES/TRMS_v2/TRAINER
+candidatesUploadedDocumentsFolder=/home/ayant/UPLOAD_FILES/TRMS_v2/CANDIDATE
+mockpreparationteam=training@globalitexperts.com
+graduationpreparationteam=graduation@globalitexperts.com,training@globalitexperts.com

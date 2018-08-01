@@ -1,0 +1,91 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:fn="http://java.sun.com/jsp/jstl/functions">
+
+	<h:form id="datatable-form">
+		<p:panel style="margin-top:9%">
+
+			<f:facet name="header">Profile</f:facet>
+				
+				<p:dataTable var="f" value="#{recruitmentBean.freePoolcandidates}" paginator="true" rows="20"
+				rowKey="#{f.candidateId}" resizableColumns="true" resizeMode="true"
+				sortBy="#{f.candidateRemarks}" sortOrder="ascending"
+				paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
+				rowsPerPageTemplate="20,30,50,100" selection="#{recruitmentBean.freePoolCandidatesDto}"
+				id="candidate-payment-due-table" widgetVar="advanceSearch" tableStyle="table-layout: auto">
+			
+				<f:facet name="header">Free Pool Candidates</f:facet>
+
+				<p:column selectionMode="single" style="width:16px;text-align:center" />
+				
+				<p:column headerText="Id" sortBy="#{f.candidateId}" filterBy="#{f.candidateId}" >
+					<h:outputText value="#{f.candidateId}" />
+				</p:column>
+					
+				<p:column headerText="Name" sortBy="#{f.candidateName}" filterBy="#{f.candidateName}" >
+					<h:outputText value="#{f.candidateName}" />
+				</p:column>
+
+				<p:column headerText="Email" sortBy="#{f.candidateEmail}" filterBy="#{f.candidateEmail}" >
+					<h:outputText value="#{f.candidateEmail}" />
+				</p:column>
+
+				<p:column headerText="Mobile" sortBy="#{f.candidateMobile}" filterBy="#{f.candidateMobile}" >
+					<button type="button"  onclick="clickToCall('#{recruitmentBean.phoneExtension}','#{fn:replace(f.candidateMobile,'[^0-9]','')}')">#{fn:replace(f.candidateMobile,'[^0-9]','')}</button>
+				</p:column>
+
+				<p:column headerText="Cur. Location" sortBy="#{f.currentLocation}" filterBy="#{f.currentLocation}" >
+					<h:outputText value="#{f.currentLocation}" />
+				</p:column>
+
+				<p:column headerText="Skills" sortBy="#{f.candidateCourse}" filterBy="#{f.candidateCourse}" >
+					<h:outputText value="#{f.candidateCourse}" />
+				</p:column>
+
+				<p:column headerText="Status" sortBy="#{f.candidateRemarks}" filterBy="#{f.candidateRemarks}" >
+					<h:outputText value="#{f.candidateRemarks}" />
+				</p:column>
+
+
+				<p:column headerText="Visa" sortBy="#{f.visa}" filterBy="#{f.visa}" >
+					<h:outputText value="#{f.visa}" />
+				</p:column>
+
+				<p:column headerText="Recruiter" sortBy="#{f.recruiterName}" filterBy="#{f.recruiterName}" >
+					<h:outputText value="#{f.recruiterName}" />
+				</p:column>
+				
+			</p:dataTable>
+			
+			<f:facet name="footer" style="text-align:left">
+			   <p:commandButton value="Next" action="#{recruitmentBean.showFollowupPage()}" onclick="PF('statusDialog').show()"
+					oncomplete="PF('statusDialog').hide()" update=":mainBody" />
+			</f:facet>
+			
+		</p:panel>
+
+	</h:form>
+	
+	
+<script type="text/javascript">
+	
+	function clickToCall(fromnum,tonum) {
+
+		$.ajax({
+ 	       url: 'http://globalitexperts.vitelglobal.com/clicktocall/index.php'+'?fromnum=' + fromnum + '&amp;tonum=' + tonum,
+            type: 'POST',
+            crossOrigin: true,
+            success: function (response) {
+            console.log(response.status);
+          },
+          error: function (response) {
+            console.log(response.status);
+         }
+        });
+           
+        alert('calling to '+ tonum);
+	}
+
+</script>
+
+</ui:composition>

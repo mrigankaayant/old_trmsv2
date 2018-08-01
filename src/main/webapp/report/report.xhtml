@@ -1,0 +1,46 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html" xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+<ui:composition template="/report/reportTemplate.xhtml">
+	<ui:define name="content">
+		<h:panelGroup id="mainBody">
+			<c:choose>
+
+				<c:when test="#{reportBean.action == 'MONTHLYINCENTIVE'}">
+					<ui:include src="/report/monthlyIncentiveList.xhtml" />
+				</c:when>
+				
+				<c:when test="#{reportBean.action == 'BARCHARTFORINCENTIVE'}">
+					<ui:include src="/report/incentivePageWithBarCharts.xhtml" />
+				</c:when>
+				
+				<c:when test="#{reportBean.action == 'BARCHARTFORINCENTIVEFORTEAMLEADER'}">
+					<ui:include src="/report/incentivePageWithBarChartsForTeamLeader.xhtml" />
+				</c:when>
+				
+				<c:when test="#{reportBean.action == 'PIECHARTFORINCENTIVE'}">
+					<ui:include src="/report/incentivePageWithPieCharts.xhtml" />
+				</c:when>
+				
+				<c:when test="#{reportBean.action == 'PIECHARTFORINCENTIVEFORTEAMLEADER'}">
+					<ui:include src="/report/incentivePageWithPieChartsForTeamLeader.xhtml" />
+				</c:when>
+				
+				<c:when test="#{reportBean.action == 'RECRUITMENTREPORT'}">
+					<ui:include src="/report/recruitmentReport.xhtml" />
+				</c:when>
+				
+				
+				<c:when test="#{reportBean.action == 'SUMMARYREPORT'}">
+					<ui:include src="/report/summaryReport.xhtml" />
+				</c:when>
+				
+			</c:choose>
+
+		</h:panelGroup>
+	</ui:define>
+</ui:composition>
+
+</html>

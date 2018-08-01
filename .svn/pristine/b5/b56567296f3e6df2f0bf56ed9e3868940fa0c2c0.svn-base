@@ -1,0 +1,1126 @@
+package com.ayantsoft.trms.jsf.view;
+
+
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.io.Serializable;
+import java.math.BigDecimal;
+import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Properties;
+import java.util.StringTokenizer;
+
+import javax.annotation.PostConstruct;
+import javax.faces.application.FacesMessage;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
+import javax.faces.bean.ViewScoped;
+import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
+
+import org.primefaces.component.selectonemenu.SelectOneMenu;
+import org.primefaces.context.RequestContext;
+import org.primefaces.event.SelectEvent;
+import org.primefaces.model.LazyDataModel;
+
+import com.ayantsoft.trms.hibernate.pojo.Candidate;
+import com.ayantsoft.trms.hibernate.pojo.CandidateCourse;
+import com.ayantsoft.trms.hibernate.pojo.CandidatePayment;
+import com.ayantsoft.trms.hibernate.pojo.CandidateRemarks;
+import com.ayantsoft.trms.hibernate.pojo.ContactAddress;
+import com.ayantsoft.trms.hibernate.pojo.FollowUp;
+import com.ayantsoft.trms.hibernate.pojo.ProgrammeSchedule;
+import com.ayantsoft.trms.jsf.converter.ListStringConverter;
+import com.ayantsoft.trms.jsf.model.CandidatePaymentModel;
+import com.ayantsoft.trms.jsf.model.FollowUpModel;
+import com.ayantsoft.trms.jsf.model.FreePoolCandidatesDto;
+import com.ayantsoft.trms.jsf.model.LazyCandidateDataModel;
+import com.ayantsoft.trms.jsf.model.LazyCandidateDataModelForReport;
+import com.ayantsoft.trms.jsf.model.LazyProgrameSheduleModel;
+import com.ayantsoft.trms.jsf.model.OfferletterModel;
+import com.ayantsoft.trms.service.CandidateCheckListService;
+import com.ayantsoft.trms.service.CandidatePaymentService;
+import com.ayantsoft.trms.service.CandidateService;
+import com.ayantsoft.trms.service.EmailSendService;
+import com.ayantsoft.trms.service.EmployeeService;
+import com.ayantsoft.trms.service.FollowUpService;
+import com.ayantsoft.trms.service.ProgrameSheduleService;
+import com.ayantsoft.trms.service.UserProfileService;
+
+
+/**
+ * @author manojgupta
+ *
+ */
+@ManagedBean
+@ViewScoped
+public class RecruitmentBean implements Serializable{
+
+	/**
+	 * serialVersionUID
+	 */
+	private static final long serialVersionUID = -2221447891807466554L;
+
+	private Candidate candidate;
+	private FollowUp followUp;
+	private String action;
+	private Integer empId;
+	private List<String> preffredLocation;
+	private List<CandidatePaymentModel>candidatePaymentModel;
+	private CandidatePaymentModel candidatePayment;
+	private List<CandidateRemarks>candidateStatuses=new ArrayList<CandidateRemarks>();
+	private boolean isCandidateEnrolled;
+	private LazyDataModel<ProgrammeSchedule> programmeScheduleLazyModel;
+	private String candidateStatus;
+	private List<CandidatePaymentModel> selectedCandidates;
+	private OfferletterModel offerletterModel;
+	private LazyDataModel<Candidate> candidateLazyModelForReport;
+	private List<Object> candidatesForFreePool;
+	private FollowUpModel followUpModel;
+	private List<FreePoolCandidatesDto> freePoolcandidates;
+	private FreePoolCandidatesDto freePoolCandidatesDto;
+	private CandidatePayment selectedCandidatePayment;
+	private LazyDataModel<Candidate> candidateLazyModel;
+	private String searchBy;
+	private String searchValue;
+	private List<Candidate> searchingCandidateList;
+	private String phoneExtension;
+
+
+
+	@ManagedProperty("#{loginBean}")
+	private LoginBean loginBean;
+
+	@ManagedProperty(value="#{candidateService}")
+	private CandidateService candidateService ;
+
+	@ManagedProperty(value="#{followUpService}")
+	private FollowUpService followUpService ;
+
+	@ManagedProperty(value="#{candidatePaymentService}")
+	private CandidatePaymentService candidatePaymentService ;
+
+	@ManagedProperty(value="#{employeeService}")
+	private EmployeeService employeeService ;
+
+	@ManagedProperty(value="#{userProfileService}")
+	private UserProfileService userProfileService ;
+
+	@ManagedProperty(value="#{appDataBean}")
+	private AppDataBean appDataBean ;
+
+	@ManagedProperty(value="#{candidateCheckListService}")
+	private CandidateCheckListService candidateCheckListService ;
+
+	@ManagedProperty(value="#{programeSheduleService}")
+	private ProgrameSheduleService programeSheduleService;
+
+
+	public void candidateAdvanceSearch(){
+		
+		phoneExtension = loginBean.getUserProfile().getEmployee().getPhoneExtension();
+		if(candidate != null){
+			candidate = null;
+		}
+		action="ADVANCESEARCH";
+	}
+
+
+	public void candidatePaymentReminder(){
+		action="PAYMENTREMINDER";
+		if(selectedCandidates != null){
+			selectedCandidates.clear();
+		}
+		empId=loginBean.getUserProfile().getEmployee().getEmpId();
+		candidatePaymentModel=candidatePaymentService.getCandidatePaymentDue(empId, loginBean.hasRole("ROLE_RECRUITER"),loginBean.hasRole("ROLE_ADMIN"));
+		if(candidatePaymentModel != null)
+		{
+			Iterator<CandidatePaymentModel> ite = candidatePaymentModel.iterator();
+			while(ite.hasNext()) {
+				CandidatePaymentModel cpm = ite.next();
+
+				if(cpm.getDueAmount() != null){
+					if ((cpm.getDueAmount()).compareTo(BigDecimal.ZERO) == 0){
+						ite.remove();
+					}
+				}
+			}
+		}
+	}
+
+	public void onRowSelect(SelectEvent event) {
+		preffredLocation = null;
+		candidate = (Candidate)event.getObject();
+		String preLocation = candidate.getPreferedLocation();
+		if(preLocation != null){
+			preffredLocation = new ArrayList<String>();
+			StringTokenizer st = new StringTokenizer(preLocation,"#");
+			while (st.hasMoreElements()) {
+				preffredLocation.add((String) st.nextElement());
+			}
+		}
+		List<FollowUp> followUpList=followUpService.followUpListForCandidate(candidate.getCandidateId());
+		candidate.setFollowUps(followUpList);
+		candidate.setNextFollowUpDate(null);
+		if(candidate.getCandidateCourse() == null){
+			candidate.setCandidateCourse(new CandidateCourse());
+		}
+
+		followUp = new FollowUp();
+		RequestContext.getCurrentInstance().reset("followup-form");
+
+		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "", "Selected candidate added at below"));
+
+	}
+
+
+
+	public void showFollowUpForPayment(SelectEvent event) {
+		candidatePayment=(CandidatePaymentModel) event.getObject();
+		candidatePayment.getCandidate().getCandidateId();
+		candidate=candidatePayment.getCandidate();
+
+	}
+
+	public void newCandidateForm(){
+
+		this.action ="NEW";
+		candidate = new Candidate();
+		candidate.setContactAddress(new ContactAddress());
+		CandidateRemarks cr = new CandidateRemarks();
+		cr.setId(1);
+		cr.setStatusType("New Entry");
+		candidate.setCandidateRemarks(cr);
+		candidate.setCandidateCourse(new CandidateCourse());
+
+		followUp=new FollowUp();
+		followUp.setFollowUpRemarks(" Candidate created. ");
+
+		preffredLocation=null;
+
+	}
+
+
+
+	/**
+	 * used for candidate and followUp entry saving
+	 */
+
+	public void saveCanidateWithFollowUp(){
+
+		if(candidate.getNextFollowUpDate()==null){
+			candidate.setNextFollowUpDate(new Date());
+		}
+		followUp.setEmployee(loginBean.getEmployee());
+
+
+		candidate.setPreferedLocation(ListStringConverter.getAsString(preffredLocation));
+		if(candidate.getCandidateId() == null){
+			candidate.setEmployee(loginBean.getEmployee());
+			candidate.setEntryDate(new Date());     //add this line 01022017
+		}
+		candidateStatuses=appDataBean.getCandidateStatuses();
+		String status=candidate.getCandidateRemarks().getStatusType();
+		try {
+			for(CandidateRemarks cr:candidateStatuses){
+				if(cr.getId()==candidate.getCandidateRemarks().getId()){
+					candidate.getCandidateRemarks().setStatusType(cr.getStatusType());
+				}
+			}
+
+			followUp.setFollowUpType(candidate.getCandidateRemarks().getStatusType());
+			isCandidateEnrolled=candidateService.checkCandidatePayment(candidate.getCandidateId());
+
+			if(candidate.getCandidateRemarks().getStatusType().equals("Enrolled") && !isCandidateEnrolled){
+
+				if(candidate.getCandidateCourse().getId() == null || candidate.getCandidateCourse().getId() <= 0){
+					FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error:", "For Enrolled Candidate Skill is must"));
+					candidate.getCandidateRemarks().setStatusType(status);
+					return;
+
+				}
+
+				if(candidate.getTotalAmount() == null || candidate.getTotalAmount() <= 0){
+					FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error:", "For Enrolled Fee is must"));
+					candidate.getCandidateRemarks().setStatusType(status);
+					return;
+
+				}
+
+				followUp.setFollowUpRemarks(followUp.getFollowUpRemarks()+" Candidate enrolled. ");
+
+				Properties prop = new Properties();
+				InputStream inputStream = getClass().getClassLoader().getResourceAsStream("trms.properties");
+				if (inputStream != null) {
+					prop.load(inputStream);
+				} else {
+					throw new FileNotFoundException("property file not found");
+				}
+
+
+				List<String> emailsForHr = userProfileService.getEmailByUserRole("ROLE_HR");
+				List<String> emailsForAccountant = userProfileService.getEmailByUserRole("ROLE_ACCOUNT");
+				if(emailsForHr != null){
+					for(String email:emailsForHr){
+						String message = "candidate Id : "+candidate.getCandidateId()+" name: "+candidate.getFirstName()+" "
+								+ "for course: "+candidate.getCandidateCourse().getCourse()+" and amount: "+candidate.getTotalAmount()+" has been enrolled check details";
+						new EmailSendService().sendMail(prop.getProperty("host"),prop.getProperty("port"),prop.getProperty("notificationSenderEmailId"),prop.getProperty("notificationSenderEmailPassword"),email,"Entrolled Candidate Info",message,null,null,null);
+					}
+				}
+
+				if(emailsForAccountant != null){
+					for(String email:emailsForAccountant)
+					{
+						String message = "candidate Id : "+candidate.getCandidateId()+" name: "+candidate.getFirstName()+" "
+								+ "for course: "+candidate.getCandidateCourse().getCourse()+" and amount: "+candidate.getTotalAmount()+" has been enrolled kindly update payment";
+						new EmailSendService().sendMail(prop.getProperty("host"),prop.getProperty("port"),prop.getProperty("notificationSenderEmailId"),prop.getProperty("notificationSenderEmailPassword"),email,"Entrolled Candidate Info",message,null,null,null);
+					}
+				}
+
+
+				CandidatePayment candidatePayment=new CandidatePayment();
+				candidatePayment.setCreadit(BigDecimal.valueOf((candidate.getTotalAmount())));
+				candidatePayment.setEmployee(loginBean.getEmployee());
+				candidatePayment.setCandidateCourse(candidate.getCandidateCourse());
+				candidatePayment.setTransactionDate(new Date());
+				candidatePayment.setDebit(new BigDecimal(0.00));
+				candidateService.updateCandidate(candidate,followUp,candidatePayment);
+
+				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"Sucess:", "Candidate enrolled"));
+			}else{
+
+				if(candidate.getCandidateId()==null){
+					candidateService.updateCandidate(candidate,followUp,null);
+					FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"Sucess:", "Candidate  saved"));
+
+
+				}else{
+					candidateService.updateCandidate(candidate,followUp,null);
+					FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"Sucess:", "FollowUp  saved"));
+				}
+
+				if(candidate.getCandidateCourse() == null){
+					candidate.setCandidateCourse(new CandidateCourse());
+				}
+			}
+			followUp=new FollowUp();
+			List<FollowUp> followUpList=followUpService.followUpListForCandidate(candidate.getCandidateId());
+			candidate.setFollowUps(followUpList);
+			candidate.setNextFollowUpDate(null);
+			preffredLocation = ListStringConverter.getAsList(candidate.getPreferedLocation());
+			action="ADVANCESEARCH";
+		} catch (Exception e) {
+			candidate.getCandidateRemarks().setStatusType(status);
+			e.printStackTrace();
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Fail:", "FollowUp  not saved"));
+		}
+
+	}
+	
+	
+	
+	
+	public void saveCanidateWithFollowUpForFreePool(){
+
+		if(candidate.getNextFollowUpDate()==null){
+			candidate.setNextFollowUpDate(new Date());
+		}
+		followUp.setEmployee(loginBean.getEmployee());
+
+
+		candidate.setPreferedLocation(ListStringConverter.getAsString(preffredLocation));
+
+		candidate.setEmployee(loginBean.getEmployee());
+		candidate.setEntryDate(new Date());     //add this line 01022017
+			
+		candidateStatuses=appDataBean.getCandidateStatuses();
+		String status=candidate.getCandidateRemarks().getStatusType();
+		try {
+			for(CandidateRemarks cr:candidateStatuses){
+				if(cr.getId()==candidate.getCandidateRemarks().getId()){
+					candidate.getCandidateRemarks().setStatusType(cr.getStatusType());
+				}
+			}
+
+			followUp.setFollowUpType(candidate.getCandidateRemarks().getStatusType());
+			isCandidateEnrolled=candidateService.checkCandidatePayment(candidate.getCandidateId());
+
+			if(candidate.getCandidateRemarks().getStatusType().equals("Enrolled") && !isCandidateEnrolled){
+
+				if(candidate.getCandidateCourse().getId() == null || candidate.getCandidateCourse().getId() <= 0){
+					FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error:", "For Enrolled Candidate Skill is must"));
+					candidate.getCandidateRemarks().setStatusType(status);
+					return;
+
+				}
+
+				if(candidate.getTotalAmount() == null || candidate.getTotalAmount() <= 0){
+					FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error:", "For Enrolled Fee is must"));
+					candidate.getCandidateRemarks().setStatusType(status);
+					return;
+
+				}
+
+				followUp.setFollowUpRemarks(followUp.getFollowUpRemarks()+" Candidate enrolled. ");
+
+				Properties prop = new Properties();
+				InputStream inputStream = getClass().getClassLoader().getResourceAsStream("trms.properties");
+				if (inputStream != null) {
+					prop.load(inputStream);
+				} else {
+					throw new FileNotFoundException("property file not found");
+				}
+
+
+				List<String> emailsForHr = userProfileService.getEmailByUserRole("ROLE_HR");
+				List<String> emailsForAccountant = userProfileService.getEmailByUserRole("ROLE_ACCOUNT");
+				if(emailsForHr != null){
+					for(String email:emailsForHr){
+						String message = "candidate Id : "+candidate.getCandidateId()+" name: "+candidate.getFirstName()+" "
+								+ "for course: "+candidate.getCandidateCourse().getCourse()+" and amount: "+candidate.getTotalAmount()+" has been enrolled check details";
+						new EmailSendService().sendMail(prop.getProperty("host"),prop.getProperty("port"),prop.getProperty("notificationSenderEmailId"),prop.getProperty("notificationSenderEmailPassword"),email,"Entrolled Candidate Info",message,null,null,null);
+					}
+				}
+
+				if(emailsForAccountant != null){
+					for(String email:emailsForAccountant)
+					{
+						String message = "candidate Id : "+candidate.getCandidateId()+" name: "+candidate.getFirstName()+" "
+								+ "for course: "+candidate.getCandidateCourse().getCourse()+" and amount: "+candidate.getTotalAmount()+" has been enrolled kindly update payment";
+						new EmailSendService().sendMail(prop.getProperty("host"),prop.getProperty("port"),prop.getProperty("notificationSenderEmailId"),prop.getProperty("notificationSenderEmailPassword"),email,"Entrolled Candidate Info",message,null,null,null);
+					}
+				}
+
+
+				CandidatePayment candidatePayment=new CandidatePayment();
+				candidatePayment.setCreadit(BigDecimal.valueOf((candidate.getTotalAmount())));
+				candidatePayment.setEmployee(loginBean.getEmployee());
+				candidatePayment.setCandidateCourse(candidate.getCandidateCourse());
+				candidatePayment.setTransactionDate(new Date());
+				candidatePayment.setDebit(new BigDecimal(0.00));
+				candidateService.updateCandidate(candidate,followUp,candidatePayment);
+
+				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"Sucess:", "Candidate enrolled"));
+			}else{
+
+				if(candidate.getCandidateId()==null){
+					candidateService.updateCandidate(candidate,followUp,null);
+					FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"Sucess:", "Candidate  saved"));
+
+
+				}else{
+					candidateService.updateCandidate(candidate,followUp,null);
+					FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"Sucess:", "FollowUp  saved"));
+				}
+
+				if(candidate.getCandidateCourse() == null){
+					candidate.setCandidateCourse(new CandidateCourse());
+				}
+			}
+			followUp=new FollowUp();
+			List<FollowUp> followUpList=followUpService.followUpListForCandidate(candidate.getCandidateId());
+			candidate.setFollowUps(followUpList);
+			candidate.setNextFollowUpDate(null);
+			preffredLocation = ListStringConverter.getAsList(candidate.getPreferedLocation());
+			action="FREEPOOLLIST";
+			candidate = null;
+			freePoolCandidatesDto = null;
+			Calendar cal = Calendar.getInstance();
+			cal.setTime(new Date());
+			cal.add(Calendar.DATE, -30);
+			Date dateBefore45Days = cal.getTime();
+			freePoolcandidates = followUpService.findFreePoolCandidates(dateBefore45Days);
+		} catch (Exception e) {
+			candidate.getCandidateRemarks().setStatusType(status);
+			e.printStackTrace();
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Fail:", "FollowUp  not saved"));
+		}
+
+	}
+	
+	
+	
+	
+	
+	
+
+	@PostConstruct
+	public void init(){
+		Map<String, String> params =FacesContext.getCurrentInstance().
+				getExternalContext().getRequestParameterMap();
+		String candidateId = params.get("candidateId");
+		if(candidateId != null){
+			candidate = candidateService.getCandidate(Integer.parseInt(candidateId));
+			followUp=new FollowUp();
+			List<FollowUp> followUpList=followUpService.followUpListForCandidate(candidate.getCandidateId());
+			candidate.setFollowUps(followUpList);
+			candidate.setNextFollowUpDate(null);
+			preffredLocation = ListStringConverter.getAsList(candidate.getPreferedLocation());
+			if(candidate.getCandidateCourse() == null){
+				candidate.setCandidateCourse(new CandidateCourse());
+			}
+		}
+
+		empId=loginBean.getUserProfile().getEmployee().getEmpId();
+		boolean isAdmin=loginBean.hasRole("ROLE_ADMIN");
+		candidateLazyModel = new LazyCandidateDataModel(candidateService, loginBean.getUserProfile().getEmployee().getEmpId(),isAdmin);
+
+	}
+
+
+	public void followUpDateValidate(FacesContext context, UIComponent component, Object value){
+
+		if(!candidate.getCandidateRemarks().getStatusType().equals("Enrolled")){
+			if(value == null){
+				FacesContext.getCurrentInstance().addMessage(component.getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR,"", "Enter Next followUp date"));
+			}
+
+		}
+	}
+
+
+	public void emailValidate(FacesContext context, UIComponent component, Object value){
+		boolean hasEmail=candidateService.checkUniqueEmail((String)value,candidate.getCandidateId());
+		if(!hasEmail){
+			FacesContext.getCurrentInstance().addMessage(component.getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR,"Email duplicate:", "Email already exists"));
+		}
+	}
+
+	public void mobileValidate(FacesContext context, UIComponent component, Object value){
+		boolean hasworkMobile=candidateService.checkUniqueMobile((String)value,candidate.getCandidateId());
+		if(!hasworkMobile){
+			FacesContext.getCurrentInstance().addMessage(component.getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR,"Mobile duplicate:", "Mobile already exists"));
+		}
+
+	}
+
+
+	public void candidateCourseValidator(FacesContext context, UIComponent component, Object value){
+		SelectOneMenu candidateStatusUI = (SelectOneMenu)component.findComponent("candidate-statusId") ;
+		Integer candidateStatus = (Integer)candidateStatusUI.getValue();
+		if(6==candidateStatus) {
+			if(value == null || ((Integer)value) <=0){
+				FacesContext.getCurrentInstance().addMessage(component.getClientId(), 
+						new FacesMessage(FacesMessage.SEVERITY_ERROR,"Course Validation:", "For enrollment, must enter skills"));
+			}
+		}
+	}
+
+
+	public void batchList()
+	{
+		action ="BATCHLIST";
+		programmeScheduleLazyModel = new LazyProgrameSheduleModel(programeSheduleService);
+	}
+
+
+
+	public int getTotalCandidate(Integer programeSheduleId)
+	{
+		return programeSheduleService.getTotalCandidate(programeSheduleId);
+	}
+
+
+	public LazyDataModel<Candidate> getCandidateLazyModel() {
+		return candidateLazyModel;
+	}
+
+	public void setCandidateLazyModel(LazyDataModel<Candidate> candidateLazyModel) {
+		this.candidateLazyModel = candidateLazyModel;
+	}
+
+	private List<Candidate> candidates;
+
+	public List<Candidate> getCandidates() {
+		return candidates;
+	}
+
+
+	public void setCandidates(List<Candidate> candidates) {
+		this.candidates = candidates;
+	}
+
+
+	public void candidateReportByStatus(){
+		FacesContext fc = FacesContext.getCurrentInstance();
+		Map<String,String> params =fc.getExternalContext().getRequestParameterMap();
+		candidateStatus = params.get("status");
+		candidates = candidateService.getCandidateByStatus(loginBean.getUserProfile().getEmployee().getEmpId(),loginBean.hasRole("ROLE_ADMIN"),candidateStatus);
+		action = "CANDIDATELISTFORREPORT";
+	}
+
+
+
+	public void emailSend(){
+		if(selectedCandidates.size()>0){
+			action = "MAILSENDING";
+			offerletterModel = new OfferletterModel();
+			offerletterModel.setCandidatePaymentModels(selectedCandidates);
+			offerletterModel.setIndicator("multiple");
+		}else{
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Fail:", "Candidate Not Selected"));
+		}
+
+	}
+
+
+	public void mailSendToCandidate(){
+		try{
+			FacesContext fc = FacesContext.getCurrentInstance();
+			Map<String,String> params =fc.getExternalContext().getRequestParameterMap();
+			String indicator = params.get("indicator");
+
+			List<String> ccList = new ArrayList<String>();
+			List<String> bccList = new ArrayList<String>();
+			if(offerletterModel.getCc() !=null){
+				StringTokenizer strToken = new StringTokenizer(offerletterModel.getCc(), ",");
+				while (strToken.hasMoreTokens()) {
+					ccList.add((String)strToken.nextElement());
+				}
+			}
+			if(offerletterModel.getBcc() !=null){
+				StringTokenizer strToken = new StringTokenizer(offerletterModel.getBcc(), ",");
+				while (strToken.hasMoreTokens()) {
+					bccList.add((String)strToken.nextElement());
+				}
+			}
+			Properties prop = new Properties();
+			InputStream inputStream = getClass().getClassLoader().getResourceAsStream("trms.properties");
+			prop.load(inputStream);
+			if(indicator.equals("multiple")){
+				for(CandidatePaymentModel cpm:selectedCandidates){
+					new EmailSendService().sendMail(prop.getProperty("host"),prop.getProperty("port"),prop.getProperty("notificationSenderEmailId"),prop.getProperty("notificationSenderEmailPassword"),cpm.getCandidateEmail(),offerletterModel.getSubject(),offerletterModel.getBodyContent(),null,ccList,bccList);
+				}
+			}else{
+				new EmailSendService().sendMail(prop.getProperty("host"),prop.getProperty("port"),prop.getProperty("notificationSenderEmailId"),prop.getProperty("notificationSenderEmailPassword"),offerletterModel.getCandidate().getContactAddress().getEmail(),offerletterModel.getSubject(),offerletterModel.getBodyContent(),null,ccList,bccList);
+			}
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"Success", "Mail Successfully Send"));
+		}catch(Exception e){
+			e.printStackTrace();
+			FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error:", "Mail Not Send"));
+		}
+	}
+
+
+
+	public void candidateReport(){
+		if(candidate != null){
+			candidate = null;
+		}
+		action="CANDIDATEREPORT";
+	}
+
+
+	public void emailToCandidate(){
+		if(candidate != null){
+			action = "MAILSENDING";
+			offerletterModel = new OfferletterModel();
+			offerletterModel.setCandidate(candidate);
+			offerletterModel.setIndicator("single");
+		}else{
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Fail:", "Candidate Not Selected"));
+		}
+
+	}
+
+
+	public void getDateForm(){
+		action = "DATEFORMFORREPORT";
+		offerletterModel = new OfferletterModel();
+
+	}
+
+
+	public void candidateForReport() throws ParseException{
+		candidateLazyModelForReport = new LazyCandidateDataModelForReport(candidateService, loginBean.getUserProfile().getEmployee().getEmpId(), loginBean.hasRole("ROLE_ADMIN"), loginBean.hasRole("ROLE_RECRUITER"), offerletterModel.getStartDate(), offerletterModel.getEndDate());
+		action="REPORT";
+	}
+
+
+	public void candidateForFreePool(){
+		try{
+			action = "FREEPOOLLIST";
+			if(candidate != null){
+				candidate = null;
+			}
+			if(freePoolCandidatesDto != null){
+				freePoolCandidatesDto = null;
+			}
+			Calendar cal = Calendar.getInstance();
+			cal.setTime(new Date());
+			cal.add(Calendar.DATE, -30);
+			Date dateBefore45Days = cal.getTime();
+			freePoolcandidates = followUpService.findFreePoolCandidates(dateBefore45Days);
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+	}
+	
+
+
+
+	public void saveCanidatefromFreePool(){
+		if(candidate.getNextFollowUpDate()==null){
+			candidate.setNextFollowUpDate(new Date());
+		}
+		followUp.setEmployee(loginBean.getEmployee());
+
+		candidate.setPreferedLocation(ListStringConverter.getAsString(preffredLocation));
+
+		candidate.setEmployee(loginBean.getEmployee());
+
+		candidateStatuses=appDataBean.getCandidateStatuses();
+		String status=candidate.getCandidateRemarks().getStatusType();
+		try {
+			for(CandidateRemarks cr:candidateStatuses){
+				if(cr.getId()==candidate.getCandidateRemarks().getId()){
+					candidate.getCandidateRemarks().setStatusType(cr.getStatusType());
+				}
+			}
+
+			followUp.setFollowUpType(candidate.getCandidateRemarks().getStatusType());
+			isCandidateEnrolled=candidateService.checkCandidatePayment(candidate.getCandidateId());
+
+			if(candidate.getCandidateRemarks().getStatusType().equals("Enrolled") && !isCandidateEnrolled){
+
+				if(candidate.getCandidateCourse().getId() == null || candidate.getCandidateCourse().getId() <= 0){
+					FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error:", "For Enrolled Candidate Skill is must"));
+					candidate.getCandidateRemarks().setStatusType(status);
+					return;
+
+				}
+
+				if(candidate.getTotalAmount() == null || candidate.getTotalAmount() <= 0){
+					FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error:", "For Enrolled Fee is must"));
+					candidate.getCandidateRemarks().setStatusType(status);
+					return;
+
+				}
+
+				followUp.setFollowUpRemarks(followUp.getFollowUpRemarks()+" Candidate enrolled. ");
+
+				Properties prop = new Properties();
+				InputStream inputStream = getClass().getClassLoader().getResourceAsStream("trms.properties");
+				if (inputStream != null) {
+					prop.load(inputStream);
+				} else {
+					throw new FileNotFoundException("property file not found");
+				}
+
+
+				List<String> emailsForHr = userProfileService.getEmailByUserRole("ROLE_HR");
+				List<String> emailsForAccountant = userProfileService.getEmailByUserRole("ROLE_ACCOUNT");
+				if(emailsForHr != null){
+					for(String email:emailsForHr){
+						String message = "candidate Id : "+candidate.getCandidateId()+" name: "+candidate.getFirstName()+" "
+								+ "for course: "+candidate.getCandidateCourse().getCourse()+" and amount: "+candidate.getTotalAmount()+" has been enrolled check details";
+						new EmailSendService().sendMail(prop.getProperty("host"),prop.getProperty("port"),prop.getProperty("notificationSenderEmailId"),prop.getProperty("notificationSenderEmailPassword"),email,"Entrolled Candidate Info",message,null,null,null);
+					}
+				}
+
+				if(emailsForAccountant != null){
+					for(String email:emailsForAccountant)
+					{
+						String message = "candidate Id : "+candidate.getCandidateId()+" name: "+candidate.getFirstName()+" "
+								+ "for course: "+candidate.getCandidateCourse().getCourse()+" and amount: "+candidate.getTotalAmount()+" has been enrolled kindly update payment";
+						new EmailSendService().sendMail(prop.getProperty("host"),prop.getProperty("port"),prop.getProperty("notificationSenderEmailId"),prop.getProperty("notificationSenderEmailPassword"),email,"Entrolled Candidate Info",message,null,null,null);
+					}
+				}
+
+
+				CandidatePayment candidatePayment=new CandidatePayment();
+				candidatePayment.setCreadit(BigDecimal.valueOf((candidate.getTotalAmount())));
+				candidatePayment.setEmployee(loginBean.getEmployee());
+				candidatePayment.setCandidateCourse(candidate.getCandidateCourse());
+				candidatePayment.setTransactionDate(new Date());
+				candidatePayment.setDebit(new BigDecimal(0.00));
+				candidateService.updateCandidate(candidate,followUp,candidatePayment);
+
+				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"Sucess:", "Candidate enrolled"));
+			}else{
+
+				if(candidate.getCandidateId()==null){
+					candidateService.updateCandidate(candidate,followUp,null);
+					FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"Sucess:", "Candidate  saved"));
+
+
+				}else{
+					candidateService.updateCandidate(candidate,followUp,null);
+					FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"Sucess:", "FollowUp  saved"));
+				}
+
+				if(candidate.getCandidateCourse() == null){
+					candidate.setCandidateCourse(new CandidateCourse());
+				}
+			}
+			candidateForFreePool();
+		} catch (Exception e) {
+			candidate.getCandidateRemarks().setStatusType(status);
+			e.printStackTrace();
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Fail:", "FollowUp  not saved"));
+		}
+	}
+	
+	
+	
+	public void showFollowupPage(){
+		try{
+			if(freePoolCandidatesDto !=null){
+				preffredLocation = null;
+				candidate = candidateService.getCandidate(freePoolCandidatesDto.getCandidateId());
+				String preLocation = candidate.getPreferedLocation();
+				if(preLocation != null){
+					preffredLocation = new ArrayList<String>();
+					StringTokenizer st = new StringTokenizer(preLocation,"#");
+					while (st.hasMoreElements()) {
+						preffredLocation.add((String) st.nextElement());
+					}
+				}
+				List<FollowUp> followUpList=followUpService.followUpListForCandidate(candidate.getCandidateId());
+				candidate.setFollowUps(followUpList);
+				candidate.setNextFollowUpDate(null);
+				if(candidate.getCandidateCourse() == null){
+					candidate.setCandidateCourse(new CandidateCourse());
+				}
+				if(candidate.getContactAddress() == null){
+					candidate.setContactAddress(new ContactAddress());
+				}
+				if(candidate.getCandidateRemarks() == null){
+					candidate.setCandidateRemarks(new CandidateRemarks());
+				}
+				followUp = new FollowUp();
+				action="SHOWFOLLOWUPPAGE";
+			}else{
+				FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,"Fail:", "Candidate Not Selected"));	
+			}	
+		}catch(Exception e){
+			
+		}
+	}
+	
+
+	public void candidateCheck(){
+		action = "CANDIDATECHECK";
+		if(searchBy != null){
+			searchBy = null;
+		}
+		
+		if(searchValue != null){
+			searchValue = null;
+		}
+		
+		if(searchingCandidateList != null && searchingCandidateList.size() >0){
+			searchingCandidateList.clear();
+		}
+	}
+	
+	
+	public void getCandidateListBySearchValue(){
+		searchingCandidateList = candidateService.getCandidateBySearchValue(searchBy,searchValue);
+	}
+	
+
+	
+  public String getSearchBy() {
+		return searchBy;
+	}
+
+
+	public void setSearchBy(String searchBy) {
+		this.searchBy = searchBy;
+	}
+
+
+	public String getSearchValue() {
+		return searchValue;
+	}
+
+
+	public void setSearchValue(String searchValue) {
+		this.searchValue = searchValue;
+	}
+
+
+	public List<Candidate> getSearchingCandidateList() {
+		return searchingCandidateList;
+	}
+
+
+	public void setSearchingCandidateList(List<Candidate> searchingCandidateList) {
+		this.searchingCandidateList = searchingCandidateList;
+	}
+
+
+	public Candidate getCandidate() {
+		return candidate;
+	}
+
+	public void setCandidate(Candidate candidate) {
+		this.candidate = candidate;
+	}
+
+	public FollowUp getFollowUp() {
+		return followUp;
+	}
+
+	public void setFollowUp(FollowUp followUp) {
+		this.followUp = followUp;
+	}
+
+	public String getAction() {
+		return action;
+	}
+
+	public void setAction(String action) {
+		this.action = action;
+	}
+
+	public LoginBean getLoginBean() {
+		return loginBean;
+	}
+
+	public void setLoginBean(LoginBean loginBean) {
+		this.loginBean = loginBean;
+	}
+
+	public CandidateService getCandidateService() {
+		return candidateService;
+	}
+
+	public void setCandidateService(CandidateService candidateService) {
+		this.candidateService = candidateService;
+	}
+
+	public FollowUpService getFollowUpService() {
+		return followUpService;
+	}
+
+	public void setFollowUpService(FollowUpService followUpService) {
+		this.followUpService = followUpService;
+	}
+
+	public com.ayantsoft.trms.service.CandidatePaymentService getCandidatePaymentService() {
+		return candidatePaymentService;
+	}
+
+	public void setCandidatePaymentService(com.ayantsoft.trms.service.CandidatePaymentService candidatePaymentService) {
+		this.candidatePaymentService = candidatePaymentService;
+	}
+
+	public CandidatePayment getSelectedCandidatePayment() {
+		return selectedCandidatePayment;
+	}
+
+	public void setSelectedCandidatePayment(CandidatePayment selectedCandidatePayment) {
+		this.selectedCandidatePayment = selectedCandidatePayment;
+	}
+
+	public EmployeeService getEmployeeService() {
+		return employeeService;
+	}
+
+	public void setEmployeeService(EmployeeService employeeService) {
+		this.employeeService = employeeService;
+	}
+
+	public Integer getEmpId() {
+		return empId;
+	}
+
+	public void setEmpId(Integer empId) {
+		this.empId = empId;
+	}
+
+
+	public List<String> getPreffredLocation() {
+		return preffredLocation;
+	}
+
+	public void setPreffredLocation(List<String> preffredLocation) {
+		this.preffredLocation = preffredLocation;
+	}
+
+	public List<CandidatePaymentModel> getCandidatePaymentModel() {
+		return candidatePaymentModel;
+	}
+
+	public void setCandidatePaymentModel(List<CandidatePaymentModel> candidatePaymentModel) {
+		this.candidatePaymentModel = candidatePaymentModel;
+	}
+
+	public CandidatePaymentModel getCandidatePayment() {
+		return candidatePayment;
+	}
+
+	public void setCandidatePayment(CandidatePaymentModel candidatePayment) {
+		this.candidatePayment = candidatePayment;
+	}
+
+
+	public List<CandidateRemarks> getCandidateStatuses() {
+		return candidateStatuses;
+	}
+
+
+	public void setCandidateStatuses(List<CandidateRemarks> candidateStatuses) {
+		this.candidateStatuses = candidateStatuses;
+	}
+
+
+	public AppDataBean getAppDataBean() {
+		return appDataBean;
+	}
+
+
+	public void setAppDataBean(AppDataBean appDataBean) {
+		this.appDataBean = appDataBean;
+	}
+
+
+	public UserProfileService getUserProfileService() {
+		return userProfileService;
+	}
+
+
+	public void setUserProfileService(UserProfileService userProfileService) {
+		this.userProfileService = userProfileService;
+	}
+
+
+	public boolean isCandidateEnrolled() {
+		return isCandidateEnrolled;
+	}
+
+
+	public void setCandidateEnrolled(boolean isCandidateEnrolled) {
+		this.isCandidateEnrolled = isCandidateEnrolled;
+	}
+
+
+	public CandidateCheckListService getCandidateCheckListService() {
+		return candidateCheckListService;
+	}
+
+
+	public void setCandidateCheckListService(CandidateCheckListService candidateCheckListService) {
+		this.candidateCheckListService = candidateCheckListService;
+	}
+
+
+	public LazyDataModel<ProgrammeSchedule> getProgrammeScheduleLazyModel() {
+		return programmeScheduleLazyModel;
+	}
+
+
+	public void setProgrammeScheduleLazyModel(LazyDataModel<ProgrammeSchedule> programmeScheduleLazyModel) {
+		this.programmeScheduleLazyModel = programmeScheduleLazyModel;
+	}
+
+
+	public ProgrameSheduleService getProgrameSheduleService() {
+		return programeSheduleService;
+	}
+
+
+	public void setProgrameSheduleService(ProgrameSheduleService programeSheduleService) {
+		this.programeSheduleService = programeSheduleService;
+	}
+
+
+	public String getCandidateStatus() {
+		return candidateStatus;
+	}
+
+
+	public void setCandidateStatus(String candidateStatus) {
+		this.candidateStatus = candidateStatus;
+	}
+
+
+	public List<CandidatePaymentModel> getSelectedCandidates() {
+		return selectedCandidates;
+	}
+
+
+	public void setSelectedCandidates(List<CandidatePaymentModel> selectedCandidates) {
+		this.selectedCandidates = selectedCandidates;
+	}
+
+
+	public OfferletterModel getOfferletterModel() {
+		return offerletterModel;
+	}
+
+
+	public void setOfferletterModel(OfferletterModel offerletterModel) {
+		this.offerletterModel = offerletterModel;
+	}
+
+
+	public LazyDataModel<Candidate> getCandidateLazyModelForReport() {
+		return candidateLazyModelForReport;
+	}
+
+
+	public void setCandidateLazyModelForReport(LazyDataModel<Candidate> candidateLazyModelForReport) {
+		this.candidateLazyModelForReport = candidateLazyModelForReport;
+	}
+
+
+	public List<Object> getCandidatesForFreePool() {
+		return candidatesForFreePool;
+	}
+
+
+	public void setCandidatesForFreePool(List<Object> candidatesForFreePool) {
+		this.candidatesForFreePool = candidatesForFreePool;
+	}
+
+
+	public FollowUpModel getFollowUpModel() {
+		return followUpModel;
+	}
+
+
+	public void setFollowUpModel(FollowUpModel followUpModel) {
+		this.followUpModel = followUpModel;
+	}
+
+
+	public List<FreePoolCandidatesDto> getFreePoolcandidates() {
+		return freePoolcandidates;
+	}
+
+
+	public void setFreePoolcandidates(List<FreePoolCandidatesDto> freePoolcandidates) {
+		this.freePoolcandidates = freePoolcandidates;
+	}
+
+
+	public FreePoolCandidatesDto getFreePoolCandidatesDto() {
+		return freePoolCandidatesDto;
+	}
+
+
+	public void setFreePoolCandidatesDto(FreePoolCandidatesDto freePoolCandidatesDto) {
+		this.freePoolCandidatesDto = freePoolCandidatesDto;
+	}
+
+
+	public String getPhoneExtension() {
+		return phoneExtension;
+	}
+
+
+	public void setPhoneExtension(String phoneExtension) {
+		this.phoneExtension = phoneExtension;
+	}
+	
+	
+
+}

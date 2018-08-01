@@ -1,0 +1,515 @@
+package com.ayantsoft.trms.jsf.view;
+
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Properties;
+import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import javax.annotation.PostConstruct;
+import javax.faces.application.FacesMessage;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
+import javax.faces.bean.ViewScoped;
+import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
+
+import org.primefaces.model.LazyDataModel;
+
+import com.ayantsoft.trms.hibernate.pojo.Cities;
+import com.ayantsoft.trms.hibernate.pojo.ContactAddress;
+import com.ayantsoft.trms.hibernate.pojo.Department;
+import com.ayantsoft.trms.hibernate.pojo.Designation;
+import com.ayantsoft.trms.hibernate.pojo.Employee;
+import com.ayantsoft.trms.hibernate.pojo.Role;
+import com.ayantsoft.trms.hibernate.pojo.States;
+import com.ayantsoft.trms.hibernate.pojo.UserProfile;
+import com.ayantsoft.trms.jsf.model.LazyEmployeeDataModel;
+import com.ayantsoft.trms.service.CityService;
+import com.ayantsoft.trms.service.EmployeeService;
+
+/**
+ * @author Mriganka
+ *
+ */
+@ManagedBean
+@ViewScoped
+public class AdminBean implements Serializable{
+	/**
+	 * serialVersionUID
+	 */
+	private static final long serialVersionUID = 2417706706034901414L;
+
+	@ManagedProperty("#{employeeService}")
+	private EmployeeService employeeService;
+
+	@ManagedProperty(value="#{loginBean}")
+	private LoginBean loginBean;
+
+	@ManagedProperty(value="#{cityService}")
+	private CityService cityService;
+	
+	@ManagedProperty(value="#{appDataBean}")
+	private AppDataBean appDataBean ;
+
+
+
+	private String action;
+	private String roleTypes[];
+	private Employee employee;
+	private UserProfile userProfile;
+	private String confirmPassword;
+	private String password;
+	private LazyDataModel<Employee> employeeLazyModel;
+	private String previousPassword;
+	private boolean passwordIndicator;
+	private String cityName;
+	private String stateName;
+
+
+	/**
+	 * Start of bussiness logic
+	 */
+
+
+	//for employee save
+
+	public void newEmployeeForm(){
+		action="NEW";
+		roleTypes = null;
+		employee = new Employee();
+		employee.setEmployee(new Employee());
+		employee.setContactAddress(new ContactAddress());
+		employee.setUserProfile(new UserProfile());
+		employee.setDepartment(new Department());
+		employee.setDesignation(new Designation());
+	}
+
+	public void saveEmployee() throws IOException
+	{
+
+		boolean hasEmail=employeeService.checkUniqueEmail(employee.getContactAddress().getEmail(),employee.getEmpId());
+		if(hasEmail){
+			String email = employee.getContactAddress().getEmail();
+			int index = email.indexOf('@');
+			String domainOfEmail = email.substring(index+1,email.length());
+			Properties prop = new Properties();
+			InputStream inputStream = getClass().getClassLoader().getResourceAsStream("trms.properties");
+			prop.load(inputStream);
+			String globalitexpertsEmail = prop.getProperty("globalitDomain");
+			if(domainOfEmail.equals(globalitexpertsEmail))
+			{
+				try
+				{
+					Set<Role> roles = getRoleSet();																																																		
+					Pattern pattern = Pattern.compile("[^0-9]");																																																																        					
+					String workMobile = employee.getContactAddress().getWorkMobile();
+					Matcher matcher1 = pattern.matcher(workMobile);																																																																											        					
+					employee.getContactAddress().setWorkMobile(matcher1.replaceAll(""));
+
+					String workPhone = employee.getContactAddress().getWorkPhone();
+					Matcher matcher2 = pattern.matcher(workPhone);
+					employee.getContactAddress().setWorkPhone(matcher2.replaceAll(""));
+
+					String homeMobile = employee.getContactAddress().getHomeMobile();
+					Matcher matcher3 = pattern.matcher(homeMobile);																																																																											        					
+					employee.getContactAddress().setHomeMobile(matcher3.replaceAll(""));
+
+
+					String homePhone = employee.getContactAddress().getHomePhone();
+					Matcher matcher4 = pattern.matcher(homePhone);																																																																											        					
+					employee.getContactAddress().setHomePhone(matcher4.replaceAll(""));
+
+					employeeService.saveEmployee(employee,roles);
+					action="ADVANCESEARCH";																																																																											
+					FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"Sucess:", "Employee saved successfully"));																																																																											        																																																																																		        					
+				}catch(Exception e)
+				{
+					FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Fail:", "Employee not saved"));
+					e.printStackTrace();
+					
+				} 
+			}else{
+				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Fail:", "Office email must be as globalitexperts"));
+			}
+		}else{
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Fail:", "Office email already exists"));
+		}
+	}
+
+
+	public void validateSamePassword(FacesContext context, UIComponent component, Object value) 
+	{
+		confirmPassword = (String) value;
+		if (!confirmPassword.equals(password))
+		{
+			FacesContext.getCurrentInstance().addMessage(component.getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR,"Fail:", "Passwords do not match!"));
+		}
+	}
+
+
+
+	public void workMobileValidation(FacesContext context, UIComponent component, Object value){
+		boolean hasworkMobile=employeeService.checkWorkMobileForValidation((String)value,employee.getEmpId());
+		if(!hasworkMobile){
+			FacesContext.getCurrentInstance().addMessage(component.getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR,"Mobile duplicate:", "Mobile already exists"));
+		}
+	}
+
+
+	public Set<Role> getRoleSet()
+	{
+		Set<Role> roleSet = new HashSet<Role>(0);
+		for(String roleType:roleTypes){
+			Role role = new Role();
+			role.setRoleType(roleType);
+			roleSet.add(role);
+		}
+		return roleSet;
+	}
+
+
+	public void emailValidate(FacesContext context, UIComponent component, Object value) throws IOException{
+		boolean hasEmail=employeeService.checkUniqueEmail((String)value,employee.getEmpId());
+		if(!hasEmail){
+			FacesContext.getCurrentInstance().addMessage(component.getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR,"Email duplicate:", "Email already exists"));
+		}
+
+		if(hasEmail){
+			String email = (String) value;
+			int index = email.indexOf('@');
+			String domainOfEmail = email.substring(index+1,email.length());
+
+			Properties prop = new Properties();
+			InputStream inputStream = getClass().getClassLoader().getResourceAsStream("trms.properties");
+			if (inputStream != null) {
+				prop.load(inputStream);
+			} else {
+				throw new FileNotFoundException("property file not found");
+			}
+
+			String globalitexpertsEmail = prop.getProperty("globalitDomain");
+
+			if(!domainOfEmail.equals(globalitexpertsEmail))
+			{
+				FacesContext.getCurrentInstance().addMessage(component.getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR,"Fail:", "Email must be as globalitexperts"));
+			}
+
+		}
+	}
+
+
+	public void checkPersonalEmail(FacesContext context, UIComponent component, Object value){
+		boolean hasEmail=employeeService.checkUniqueEmail((String)value,employee.getEmpId());
+		if(!hasEmail){
+			FacesContext.getCurrentInstance().addMessage(component.getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR,"Email duplicate:", "Email already exists"));
+		}
+	}
+
+
+
+
+	public void checkUsername(FacesContext context, UIComponent component, Object value)
+	{
+		boolean hasUsername = employeeService.getUsername((String) value);
+		if(hasUsername)
+		{
+			FacesContext.getCurrentInstance().addMessage(component.getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR,"Fail:", "Username already exists"));
+		}
+
+	}
+
+	public void employeeAdvanceSearch(){
+		action="ADVANCESEARCH";
+	}
+
+
+	@PostConstruct
+	public void init(){
+		employeeLazyModel = new LazyEmployeeDataModel(employeeService);
+	}
+
+
+
+	public void editEmployee(Integer empId)
+	{
+		action="EDIT";
+		employee = employeeService.getEmployeeById(empId);
+		
+		if(employee == null){
+			employee = new Employee();
+		}else{
+			if(employee.getContactAddress() == null){
+				employee.setContactAddress(new ContactAddress());
+			}
+			if(employee.getUserProfile() == null){
+				employee.setUserProfile(new UserProfile());
+			}
+			if(employee.getDepartment() == null){
+				employee.setDepartment(new Department());
+			}
+			if(employee.getDesignation() == null){
+				employee.setDesignation(new Designation());
+			}
+			if(employee.getEmployee() == null){	
+				employee.setEmployee(new Employee());
+			}else{
+				Employee emp = new Employee();
+				emp.setEmpId(employee.getEmployee().getEmpId());
+				employee.setEmployee(emp);
+			}
+			Set<Role> roles = employee.getUserProfile().getRoles();
+			roleTypes = new String[roles.size()];	
+			int i=0;
+			for(Role r:roles){
+				roleTypes[i]=r.getRoleType();
+				i++;
+			}
+
+		}
+	}
+
+
+
+	public void employeeProfile()
+	{
+		action = "PROFILE";
+		Integer empId = loginBean.getUserProfile().getEmployee().getEmpId();
+		employee = employeeService.getEmployeeById(empId);
+	}
+
+
+	public void changePassword()
+	{
+		action = "CHANGEPASSWORD";
+		employee = new Employee();
+		employee.setUserProfile(new UserProfile());
+
+	}
+
+	public void checkPreviousPassword()
+	{
+		passwordIndicator = employeeService.getPassword(loginBean.getUserProfile().getEmployee().getEmpId(),previousPassword);
+		if(!passwordIndicator)
+		{
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Fail:", "Password not found"));
+		}
+	}
+
+
+	public void setPasswordByListener()
+	{
+		password = employee.getUserProfile().getPassword();
+	}
+
+
+	public void savePassword()
+	{
+		if(passwordIndicator)
+		{
+			if(password.equals(confirmPassword))
+			{
+				boolean isUpdate = employeeService.savePasswordForUpdate(loginBean.getUserProfile().getEmployee().getEmpId(), password);
+				if(isUpdate)
+				{
+					FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"Sucess:", "Password Successfully Saved"));
+				}else{
+					FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Fail:", "Password Successfully Not Saved"));
+				}
+
+			}else{
+				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Fail:", "Password and confirm password does not matched"));	
+			}
+		}else{
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Fail:", "Sorry, Enter Your Correct Previous Password"));
+		}
+
+
+	}
+
+
+	    public void addCity(){
+		action="ADDCITY";
+		if(stateName != null){
+			stateName = null;
+		}
+		if(cityName != null){
+			cityName = null;
+		}
+	}
+	
+	
+	public void saveCity(){
+		try{
+			String stateId = stateName.substring(stateName.lastIndexOf(",")+1);
+			States state = new States();
+			state.setId(Integer.valueOf(stateId.trim()));
+			Cities city = new Cities();
+			city.setStates(state);
+			city.setName(cityName);
+			cityService.saveCity(city);
+			appDataBean.setCitiList(cityService.getCityList());
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"Success", "City successully added"));
+		}catch(Exception e){
+			e.printStackTrace();
+			FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error:", "City not added"));
+		}
+	}
+	
+	
+
+	public LazyDataModel<Employee> getEmployeeLazyModel() {
+		return employeeLazyModel;
+	}
+
+	public boolean isPasswordIndicator() {
+		return passwordIndicator;
+	}
+
+
+
+	public void setPasswordIndicator(boolean passwordIndicator) {
+		this.passwordIndicator = passwordIndicator;
+	}
+
+
+
+	public String getPreviousPassword() {
+		return previousPassword;
+	}
+
+
+
+	public void setPreviousPassword(String previousPassword) {
+		this.previousPassword = previousPassword;
+	}
+
+
+
+	public LoginBean getLoginBean() {
+		return loginBean;
+	}
+
+
+
+	public void setLoginBean(LoginBean loginBean) {
+		this.loginBean = loginBean;
+	}
+
+
+
+	public void setEmployeeLazyModel(LazyDataModel<Employee> employeeLazyModel) {
+		this.employeeLazyModel = employeeLazyModel;
+	}
+
+
+
+
+	public String getPassword() {
+		return password;
+	}
+
+
+
+
+	public EmployeeService getEmployeeService() {
+		return employeeService;
+	}
+
+
+	public void setEmployeeService(EmployeeService employeeService) {
+		this.employeeService = employeeService;
+	}
+
+
+	public String[] getRoleTypes() {
+		return roleTypes;
+	}
+
+
+	public void setRoleTypes(String[] roleTypes) {
+		this.roleTypes = roleTypes;
+	}
+
+
+	public String getConfirmPassword() {
+		return confirmPassword;
+	}
+
+
+	public void setConfirmPassword(String confirmPassword) {
+		this.confirmPassword = confirmPassword;
+	}
+
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+
+	public Employee getEmployee() {
+		return employee;
+	}
+
+
+
+	public void setEmployee(Employee employee) {
+		this.employee = employee;
+	}
+
+	public String getAction() {
+		return action;
+	}
+
+	public UserProfile getUserProfile() {
+		return userProfile;
+	}
+
+
+	public void setUserProfile(UserProfile userProfile) {
+		this.userProfile = userProfile;
+	}
+
+
+	public void setAction(String action) {
+		this.action = action;
+	}
+
+	public String getCityName() {
+		return cityName;
+	}
+
+	public void setCityName(String cityName) {
+		this.cityName = cityName;
+	}
+
+	public String getStateName() {
+		return stateName;
+	}
+
+	public void setStateName(String stateName) {
+		this.stateName = stateName;
+	}
+
+	public CityService getCityService() {
+		return cityService;
+	}
+
+	public void setCityService(CityService cityService) {
+		this.cityService = cityService;
+	}
+
+	public AppDataBean getAppDataBean() {
+		return appDataBean;
+	}
+
+	public void setAppDataBean(AppDataBean appDataBean) {
+		this.appDataBean = appDataBean;
+	}
+
+
+}

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-reverse-engineering PUBLIC "-//Hibernate/Hibernate Reverse Engineering DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-reverse-engineering-3.0.dtd" >
+
+<hibernate-reverse-engineering>
+  <table-filter match-catalog="ayant_trmsv2" match-name="candidate"/>
+  <table-filter match-catalog="ayant_trmsv2" match-name="candidate_check_list"/>
+  <table-filter match-catalog="ayant_trmsv2" match-name="candidate_course"/>
+  <table-filter match-catalog="ayant_trmsv2" match-name="candidate_group"/>
+  <table-filter match-catalog="ayant_trmsv2" match-name="candidate_has_documents"/>
+  <table-filter match-catalog="ayant_trmsv2" match-name="candidate_has_salesresponsibility"/>
+  <table-filter match-catalog="ayant_trmsv2" match-name="candidate_payment"/>
+  <table-filter match-catalog="ayant_trmsv2" match-name="candidate_programme_schedule"/>
+  <table-filter match-catalog="ayant_trmsv2" match-name="candidate_remarks"/>
+  <table-filter match-catalog="ayant_trmsv2" match-name="candidate_skills"/>
+  <table-filter match-catalog="ayant_trmsv2" match-name="candidate_visa"/>
+  <table-filter match-catalog="ayant_trmsv2" match-name="check_list_type"/>
+  <table-filter match-catalog="ayant_trmsv2" match-name="checklist_has_documents"/>
+  <table-filter match-catalog="ayant_trmsv2" match-name="cities"/>
+  <table-filter match-catalog="ayant_trmsv2" match-name="contact_address"/>
+  <table-filter match-catalog="ayant_trmsv2" match-name="countries"/>
+  <table-filter match-catalog="ayant_trmsv2" match-name="department"/>
+  <table-filter match-catalog="ayant_trmsv2" match-name="designation"/>
+  <table-filter match-catalog="ayant_trmsv2" match-name="documents"/>
+  <table-filter match-catalog="ayant_trmsv2" match-name="documents_type"/>
+  <table-filter match-catalog="ayant_trmsv2" match-name="education_certification"/>
+  <table-filter match-catalog="ayant_trmsv2" match-name="employee"/>
+  <table-filter match-catalog="ayant_trmsv2" match-name="employee_has_task"/>
+  <table-filter match-catalog="ayant_trmsv2" match-name="extension"/>
+  <table-filter match-catalog="ayant_trmsv2" match-name="follow_up"/>
+  <table-filter match-catalog="ayant_trmsv2" match-name="freepool"/>
+  <table-filter match-catalog="ayant_trmsv2" match-name="group_has_candidate"/>
+  <table-filter match-catalog="ayant_trmsv2" match-name="immigration"/>
+  <table-filter match-catalog="ayant_trmsv2" match-name="incentive_structure"/>
+  <table-filter match-catalog="ayant_trmsv2" match-name="phone_recording"/>
+  <table-filter match-catalog="ayant_trmsv2" match-name="profile_image"/>
+  <table-filter match-catalog="ayant_trmsv2" match-name="programme_schedule"/>
+  <table-filter match-catalog="ayant_trmsv2" match-name="role"/>
+  <table-filter match-catalog="ayant_trmsv2" match-name="states"/>
+  <table-filter match-catalog="ayant_trmsv2" match-name="task_has_documents"/>
+  <table-filter match-catalog="ayant_trmsv2" match-name="task_role"/>
+  <table-filter match-catalog="ayant_trmsv2" match-name="task_status"/>
+  <table-filter match-catalog="ayant_trmsv2" match-name="task_tag"/>
+  <table-filter match-catalog="ayant_trmsv2" match-name="trainer"/>
+  <table-filter match-catalog="ayant_trmsv2" match-name="trainer_invoice"/>
+  <table-filter match-catalog="ayant_trmsv2" match-name="user_has_role"/>
+  <table-filter match-catalog="ayant_trmsv2" match-name="user_profile"/>
+</hibernate-reverse-engineering>

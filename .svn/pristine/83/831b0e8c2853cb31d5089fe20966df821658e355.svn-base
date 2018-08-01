@@ -1,0 +1,76 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+	<h:form id="form">
+
+		<p:panel style="margin-top:9%">
+
+			<f:facet name="header">Payment Details</f:facet>
+
+			<p:dataTable var="p" value="#{accountBean.paymentList}" paginator="true" rows="10" resizableColumns="true"
+				resizeMode="true"
+				paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
+				rowsPerPageTemplate="10,25,50,100" id="candidate-payment-due-table" widgetVar="advanceSearch"
+				tableStyle="table-layout: auto">
+
+				<f:facet name="header">Candidates</f:facet>
+
+				<p:column headerText="Name" sortBy="#{p.candidate.firstName}" filterBy="#{p.candidate.firstName}">
+					<h:outputText value="#{p.candidate.firstName}" />
+				</p:column>
+
+
+				<p:column headerText="Email" sortBy="#{p.candidate.contactAddress.email}"
+					filterBy="#{p.candidate.contactAddress.email}">
+					<h:outputText value="#{p.candidate.contactAddress.email}" />
+				</p:column>
+
+
+				<p:column headerText="Phone No." sortBy="#{p.candidate.contactAddress.workMobile}"
+					filterBy="#{p.candidate.contactAddress.workMobile}">
+					<h:outputText value="#{p.candidate.contactAddress.workMobile}" />
+				</p:column>
+
+
+				<p:column headerText="Course" sortBy="#{p.candidateCourse.course}" filterBy="#{p.candidateCourse.course}">
+					<f:facet name="filter">
+						<p:selectOneMenu onchange="PF('advanceSearch').filter()">
+							<f:selectItem itemLabel="Select Course" itemValue=" " noSelectionOption="true" />
+							<f:selectItems value="#{appDataBean.candidateCourses}" var="course" itemLabel="#{course.course}"
+								itemValue="#{course.course}" />
+						</p:selectOneMenu>
+					</f:facet>
+					<h:outputText value="#{p.candidateCourse.course}" />
+				</p:column>
+
+				<p:column headerText="Paid Amount" sortBy="#{p.debit}" filterBy="#{p.debit}">
+					<h:outputText value="#{p.debit}" />
+				</p:column>
+
+				<p:column headerText="Transaction Id" sortBy="#{p.transactionId}" filterBy="#{p.transactionId}">
+					<h:outputText value="#{p.transactionId}" />
+				</p:column>
+				
+				
+				<p:column headerText="Transaction Date" sortBy="#{p.transactionDate}" filterBy="#{p.transactionDate}">
+					<h:outputText value="#{p.transactionDate}" />
+				</p:column>
+				
+				<p:column headerText="Mode Of Mayment" sortBy="#{p.modeOfPayment}" filterBy="#{p.modeOfPayment}">
+					<h:outputText value="#{p.modeOfPayment}" />
+				</p:column>
+
+
+				<p:column headerText="Receiver" sortBy="#{p.receiver}" filterBy="#{p.receiver}">
+					<h:outputText value="#{p.receiver}" />
+				</p:column>
+
+
+			</p:dataTable>
+
+		</p:panel>
+
+	</h:form>
+
+</ui:composition>

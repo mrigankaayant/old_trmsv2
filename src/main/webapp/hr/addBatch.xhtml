@@ -1,0 +1,118 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+	<h:form id="batch-form">
+	 
+		<p:panel>
+			<f:facet name="header">Enter Batch Detail</f:facet>
+
+			<div class="ui-g">
+				<div class="ui-g-12 ui-md-6 ui-lg-3">
+					<h:panelGrid style="width:100%">
+						<p:outputLabel for="batch-title" value="Batch Title:" />
+						<p:inputText value="#{hrBean.programmeSchedule.title}" required="true" id="batch-title"
+							requiredMessage="Enter Batch Title" placeholder="Enter Batch Title" />
+						<p:message for="batch-title" />
+					</h:panelGrid>
+				</div>
+
+
+				<div class="ui-g-12 ui-md-6 ui-lg-3">
+					<h:panelGrid style="width:100%">
+						<p:outputLabel for="batch-trainername" value="Trainer Name:" />
+						<p:selectOneMenu id="batch-trainername" value="#{hrBean.programmeSchedule.trainer.id}" required="true"
+							requiredMessage="Enter Trainer Name">
+							<f:selectItem itemLabel="Select Trainer" itemValue="" noSelectionOption="true" />
+							<f:selectItems value="#{appDataBean.trainers}" var="t" itemLabel="#{t.trainerName}" itemValue="#{t.id}" />
+						</p:selectOneMenu>
+						<p:message for="batch-trainername" />
+					</h:panelGrid>
+				</div>
+
+				<div class="ui-g-12 ui-md-6 ui-lg-3">
+					<h:panelGrid style="width:100%">
+						<p:outputLabel for="batch-coursename" value="Course Name:" />
+						<p:selectOneMenu id="batch-coursename" value="#{hrBean.programmeSchedule.candidateCourse.id}" required="true"
+							requiredMessage="Enter Course Name">
+							<f:selectItem itemLabel="Select Course" itemValue="" noSelectionOption="true" />
+							<f:selectItems value="#{appDataBean.trainers}" var="t" itemLabel="#{t.candidateCourse.course}"
+								itemValue="#{t.candidateCourse.id}" />
+						</p:selectOneMenu>
+						<p:message for="batch-coursename" />
+					</h:panelGrid>
+				</div>
+
+
+				<div class="ui-g-12 ui-md-6 ui-lg-3">
+					<h:panelGrid style="width:100%">
+						<p:outputLabel for="batch-startdate" value="Start Date: (mm/dd/YYYY):" />
+						<p:calendar id="batch-startdate" value="#{hrBean.programmeSchedule.startDate}" pattern="MM/dd/yyyy" mask="true"
+							required="true" requiredMessage="Enter Start Date" />
+						<p:message for="batch-startdate" />
+					</h:panelGrid>
+				</div>
+
+
+				<div class="ui-g-12 ui-md-6 ui-lg-3">
+					<h:panelGrid style="width:100%">
+						<p:outputLabel for="batch-enddate" value="End Date: (mm/dd/YYYY):" />
+						<p:calendar id="batch-enddate" value="#{hrBean.programmeSchedule.endDate}" pattern="MM/dd/yyyy" mask="true" />
+						<p:message for="batch-enddate" />
+					</h:panelGrid>
+				</div>
+
+				<div class="ui-g-12 ui-md-6 ui-lg-3">
+					<h:panelGrid style="width:100%">
+						<p:outputLabel for="batch-starttime" value="Start Time:" />
+						<p:calendar id="batch-starttime" value="#{hrBean.programmeSchedule.startTime}" pattern="HH:mm" timeOnly="true" />
+						<p:message for="batch-starttime" />
+					</h:panelGrid>
+				</div>
+
+
+				<div class="ui-g-12 ui-md-6 ui-lg-3">
+					<h:panelGrid style="width:100%">
+						<p:outputLabel for="batch-endtime" value="End Time:" />
+						<p:calendar id="batch-endtime" value="#{hrBean.programmeSchedule.endTime}" pattern="HH:mm" timeOnly="true" />
+						<p:message for="batch-endtime" />
+					</h:panelGrid>
+				</div>
+
+
+				<div class="ui-g-12 ui-md-6 ui-lg-3">
+					<h:panelGrid style="width:100%">
+						<p:outputLabel for="batch-incomplete" value="Completed:" />
+						<p:selectOneRadio id="batch-incomplete" value="#{hrBean.programmeSchedule.isComplete}">
+							<f:selectItem itemLabel="YES" itemValue="YES" />
+							<f:selectItem itemLabel="NO" itemValue="NO" />
+						</p:selectOneRadio>
+						<p:message for="batch-incomplete" />
+					</h:panelGrid>
+				</div>
+
+
+				<div class="ui-g-12 ui-md-6 ui-lg-12">
+					<h:panelGrid style="width:100%">
+						<p:outputLabel for="batch-dayOfWeek" value="Day Of Week:" />
+						<p:selectManyCheckbox id="batch-dayOfWeek" value="#{hrBean.multipleDay}" required="true" requiredMessage="Enter Day Of Week">
+							<f:selectItem itemLabel="Monday" itemValue="Monday" />
+							<f:selectItem itemLabel="Tuesday" itemValue="Tuesday" />
+							<f:selectItem itemLabel="Wednesday" itemValue="Wednesday" />
+							<f:selectItem itemLabel="Thursday" itemValue="Thursday" />
+							<f:selectItem itemLabel="Friday" itemValue="Friday" />
+							<f:selectItem itemLabel="Saturday" itemValue="Saturday" />
+							<f:selectItem itemLabel="Sunday" itemValue="Sunday" />
+						</p:selectManyCheckbox>
+						<p:message for="batch-dayOfWeek" />
+					</h:panelGrid>
+				</div>
+
+
+				<f:facet name="footer">
+					<p:commandButton value="Save" actionListener="#{hrBean.saveBatch()}" update=":mainBody" />
+				</f:facet>
+			</div>
+		</p:panel>
+	</h:form>
+</ui:composition>

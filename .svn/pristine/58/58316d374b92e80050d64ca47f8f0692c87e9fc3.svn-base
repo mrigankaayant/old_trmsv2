@@ -1,0 +1,47 @@
+package com.ayantsoft.trms.hibernate.dao;
+
+import java.io.Serializable;
+import java.util.List;
+
+import javax.faces.bean.ApplicationScoped;
+import javax.faces.bean.ManagedBean;
+
+import org.hibernate.Criteria;
+import org.hibernate.HibernateException;
+import org.hibernate.Session;
+import org.hibernate.criterion.Order;
+
+import com.ayantsoft.trms.hibernate.pojo.CandidateCourse;
+import com.ayantsoft.trms.hibernate.util.HibernateUtil;
+
+@ManagedBean
+@ApplicationScoped
+
+public class CandidateCourseDao implements Serializable{
+
+	/**
+	 * serialVersionUID
+	 */
+	private static final long serialVersionUID = -4591151405345829174L;
+
+	public List<CandidateCourse> getcandidateCourse(){
+
+		List<CandidateCourse>results=null;
+		Session session=HibernateUtil.getSessionFactory().openSession();
+
+		try{
+			Criteria criteria = session.createCriteria(CandidateCourse.class,"cc");
+			criteria.addOrder(Order.asc("cc.course"));
+			results= criteria.list();
+		}catch(Exception e){
+			e.printStackTrace();
+			throw new HibernateException("Data access Exception");
+		}finally{
+			session.close();
+		}
+		return results;
+	}
+
+	
+	
+}

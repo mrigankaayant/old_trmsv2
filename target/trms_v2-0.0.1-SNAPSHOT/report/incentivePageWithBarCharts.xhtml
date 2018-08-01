@@ -1,0 +1,24 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+	<h:form id="button-form">
+
+			<p:panelGrid style="margin-left:89%;">
+
+				<p:row>
+					<p:column>
+						<p:commandButton value="Bar" action="#{reportBean.showIncentiveDetailsWithBarCharts()}" update=":mainBody" />
+					</p:column>
+					
+					<p:column>
+						<p:commandButton value="Pie" action="#{reportBean.showIncentiveDetailsWithPieCharts()}" update=":mainBody" />
+					</p:column>
+				</p:row>
+			</p:panelGrid>
+			
+		<h:panelGrid style="margin-top:5%;margin-left:18%;">
+			<p:chart type="bar" model="#{reportBean.animatedModel2}" style="width:900px;" />
+		</h:panelGrid>
+	</h:form>
+</ui:composition>

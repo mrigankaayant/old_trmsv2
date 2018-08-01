@@ -1,0 +1,228 @@
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+	<h:form id="form">
+		<p:panel id="toggleable" header="Profile Snapshot" toggleable="true" toggleSpeed="500" closeSpeed="500"
+			widgetVar="panel-profile" style="margin-top:9%;margin-bottom:20px">
+
+			<p:panelGrid columns="3" layout="grid">
+				<h:outputText value="Candidate Name    : #{salesBean.selectedCandidate.firstName}" />
+				<h:outputText value="Job Title    : #{salesBean.selectedCandidate.jobTitle}" />
+				<h:outputText value="Experience years in Usa    : #{salesBean.selectedCandidate.expYearsInUsa}" />
+
+				<h:outputText value="Current Location    : #{salesBean.selectedCandidate.currentLocation}" />
+				<h:outputText value="Prefered Location    : #{salesBean.selectedCandidate.preferedLocation}" />
+			</p:panelGrid>
+
+		</p:panel>
+
+		<p:panel id="toggleable1" header="Personnel Information" toggleable="true" toggleSpeed="500" closeSpeed="500"
+			widgetVar="panel-personnel" style="margin-bottom:20px">
+
+			<p:panelGrid columns="3" layout="grid">
+				<h:outputText value="Name    : #{salesBean.selectedCandidate.firstName}" />
+				<h:outputText value="Date of Birth    : #{salesBean.selectedCandidate.birthDate}" />
+				<h:outputText value="Gender    : #{salesBean.selectedCandidate.gender}" />
+				<h:outputText value="Marital Status    : #{salesBean.selectedCandidate.maritalStatus}" />
+
+				<h:outputText value="SSN    : #{salesBean.selectedCandidate.ssn}" />
+				<h:outputText value="Graduation Date    : #{salesBean.selectedCandidate.yearOfPassing}" />
+				<h:outputText value="Email    : #{salesBean.selectedCandidate.contactAddress.email}" />
+
+				<h:outputText value="Alternate Email    : #{salesBean.selectedCandidate.contactAddress.alternateEmail}" />
+				<h:outputText value="City    : #{salesBean.selectedCandidate.contactAddress.city}" />
+				<h:outputText value="Country    : #{salesBean.selectedCandidate.contactAddress.country}" />
+
+				<h:outputText value="Home Mobile    : #{salesBean.selectedCandidate.contactAddress.homeMobile}" />
+				<h:outputText value="Home Phone    : #{salesBean.selectedCandidate.contactAddress.homePhone}" />
+				<h:outputText value="Landmark    : #{salesBean.selectedCandidate.contactAddress.landmark}" />
+
+				<h:outputText value="Postal Code    : #{salesBean.selectedCandidate.contactAddress.postalCode}" />
+				<h:outputText value="Current Location    : #{salesBean.selectedCandidate.currentLocation}" />
+				<h:outputText value="Prefered Location    : #{salesBean.selectedCandidate.preferedLocation}" />
+				<h:outputText value="Availiability    : #{salesBean.selectedCandidate.availiability}" />
+				<h:outputText value="Bill Rate    : #{salesBean.selectedCandidate.billRate}" />
+				<h:outputText value="Bill Rate    : #{salesBean.selectedCandidate.billRate}" />
+			</p:panelGrid>
+
+		</p:panel>
+
+
+		<p:panel id="toggleable2" header="Professional Information" toggleable="true" toggleSpeed="500" closeSpeed="500"
+			widgetVar="panel-professional" style="margin-bottom:20px">
+
+			<p:panelGrid columns="3" layout="grid">
+				<h:outputText value="Course Name    : #{salesBean.selectedCandidate.candidateCourse.course}" />
+				<h:outputText value="Facebook    : #{salesBean.selectedCandidate.contactAddress.facebook}" />
+				<h:outputText value="Fax    : #{salesBean.selectedCandidate.contactAddress.fax}" />
+				<h:outputText value="LinkedIn    : #{salesBean.selectedCandidate.contactAddress.linkedin}" />
+
+				<h:outputText value="MSN    : #{salesBean.selectedCandidate.contactAddress.msn}" />
+				<h:outputText value="Twitter    : #{salesBean.selectedCandidate.contactAddress.twitter}" />
+				<h:outputText value="Work Mobile    : #{salesBean.selectedCandidate.contactAddress.workMobile}" />
+
+				<h:outputText value="Work Phone    : #{salesBean.selectedCandidate.contactAddress.workPhone}" />
+				<h:outputText value="Recruiter Name    : #{salesBean.selectedCandidate.employee.name}" />
+				<h:outputText value="Visa    : #{salesBean.selectedCandidate.credentialType}" />
+
+				<h:outputText value="Visa Start Date    : #{salesBean.selectedCandidate.immigrationStartDate}" />
+				<h:outputText value="Skype    : #{salesBean.selectedCandidate.contactAddress.skype}" />
+				<h:outputText value="Joining Date    : #{salesBean.selectedCandidate.joiningDate}" />
+
+				<h:outputText value="Job Title    : #{salesBean.selectedCandidate.jobTitle}" />
+				<h:outputText value="Payrate    : #{salesBean.selectedCandidate.payRate}" />
+				<h:outputText value="Pay Type    : #{salesBean.selectedCandidate.payType}" />
+
+				<h:outputText value="Total Experience    : #{salesBean.selectedCandidate.totalExp}" />
+				<h:outputText value="Years in USA    : #{salesBean.selectedCandidate.yearsInUsa}" />
+			</p:panelGrid>
+
+		</p:panel>
+
+
+
+
+		<p:panel id="toggleable4" header="IT-Skill" toggleable="true" toggleSpeed="500" closeSpeed="500"
+			widgetVar="panel-it-skill" style="margin-bottom:20px">
+
+			<p:dataTable var="canSkill" value="#{salesBean.candidateSkills}">
+				<p:column headerText="Experties Level">
+					<h:outputText value="#{canSkill.expertiesLevel}" />
+				</p:column>
+
+				<p:column headerText="Tech Skill">
+					<h:outputText value="#{canSkill.techSkill}" />
+				</p:column>
+
+				<p:column headerText="Last Used">
+					<h:outputText value="#{canSkill.lastUsed}" />
+				</p:column>
+
+				<p:column headerText="Years Of Experience">
+					<h:outputText value="#{canSkill.yearsOfExp}" />
+				</p:column>
+			</p:dataTable>
+
+		</p:panel>
+
+
+
+
+		<p:panel id="toggleable5" header="Education" toggleable="true" toggleSpeed="500" closeSpeed="500"
+			widgetVar="panel-education" style="margin-bottom:20px">
+
+			<p:dataTable var="canEdu" value="#{salesBean.educationCertificateList}">
+
+				<p:column headerText="Country">
+					<h:outputText value="#{canEdu.country}" />
+				</p:column>
+				<p:column headerText="Credential">
+					<h:outputText value="#{canEdu.credential}" />
+				</p:column>
+
+				<p:column headerText="CredentialType">
+					<h:outputText value="#{canEdu.credentialType}" />
+				</p:column>
+
+				<p:column headerText="Pergentage">
+					<h:outputText value="#{canEdu.pergentage}" />
+				</p:column>
+
+				<p:column headerText="University">
+					<h:outputText value="#{canEdu.university}" />
+				</p:column>
+
+				<p:column headerText="YearOfPassing">
+					<h:outputText value="#{canEdu.yearOfPassing}">
+						<f:convertDateTime pattern="MM/dd/yyyy" />
+					</h:outputText>
+				</p:column>
+			</p:dataTable>
+
+		</p:panel>
+
+
+
+
+		<p:panel id="documentsPanel" header="Documents" toggleable="true" toggleSpeed="500" closeSpeed="500"
+			widgetVar="panel-education">
+
+			<p:dataTable var="doc" value="#{salesBean.documents}" sortBy="#{doc.name}" style="text-align:center;">
+
+				<p:column headerText="Document Name" sortBy="#{doc.name}">
+					<h:outputText value="#{doc.name}" />
+				</p:column>
+				<p:column headerText="File name" sortBy="#{doc.filename}">
+					<h:outputText value="#{doc.filename}" />
+				</p:column>
+
+				<p:column headerText="Description" sortBy="#{doc.description}">
+					<h:outputText value="#{doc.description}" />
+				</p:column>
+
+				<p:column headerText="Exp. Date" sortBy="#{doc.expriedDate}">
+					<h:outputText value="#{doc.expriedDate}" />
+				</p:column>
+
+				<p:column headerText="Created" sortBy="#{doc.created}">
+					<h:outputText value="#{doc.created}" />
+				</p:column>
+
+				<p:column headerText="Action">
+
+					<h:commandLink actionListener="#{salesBean.showFile()}" update=":form:documentsPanel" value="Show"
+						style="color:blue;" target="_blank">
+						<f:param name="fileName" value="#{doc.filename}" />
+						<f:param name="filePath" value="#{doc.filepath}" />
+					</h:commandLink>
+
+				</p:column>
+
+				<p:column headerText="Action">
+
+
+					<h:commandLink actionListener="#{salesBean.downloadFile}" value="Download" style="color:blue;">
+						<f:param name="fileName" value="#{doc.filename}" />
+						<f:param name="filePath" value="#{doc.filepath}" />
+					</h:commandLink>
+
+				</p:column>
+
+			</p:dataTable>
+
+		</p:panel>
+
+
+		<p:panel id="resumePanel" header="Resume" toggleable="true" toggleSpeed="500" closeSpeed="500"
+			widgetVar="panel-resume" style="margin-top:1%;margin-bottom:20px">
+
+			<div class="ui-g">
+				<div class="ui-g-12 ui-md-6 ui-lg-6">
+					<h:panelGrid style="width:100%">
+						<p:outputLabel for="show-resume" value="Show Resume " />
+						<h:commandLink id="show-resume" actionListener="#{salesBean.showFile()}"
+							value="#{salesBean.offerletterModel.fileName}" style="color:blue;" target="_blank">
+							<f:param name="fileName" value="#{salesBean.offerletterModel.fileName}" />
+							<f:param name="filePath" value="#{salesBean.offerletterModel.filePath}" />
+						</h:commandLink>
+					</h:panelGrid>
+				</div>
+
+				<div class="ui-g-12 ui-md-6 ui-lg-6">
+					<h:panelGrid style="width:100%">
+						<p:outputLabel for="download-resume" value="Download Resume " />
+						<h:commandLink id="download-resume" actionListener="#{salesBean.downloadFile}"
+							value="#{salesBean.offerletterModel.fileName}" style="color:blue;">
+							<f:param name="fileName" value="#{salesBean.offerletterModel.fileName}" />
+							<f:param name="filePath" value="#{salesBean.offerletterModel.filePath}" />
+						</h:commandLink>
+					</h:panelGrid>
+				</div>
+			</div>
+
+		</p:panel>
+
+	</h:form>
+</ui:composition>

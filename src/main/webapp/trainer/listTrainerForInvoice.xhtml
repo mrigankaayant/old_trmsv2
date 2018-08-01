@@ -1,0 +1,56 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:p="http://primefaces.org/ui">
+
+	<p:growl id="growl" showDetail="true" sticky="false" autoUpdate="true" />
+
+	<h:form id="form">
+		<p:panel style="margin-top:9%;">
+
+			<f:facet name="header">
+				<p:outputLabel>Generate Invoice</p:outputLabel>
+			</f:facet>
+
+
+				<p:dataTable var="t" value="#{trainerBean.trainers}" paginator="true" rows="20"
+				rowKey="#{t.id}" resizableColumns="true" sortBy="#{t.id}" sortOrder="descending"
+				paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
+				rowsPerPageTemplate="20,25,50,100" selection="#{trainerBean.trainer}" resizeMode="true"
+				widgetVar="trainerTable" tableStyle="table-layout: auto">
+				
+
+				<f:facet name="header">
+					<p:outputLabel>Trainer List</p:outputLabel>
+				</f:facet>
+
+				<p:column selectionMode="single" style="width:16px;text-align:center" />
+
+				<p:column headerText="Id" sortBy="#{t.id}" filterBy="#{t.id}">
+					<h:outputText value="#{t.id}" />
+				</p:column>
+
+				<p:column headerText="Name" sortBy="#{t.trainerName}" filterBy="#{t.trainerName}">
+					<h:outputText value="#{t.trainerName}" />
+				</p:column>
+
+				<p:column headerText="Course Name" sortBy="#{t.candidateCourse.course}" filterBy="#{t.candidateCourse.course}">
+					<h:outputText value="#{t.candidateCourse.course}" />
+				</p:column>
+
+				<p:column headerText="Email" sortBy="#{t.contactAddress.email}" filterBy="#{t.contactAddress.email}">
+					<h:outputText value="#{t.contactAddress.email}" />
+				</p:column>
+
+				<p:column headerText="Phone No." sortBy="#{t.contactAddress.workMobile}" filterBy="#{t.contactAddress.workMobile}">
+					<h:outputText value="#{t.contactAddress.workMobile}" />
+				</p:column>
+
+			</p:dataTable>
+
+			<f:facet name="footer" style="text-align:left">
+				<p:commandButton value="Next" action="#{trainerBean.findBatchByTrainerId()}" onclick="PF('statusDialog').show()"
+					oncomplete="PF('statusDialog').hide()" update=":mainBody" />
+			</f:facet>
+		</p:panel>
+
+	</h:form>
+</ui:composition>

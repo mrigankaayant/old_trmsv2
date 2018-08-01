@@ -1,0 +1,68 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:p="http://primefaces.org/ui">
+
+	<p:growl id="growl" showDetail="true" sticky="false" autoUpdate="true" />
+
+	<h:form id="form">
+		<p:panel style="margin-top:9%;">
+
+			<f:facet name="header">
+				<p:outputLabel>Details Of Removed Candidates</p:outputLabel>
+			</f:facet>
+
+				<p:dataTable var="can" value="#{trainerBean.transferCandidates}" paginator="true" rows="20"
+					rowKey="#{can.candidateId}" resizableColumns="true" sortBy="#{can.candidateId}" sortOrder="descending"
+					paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
+					rowsPerPageTemplate="20,25,50,100" resizeMode="true" widgetVar="candidateTable" tableStyle="table-layout: auto">
+					
+					<f:facet name="header">Candidates</f:facet>
+
+					<p:column headerText="Id" sortBy="#{can.candidateId}" filterBy="#{can.candidateId}">
+						<h:outputText value="#{can.candidateId}" />
+					</p:column>
+
+					<p:column headerText="Candidate Name" sortBy="#{can.firstName}" filterBy="#{can.firstName}">
+						<h:outputText value="#{can.firstName}" />
+					</p:column>
+
+					<p:column headerText="Email" sortBy="#{can.contactAddress.email}" filterBy="#{can.contactAddress.email}">
+						<h:outputText value="#{can.contactAddress.email}" />
+					</p:column>
+
+					<p:column headerText="Phone No." sortBy="#{can.contactAddress.workMobile}"
+						filterBy="#{can.contactAddress.workMobile}">
+						<button type="button"  onclick="clickToCall('#{trainerBean.phoneExtension}','#{can.contactAddress.workMobile}')">#{can.contactAddress.workMobile}</button>
+					</p:column>
+
+					<p:column headerText="Course Name" sortBy="#{can.candidateCourse.course}" filterBy="#{can.candidateCourse.course}">
+						<h:outputText value="#{can.candidateCourse.course}" />
+					</p:column>
+
+				</p:dataTable>
+
+		</p:panel>
+	</h:form>
+	
+	<script type="text/javascript">
+	
+	function clickToCall(fromnum,tonum) {
+
+		$.ajax({
+ 	       url: 'http://globalitexperts.vitelglobal.com/clicktocall/index.php'+'?fromnum=' + fromnum + '&amp;tonum=' + tonum,
+            type: 'POST',
+            crossOrigin: true,
+            success: function (response) {
+            console.log(response.status);
+          },
+          error: function (response) {
+            console.log(response.status);
+         }
+        });
+           
+        alert('calling to '+ tonum);
+	}
+
+  </script>
+  
+  
+</ui:composition>

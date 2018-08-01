@@ -1,0 +1,70 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:p="http://primefaces.org/ui"
+	template="/templates/common.xhtml">
+	<ui:define name="submenu">
+		<h:form id="menu-form">
+		    <p:hotkey bind="ctrl+shift+z" update=":mainBody" actionListener="#{recruitmentBean.newCandidateForm()}" />
+			<div class="ui-ribbon-groups ui-helper-clearfix">
+				<table class="ui-ribbon-group-content ui-ribbon-group ui-widget">
+					<tr>
+						<td>
+							<p:commandButton value="New" icon="ui-ribbonicon-new" styleClass="ui-ribbon-bigbutton"
+								action="#{recruitmentBean.newCandidateForm()}" onclick="PF('statusDialog').show()" oncomplete="PF('statusDialog').hide()" update=":mainBody" />
+						</td>
+					</tr>
+					<tfoot>
+						<tr>
+							<td colspan="2" class="ui-ribbon-group-label">Candidate</td>
+						</tr>
+					</tfoot>
+				</table>
+				
+				<table class="ui-ribbon-group-content ui-ribbon-group ui-widget">
+
+					<tr>
+						<td>
+							<p:commandButton value="Profile" icon="ui-ribbonicon-candidateProfile" styleClass="ui-ribbon-bigbutton" id="search-button"
+								action="#{recruitmentBean.candidateAdvanceSearch()}" onclick="PF('statusDialog').show()" oncomplete="PF('statusDialog').hide()" update=":mainBody" />
+						</td>
+						<td>
+							<p:commandButton value="Search" icon="ui-ribbonicon-check" styleClass="ui-ribbon-bigbutton" id="check-button"
+								action="#{recruitmentBean.candidateCheck()}" onclick="PF('statusDialog').show()" oncomplete="PF('statusDialog').hide()" update=":mainBody" />
+						</td>
+						
+						<td>
+							<p:commandButton value="Free Pool" styleClass="ui-ribbon-bigbutton" icon="ui-ribbonicon-freepool"
+								action="#{recruitmentBean.candidateForFreePool()}" onclick="PF('statusDialog').show()" oncomplete="PF('statusDialog').hide()" update=":mainBody" />
+						</td>
+						
+						<td>
+							<p:commandButton value="Call Log" styleClass="ui-ribbon-bigbutton" icon="ui-ribbonicon-transfer"
+								action="#{recruitmentBean.getCallLog()}" onclick="PF('statusDialog').show()" oncomplete="PF('statusDialog').hide()" update=":mainBody" />
+						</td>
+
+					</tr>
+					<tfoot>
+						<tr>
+							<td colspan="7" class="ui-ribbon-group-label">Search</td>
+						</tr>
+					</tfoot>
+				</table>
+				
+				<table class="ui-ribbon-group-content ui-ribbon-group ui-widget">
+					<tr>
+						<td>
+							<p:commandButton value="Logout" icon="ui-ribbonicon-logout" styleClass="ui-ribbon-bigbutton" id="logout-button"
+								action="#{loginBean.logout()}" onclick="PF('statusDialog').show()" oncomplete="PF('statusDialog').hide()" update=":mainBody" />
+						</td>
+					</tr>
+					<tfoot>
+						<tr>
+							<td colspan="7" class="ui-ribbon-group-label">Logout</td>
+						</tr>
+					</tfoot>
+				</table>
+				
+			</div>
+		</h:form>
+	</ui:define>
+</ui:composition>

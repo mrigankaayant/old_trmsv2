@@ -1,0 +1,55 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:p="http://primefaces.org/ui">
+
+	<p:growl id="growl" showDetail="true" sticky="false" autoUpdate="true" />
+
+	<h:form id="form">
+		<p:panel style="margin-top:9%">
+			<f:facet name="header">Trainer List</f:facet>
+			<p:dataTable var="trainer" value="#{trainerBean.trainerLazyModel}" paginator="true" rows="20" rowKey="#{trainer.id}"
+				resizableColumns="true" resizeMode="true" selectionMode="single" selection="#{trainerBean.trainer}"
+				paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
+				sortBy="#{trainer.id}" sortOrder="descending" rowsPerPageTemplate="10,25,50,100" id="trainer-table" lazy="true"
+				widgetVar="trainerTable" tableStyle="table-layout: auto">
+
+				<f:facet name="header">Trainers</f:facet>
+
+				<p:ajax event="rowDblselect" listener="#{trainerBean.onRowSelectForTrainer}" onstart="PF('statusDialog').show()"
+					oncomplete="PF('statusDialog').hide()" update=":mainBody" />
+
+				<p:column headerText="Id" sortBy="#{trainer.id}" filterBy="#{trainer.id}" style="text-align:center">
+					<h:outputText value="#{trainer.id}" />
+				</p:column>
+
+				<p:column headerText="Name" sortBy="#{trainer.trainerName}" filterBy="#{trainer.trainerName}"
+					style="text-align:center">
+					<h:outputText value="#{trainer.trainerName}" />
+				</p:column>
+
+				<p:column headerText="Phone No." sortBy="#{trainer.contactAddress.workMobile}"
+					filterBy="#{trainer.contactAddress.workMobile}" style="text-align:center">
+					<h:outputText value="#{trainer.contactAddress.workMobile}" />
+				</p:column>
+
+				<p:column headerText="Email" sortBy="#{trainer.contactAddress.email}" filterBy="#{trainer.contactAddress.email}"
+					style="text-align:center">
+					<h:outputText value="#{trainer.contactAddress.email}" />
+				</p:column>
+
+				<p:column headerText="Course" sortBy="#{trainer.candidateCourse.course}"
+					filterBy="#{trainer.candidateCourse.course}" style="text-align:center">
+
+					<f:facet name="filter">
+						<p:selectOneMenu onchange="PF('trainerTable').filter()">
+							<f:selectItem itemLabel="Select One" itemValue="#{null}" noSelectionOption="true" />
+							<f:selectItems value="#{appDataBean.candidateCourses}" var="course" itemLabel="#{course.course}"
+								itemValue="#{course.course}" />
+						</p:selectOneMenu>
+					</f:facet>
+
+					<h:outputText value="#{trainer.candidateCourse.course}" />
+				</p:column>
+			</p:dataTable>
+		</p:panel>
+	</h:form>
+</ui:composition>

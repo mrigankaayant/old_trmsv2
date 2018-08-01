@@ -1,0 +1,76 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+	<h:form id="datatable-form">
+		<p:panel style="margin-top:9%">
+
+			<f:facet name="header">Hotlist</f:facet>
+
+			<p:dataTable id="candidate-datatable" var="candi" value="#{salesBean.candidateLazyModelForPlaced}" paginator="true"
+				rows="15" resizableColumns="true" resizeMode="true" widgetVar="advanceSearch" sortBy="#{candi.candidateId}"
+				sortOrder="descending"
+				paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
+				rowsPerPageTemplate="15,30,50,100,500,1000" rowKey="#{candi.candidateId}" lazy="true"
+				tableStyle="width:auto;table-layout:auto">	
+
+				<f:facet name="header">Candidates</f:facet>
+
+				<p:column headerText="Id" sortBy="#{candi.candidateId}" filterBy="#{candi.candidateId}">
+					<h:outputText value="#{candi.candidateId}" />
+				</p:column>
+
+				<p:column headerText="Name" sortBy="#{candi.firstName}" filterBy="#{candi.firstName}">
+					<h:outputText value="#{candi.firstName}" />
+				</p:column>
+				
+				<p:column headerText="Skills" sortBy="#{candi.candidateCourse.course}" filterBy="#{candi.candidateCourse.id}">
+					<f:facet name="filter">
+						<p:selectOneMenu onchange="PF('advanceSearch').filter()">
+							<f:selectItem itemLabel="Select Skill" itemValue=" " noSelectionOption="true" />
+							<f:selectItems value="#{appDataBean.candidateCourses}" var="course" itemLabel="#{course.course}"
+								itemValue="#{course.id}" />
+						</p:selectOneMenu>
+					</f:facet>
+					<h:outputText value="#{candi.candidateCourse.course}" />
+				</p:column>
+
+				<p:column headerText="Email" sortBy="#{candi.contactAddress.email}" filterBy="#{candi.contactAddress.email}">
+					<h:outputText value="#{candi.contactAddress.email}" />
+				</p:column>
+
+				<p:column headerText="Alt Email" sortBy="#{candi.contactAddress.alternateEmail}"
+					filterBy="#{candi.contactAddress.alternateEmail}">
+					<h:outputText value="#{candi.contactAddress.alternateEmail}" />
+				</p:column>
+
+				<p:column headerText="Mobile" sortBy="#{candi.contactAddress.workMobile}"
+					filterBy="#{candi.contactAddress.workMobile}">
+					<h:outputText value="#{candi.contactAddress.workMobile}" />
+				</p:column>
+
+				<p:column headerText="Alt Mobile" sortBy="#{candi.contactAddress.homeMobile}"
+					filterBy="#{candi.contactAddress.homeMobile}">
+					<h:outputText value="#{candi.contactAddress.homeMobile}" />
+				</p:column>
+
+				<p:column headerText="Cur. Location" sortBy="#{candi.currentLocation}" filterBy="#{candi.currentLocation}"
+					style="text-align:center">
+					<h:outputText value="#{candi.currentLocation}" />
+				</p:column>
+
+				<p:column headerText="Pref. Location" sortBy="#{candi.preferedLocation}" filterBy="#{candi.preferedLocation}"
+					style="text-align:center">
+					<h:outputText value="#{candi.preferedLocation}" />
+				</p:column>
+				
+				<p:column headerText="Recruiter Name" sortBy="#{candi.employee.name}" filterBy="#{candi.employee.name}"
+					style="text-align:center">
+					<h:outputText value="#{candi.employee.name}" />
+				</p:column>
+
+			</p:dataTable>
+		</p:panel>
+	</h:form>
+
+</ui:composition>

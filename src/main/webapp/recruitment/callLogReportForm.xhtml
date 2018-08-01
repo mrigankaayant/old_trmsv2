@@ -1,0 +1,150 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions">
+
+	<h:form id="report-form">
+		<p:panel style="margin-top:1%">
+			<f:facet name="header">Priod</f:facet>
+			<h:panelGrid columns="10" layout="grid" style="border: none">
+				<p:outputLabel for="period" style="font-size:16px;font-weight:bold"
+					value="Period:" />
+
+				<p:selectOneMenu id="period" required="true"
+					requiredMessage="Enter Period"
+					validator="#{recruitmentBean.dateRangeCheck}">
+					<f:selectItem itemLabel="---Select---" itemValue="" />
+					<f:selectItem itemValue="Current Month" itemLabel="Current Month" />
+					<f:selectItem itemValue="Current Month Plus Previous Month"
+						itemLabel="Current Month Plus Previous Month" />
+					<f:selectItem itemValue="Current Month Plus Previous Two Month"
+						itemLabel="Current Month Plus Previous Two Month" />
+					<f:selectItem itemValue="Date Range" itemLabel="Date Range" />
+					<p:ajax event="change" update=":report-form" />
+				</p:selectOneMenu>
+				<p:message for="period" />
+
+
+				<p:outputLabel for="start" style="font-size:16px;font-weight:bold"
+					value="Start (DD/MM/YYYY)"
+					rendered="#{recruitmentBean.dateRangePanelSelector}" />
+
+				<p:calendar required="true" id="start" pattern="dd-MMMM-yyyy"
+					requiredMessage="Enter Start Date"
+					value="#{recruitmentBean.startDate}"
+					rendered="#{recruitmentBean.dateRangePanelSelector}" />
+				<p:message for="start"
+					rendered="#{recruitmentBean.dateRangePanelSelector}" />
+
+				<p:outputLabel for="end" style="font-size:16px;font-weight:bold"
+					value="End (DD/MM/YYYY)"
+					rendered="#{recruitmentBean.dateRangePanelSelector}" />
+
+				<p:calendar required="true" id="end" pattern="dd-MMMM-yyyy"
+					requiredMessage="Enter Start Date"
+					value="#{recruitmentBean.endDate}"
+					rendered="#{recruitmentBean.dateRangePanelSelector}" />
+				<p:message for="end"
+					rendered="#{recruitmentBean.dateRangePanelSelector}" />
+
+				<p:commandButton value="Search"
+					action="#{recruitmentBean.findCallLogByStartDateAndEndDate()}"
+					update=":report-form"
+					rendered="#{recruitmentBean.dateRangePanelSelector}" />
+
+			</h:panelGrid>
+		</p:panel>
+
+	
+
+	<p:panel style="margin-top:1%;"
+		rendered="#{!not empty recruitmentBean.callLogLazyModelForReport}">
+		<f:facet name="header">Result</f:facet>
+		<h1 align="center">Data is not found</h1>
+	</p:panel>
+	
+	
+	<p:panel style="margin-top:1%;"
+		rendered="#{not empty recruitmentBean.callLogLazyModelForReport}">
+		<f:facet name="header">Result</f:facet>
+		<p:dataTable id="candidate-datatable" var="c"
+				value="#{recruitmentBean.callLogLazyModelForReport}" paginator="true"
+				rows="20" resizableColumns="true" resizeMode="true"
+				widgetVar="advanceSearch" sortBy="#{c.callingDate}" 
+				sortOrder="descending"
+				paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
+				rowsPerPageTemplate="20,30,50,100,500,1000,2000" 
+				rowKey="#{c.id}" lazy="true"
+				tableStyle="width:auto;table-layout:auto">
+				
+				
+				<f:facet name="header">
+					<div align="left">
+
+						<h:commandLink style="margin-left:8px;">
+							<h:graphicImage value="/resources/demo/images/icon/excel.png" />
+							<p:dataExporter type="xls" target="candidate-datatable"
+								fileName="calllog-report" pageOnly="true" />
+						</h:commandLink>
+
+					</div>
+				</f:facet>
+				
+				
+				<p:column headerText="Emp. Name" sortBy="#{c.employeeName}" filterBy="#{c.employeeName}" >
+					<h:outputText value="#{c.employeeName}" />
+				</p:column>
+				
+				<p:column headerText="Ext" sortBy="#{c.extension}" filterBy="#{c.extension}">
+					<h:outputText value="#{c.extension}" />
+				</p:column>
+				
+				<p:column headerText="Source No" sortBy="#{c.srcNumber}" filterBy="#{c.srcNumber}">
+					<h:outputText value="#{c.srcNumber}" />
+				</p:column>
+				
+				<p:column headerText="Destination No" sortBy="#{c.destNumber}" filterBy="#{c.destNumber}">
+					<h:outputText value="#{c.destNumber}" />
+				</p:column>
+				
+				<p:column headerText="IN/OUT" sortBy="#{c.inOut}" filterBy="#{c.inOut}">
+					<h:outputText value="#{c.inOut}" />
+				</p:column>
+				
+				<p:column headerText="Location" sortBy="#{c.callingLocation}" filterBy="#{c.callingLocation}">
+					<h:outputText value="#{c.callingLocation}" />
+				</p:column>
+				
+				<p:column headerText="Calling Date" sortBy="#{c.callingDate}" filterBy="#{c.callingDate}">
+					<h:outputText value="#{c.callingDate}" />
+				</p:column>
+				
+				<p:column headerText="Status" sortBy="#{c.callStatus}" filterBy="#{c.callStatus}">
+					<h:outputText value="#{c.callStatus}" />
+				</p:column>
+				
+				<p:column headerText="Duration" sortBy="#{c.callDuration}" filterBy="#{c.callDuration}">
+					<h:outputText value="#{c.callDuration}" />
+				</p:column>
+				
+				<p:column headerText="Candidate Id" sortBy="#{c.candidateId}" filterBy="#{c.candidateId}">
+					<h:outputText value="#{c.candidateId}" />
+				</p:column>
+				
+				<p:column headerText="Candidate Name" sortBy="#{c.candidateName}" filterBy="#{c.candidateName}">
+					<h:outputText value="#{c.candidateName}" />
+				</p:column>
+				
+				<p:column headerText="Candidate Email" sortBy="#{c.candidateEmail}" filterBy="#{c.candidateEmail}">
+					<h:outputText value="#{c.candidateEmail}" />
+				</p:column>
+			</p:dataTable>
+	</p:panel>
+	
+	</h:form>
+
+</ui:composition>
+
